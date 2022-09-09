@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_tabata"
+    android:clipToPadding="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context="com.machy1979ii.intervaltimer.TabataActivity">
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:elevation="@dimen/velikostStinu"
+        android:background="@drawable/backgroundreklama"
+
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="9">
+
+
+            <LinearLayout
+                android:elevation="@dimen/velikostStinu"
+                android:background="@drawable/backgroundcolorcaspripravy"
+                android:layout_margin="@dimen/velikostMezeryLandTabataClassic"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:id="@+id/dlazdiceHlavniCas"
+                android:weightSum="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dlazdiceHlavniCasRelativeLayout"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/textViewBeziciCasNadpis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:text="@string/nadpisCasPripravy"
+                        android:textColor="@color/colorPisma"
+                        android:textSize="@dimen/velikostTextuNadpis"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:includeFontPadding="false"
+                            android:id="@+id/textViewBeziciCasCisloKola"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/velikostMezeryPismaOdpocitavace"
+                            android:layout_marginRight="@dimen/velikostMezeryVodorovneLandZakladniLayout"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:text="1"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostCasuOdpocitavaniCtyri"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            app:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="@dimen/velikostCasuOdpocitavaniDva"
+                            app:autoSizeMinTextSize="12sp"
+                            app:autoSizeStepGranularity="2sp"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:includeFontPadding="false"
+                            android:id="@+id/textViewBeziciCas"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/velikostMezeryPismaOdpocitavace"
+                            android:layout_marginRight="@dimen/velikostMezeryPismaOdpocitavace"
+
+                            android:gravity="center"
+                            android:text="00"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostCasuOdpocitavaniDva"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            app:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="@dimen/velikostCasuOdpocitavaniDva"
+                            app:autoSizeMinTextSize="12sp"
+                            app:autoSizeStepGranularity="2sp"
+                            />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:weightSum="3"
+                android:id="@+id/dlazdicePodHlavnimCasem" >
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/dlazdicePodHlavnimCasem1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
+                    android:background="@drawable/backgroundmodrykulaterohy"
+
+                    android:elevation="@dimen/velikostStinu"
+                    android:layout_weight="1"
+                    android:onClick="showPickerNastavPocetCykluVTabate">
+
+
+
+
+                    <TextView
+                        android:text="@string/nadpisPocetCyklu"
+                        android:textSize="@dimen/velikostTextuNadpis"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/textViewPocetCykluNadpis" />
+
+                    <TextView
+                        android:text="00/00"
+                        android:textSize="@dimen/velikostTextuHodnoty"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/textViewAktualniPocetCyklu"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dlazdicePodHlavnimCasem2"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
+
+                    android:elevation="@dimen/velikostStinu"
+                    android:layout_weight="1"
+                    android:onClick="showPauseDialog"
+                    android:background="@drawable/backgroundmodrykulaterohy">
+
+                    <TextView
+
+                        android:textStyle="bold"
+                        android:textSize="@dimen/velikostTextuCelkovyCas"
+                        android:text="10:25"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/textViewCelkovyCas" />
+
+                    <LinearLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_gravity="center"
+
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayoutPauza"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:background="@mipmap/pauselezatotabataactivity"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+
+
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dlazdicePodHlavnimCasem3"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@drawable/backgroundmodrykulaterohy"
+                    android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
+
+                    android:elevation="@dimen/velikostStinu"
+                    android:layout_weight="1"
+                    android:onClick="showTimePickerDialogNastavPocetTabatVCasovaci">
+
+                    <TextView
+                        android:text="@string/nadpisPocetTabat"
+                        android:textSize="@dimen/velikostTextuNadpis"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/textViewHodnotaPoctuTabatNadpis" />
+
+                    <TextView
+                        android:text="00/00"
+                        android:textSize="@dimen/velikostTextuHodnoty"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/textViewAktualniPocetTabat"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+

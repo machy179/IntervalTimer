@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">الفاصل الزمني</string>
+
+    <string name="ulozCas">حفظ</string>
+
+    <string name="prehrajCas">تشغيل</string>
+
+    <string name="nadpisNastavCasPripravy">اضبط وقت التحضير</string>
+
+    <string name="nadpisNastavCasCviceni">إعداد وقت الجولة </string>
+
+    <string name="nadpisNastavCasPauzy">اضبط وقت الراحة</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatami">اضبط الوقت بين تمارين تاباتا</string>
+
+    <string name="nadpisNastavCasCoolDown">اضبط وقت التهدئة</string>
+
+    <string name="nadpisCasPauzy">وقت الراحة:</string>
+
+    <string name="nadpisCasPauzyZvuk">صوت نهاية الجولة</string>
+
+    <string name="nadpisCasPauzyTabatyZvuk">صوت الوقت بين تمارين تاباتا</string>
+
+    <string name="nadpisCasPripravy">وقت التحضير:</string>
+
+    <string name="nadpisCasCviceni">وقت الجولة:</string>
+
+    <string name="nadpisCasCviceniZvuk">صوت بداية الجولة</string>
+
+    <string name="nadpisCasCoolDown">وقت التهدئة:</string>
+
+    <string name="nadpisCasCoolDownCas">صوت نهاية كل الجولات</string>
+    <string name="nadpisZvukPulkaCviceni">الصوت نصف الجولة</string><!-- this is a comment -->
+    <string name="nadpisZvukPrekKoncemKola">الصوت قبل نهاية الجولة</string><!-- this is a comment -->
+
+
+    <string name="nadpisCasPauzyMeziTabatmi">الوقت بين تمارين تاباتا</string>
+
+    <string name="nadpisPocetTabatC">طول الجولة:</string>
+    <string name="nadpisPocetTabat">تمارين تاباتا:</string>
+
+    <string name="nadpisPocetCyklu">الجولات:</string>
+
+    <string name="nadpisPocet">عدد:</string>
+
+    <string name="pauza">إيقاف مؤقت</string>
+
+    <string name="pokracovat">استمرار</string>
+
+    <string name="coolDown">COOL DOWN</string>
+
+    <string name="odpocinek">راحة</string>
+
+    <string name="cvic">GO</string>
+
+    <string name="konec">انتهاء</string>
+
+    <string name="celkovyCas">الوقت الكلي: </string>
+    <string name="NoSound">لا</string><!-- this is a comment -->
+
+    <string name="nadpisSoundSetup">صوت</string>
+
+    <string name="nadpisNastaveniZvukuCoutDown">صوت العد التنازلي</string>
+
+    <string name="nadpisOdpocinekMeziTabatami">الباقي بين تمارين تاباتا:</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatmi">ضبط وقت الراحة بين تمارين تاباتا</string>
+
+    <string name="nadpisNastavPocetTabat">حدد عدد تمارين تاباتا</string>
+
+    <string name="nadpisNastavPocetCyklu">حدد عدد الجولات</string>
+
+    <string name="title_activity_tabata">نشاط تاباتا</string>
+
+
+    <string name="title_activity_set_sound">ضبط نشاط الصوت</string>
+
+    <string name="nadpisNastavZvukCviceni">ضبط الأصوت بداية  الجولة</string>
+    <string name="nadpisNastavZvukPulkaCviceni">ضبط الأصوت صوت نصف الجولة</string><!-- this is a comment -->
+    <string name="nadpisNastavZvukDoKonceKola">ضبط الأصوت قبل نهاية الجولة</string><!-- this is a comment -->
+
+
+    <string name="nadpisNastavZvukRest">اضبط صوت بدء وقت الراحة</string>
+
+    <string name="nadpisNastavZvukRestTabatas">اضبط صوت بدء الراحة بين تمارين تاباتا </string>
+
+    <string name="nadpisNastavZvukKonecCviceni">اضبط صوت نهاية جميع التدريبات</string>
+
+    <string name="nadpisNastavZvukCountdown">اضبط صوت العد التنازلي</string>
+
+    <string name="title_activity_home">نشاط المنزل</string>
+
+    <string name="title_activity_banner">نشاط البانر</string>
+
+    <string name="napisZvuk"> صوت </string>
+
+    <string name="napisesrecenziprosim">هل ستراجع التطبيق؟ ... 5 نجوم من فضلك:-)</string>
+    <string name="recenze">إعادة النظر</string>
+    <string name="never">مطلقا</string>
+    <string name="notnow">ليس الآن</string>
+    <string name="ok">موافق</string>
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">قم بإعداد ثواني</string>
+
+    <string name = "preskocPosledniKoloHorniText">  تخطي آخر</string>
+    <string name = "preskocPosledniKolo"> مجموعة </string>
+    <string name = "timeNapis"> الوقت </string>
+    <string name = "nadpisNastavBarvu"> اضبط اللون: </string>
+    <string name = "nadpisNastaveniHlasitosti">  ضبط الصوت</string>
+    <string name = "nadpisNastavCas"> ضبط الوقت </string>
+
+    <string name = "tab_text_1"> كلاسيكي </string>
+    <string name = "tab_text_2"> Tabata </string>
+    <string name = "tab_text_3"> مخصص </string>
+
+
+
+
+
+
+</resources>

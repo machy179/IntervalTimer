@@ -1,0 +1,19 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorReklama</item>
+
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorReklama</item>
+        <item name="colorPrimaryDark">@color/colorReklama</item>
+
+        <item name="colorAccent">@color/colorPisma</item>
+        <item name="android:statusBarColor">@color/colorReklama</item>
+    </style>
+</resources>

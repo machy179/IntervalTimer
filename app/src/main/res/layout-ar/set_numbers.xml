@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:baselineAligned="false"
+    android:padding="@dimen/velikostMezery"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <NumberPicker
+            android:id="@+id/npJednotky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/NumberPickerStyle"
+            android:descendantFocusability="blocksDescendants"
+            />
+
+        <NumberPicker
+            android:id="@+id/npDesitky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/NumberPickerStyle"
+            android:descendantFocusability="blocksDescendants"
+            />
+
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/buttonUlozPocet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_save"/>
+
+</LinearLayout>

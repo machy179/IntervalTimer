@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="velikostTextuNadpis">28dp</dimen>
+    <dimen name="velikostTextuNadpisMensi">23dp</dimen>
+    <dimen name="velikostTextuHodnoty">50dp</dimen>
+    <dimen name="velikostTextuNadpisDialog">16dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniFull">120dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniDva">335dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniCtyri">155dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniTri">190dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniCoolDown">70dp</dimen>
+    <dimen name="velikostTextuCelkovyCas">40dp</dimen>
+
+
+
+</resources>

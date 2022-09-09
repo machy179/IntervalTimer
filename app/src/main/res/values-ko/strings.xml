@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">인터벌 타이머</string>
+
+    <string name="ulozCas">저장</string>
+
+    <string name="prehrajCas">플레이</string>
+
+    <string name="nadpisNastavCasPripravy">준비 시간 설정</string>
+
+    <string name="nadpisNastavCasCviceni">라운드 시간 설정</string>
+
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">초 설정</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavCasPauzy">휴식 시간 설정</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatami">타바타 사이 시간 설정</string>
+
+    <string name="nadpisNastavCasCoolDown">쿨다운 시간 설정</string>
+
+    <string name="nadpisCasPauzy">휴식 시간:</string>
+
+    <string name="nadpisCasPauzyZvuk">라운드 종료 소리</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasPauzyTabatyZvuk">타바타 사이 시간 소리</string>
+
+    <string name="nadpisCasPripravy">준비 시간:</string>
+
+    <string name="nadpisCasCviceni">라운드 시간:</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasCviceniZvuk">라운드 시작 소리</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasCoolDown">쿨다운 시간:</string>
+
+    <string name="nadpisCasCoolDownCas">모든 라운드 종료 소리</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisZvukPulkaCviceni">하프 라운드 소리</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisZvukPrekKoncemKola">라운드 종료 전 소리</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasPauzyMeziTabatmi">타바타 사이 시간</string>
+
+    <string name="nadpisPocetTabatC">라운드 길이</string>
+    <string name="nadpisPocetTabat">수업 과정:</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisPocetCyklu">라운드</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisPocet">번호:</string>
+
+    <string name="pauza">중지</string>
+
+    <string name="pokracovat">계속</string>
+
+    <string name="coolDown">쿨다운</string>
+
+    <string name="odpocinek">휴식</string>
+
+    <string name="cvic">GO</string>
+    <!-- this is a comment -->
+
+    <string name="konec">종료</string>
+
+    <string name="celkovyCas">총 시간: </string>
+
+    <string name="NoSound">없음</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisSoundSetup">소리</string>
+
+    <string name="nadpisNastaveniZvukuCoutDown">카운트 다운 소리</string>
+
+    <string name="nadpisOdpocinekMeziTabatami">타바타 사이 휴식:</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatmi">타바타 사이 휴식 시간 설정</string>
+
+    <string name="nadpisNastavPocetTabat">타바타 수 설정</string>
+
+    <string name="nadpisNastavPocetCyklu">라운드 수 설정</string>
+    <!-- ??? -->
+
+    <string name="title_activity_tabata">타바타활동</string>
+
+    <string name="title_activity_set_sound">활동소리설정</string>
+
+    <string name="nadpisNastavZvukCviceni">라운드 시작 소리 설정</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavZvukRest">휴식 시간 시작 소리 설정</string>
+
+    <string name="nadpisNastavZvukRestTabatas">타바타 사이 휴식 시작 소리 설정 </string>
+
+    <string name="nadpisNastavZvukKonecCviceni">모든 운동 종료 소리 설정</string>
+
+    <string name="nadpisNastavZvukCountdown">카운트 다운 소리 설정</string>
+
+    <string name="nadpisNastavZvukPulkaCviceni">하프 라운드 소리 설정</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavZvukDoKonceKola">라운드 종료 전 사운드 설정</string>
+    <!-- this is a comment -->
+
+    <string name="title_activity_home">홈활동</string>
+
+    <string name="title_activity_banner">배너활동</string>
+
+    <string name="napisZvuk"> 소리 </string>
+
+    <string name="napisesrecenziprosim">앱을 리뷰하시겠습니까?...별 5개 후기를 부탁드립니다.</string>
+
+    <string name="recenze">리뷰</string>
+
+    <string name="never">절대 하지 않음</string>
+
+    <string name="notnow">나중에</string>
+
+    <string name="ok">확인</string>
+
+    <string name="preskocPosledniKoloHorniText">마지막 세트</string>
+    <string name="preskocPosledniKolo"> 건너뛰기</string>
+    <string name="timeNapis">시간</string>
+
+    <string name="nadpisNastavBarvu">색상 설정:</string>
+    <string name="nadpisNastaveniHlasitosti">볼륨 설정</string>
+    <string name="nadpisNastavCas">시간 설정</string>
+
+    <string name="tab_text_1">클래식</string>
+    <string name="tab_text_2">타바타</string>
+    <string name="tab_text_3">사용자 지정</string>
+
+</resources>

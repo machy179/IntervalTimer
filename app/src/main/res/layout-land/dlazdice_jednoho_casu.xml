@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="false"
+    android:weightSum="10"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/dlazdiceCasu"
+        android:layout_width="0dp"
+        android:layout_weight="9"
+        android:layout_height="@dimen/vyskaDlazcie"
+        android:layout_marginLeft="@dimen/velikostMezeryLandTabataClassic"
+        android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
+        android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
+        android:elevation="@dimen/velikostStinu"
+        android:background="@drawable/backgroundcolorcascviceni"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_marginRight="@dimen/posunVedleObrazkuSetupColor"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showPickerDialogNastavColorDlazdice"
+                    android:background="@drawable/setupcolorikona"
+
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/setupcolorikonactverec"
+
+                        android:orientation="vertical">
+
+
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showPickerDialogNastavZvukDlazdice"
+                    android:background="@drawable/setupcolorikona"
+
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/setupsoundikonactverec"
+
+                        android:orientation="vertical">
+
+
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/showDialogNastavCasDlazdice"
+                    android:background="@mipmap/prazdnyobrazek"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/editTextNadpisHodnotaCasu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:text="@string/timeNapis"
+                        android:textColor="@color/colorPisma"
+                        android:textSize="@dimen/velikostTextuNadpis"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                        app:autoSizeMinTextSize="12sp"
+                        app:autoSizeStepGranularity="2sp"
+                        android:id="@+id/textViewHodnotaCasu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="00:00:00"
+                        android:textColor="@color/colorPisma"
+                        android:textSize="@dimen/velikostTextuHodnoty"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/vyskaDlazcie"
+
+        android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
+        android:elevation="@dimen/velikostStinu"
+
+
+        android:background="@drawable/backgroundcolornastavenizvuku"
+        android:id="@+id/showVymazDlazdici"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/prazdnyobrazeksetup">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom|center_horizontal"
+                android:contentDescription="Image"
+                android:src="@mipmap/minus" />
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

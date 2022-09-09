@@ -1,0 +1,83 @@
+
+<resources>
+    <string name = "app_name">Zegar interwałowy</string>
+        <string name = "ulozCas"> Zapisz </string>
+        <string name = "prehrajCas"> Odtwórz </string>
+        <string name = "nadpisNastavCasPripravy"> Ustaw czas przygotowania </string>
+        <string name = "nadpisNastavCasCviceni"> Ustaw czas rundy </string>
+        <string name = "nadpisNastavCasPauzy"> Ustaw czas odpoczynku </string>
+        <string name = "nadpisNastavCasPauzyMeziTabatami"> Ustaw czas między tabatami </string>
+        <string name = "nadpisNastavCasCoolDown"> Ustaw czas chłodzenia </string>
+
+        <string name = "nadpisCasPauzy"> Czas odpoczynku: </string>
+        <string name = "nadpisCasPauzyZvuk"> Dźwięk końca rundy </string>
+
+        <string name = "nadpisCasPauzyTabatyZvuk"> Dźwięk czasu między tabatami </string>
+        <string name = "nadpisCasPripravy"> Czas przygotowania: </string>
+        <string name = "nadpisCasCviceni"> Czas rundy: </string>
+        <string name = "nadpisCasCviceniZvuk">Dźwięk początku rundy</string>
+        <string name = "nadpisCasCoolDown"> Czas chłodzenia: </string>
+        <string name = "nadpisCasCoolDownCas"> Dźwięk samego końca </string>
+    <string name="nadpisZvukPulkaCviceni">dźwięk pół rundy</string>
+        <string name = "nadpisCasPauzyMeziTabatmi"> Czas między tabatami </string>
+        <string name = "nadpisPocetTabatC">Runda trwa:</string>
+    <string name = "nadpisPocetTabat"> Tabaty: </string>
+        <string name = "nadpisPocetCyklu"> Rundy: </string>
+        <string name = "nadpisPocet"> Liczba: </string>
+        <string name = "pauza"> Pauza </string>
+        <string name = "pokracovat"> kontynuuj </string>
+        <string name = "coolDown"> CHŁODZENIE</string>
+        <string name = "odpocinek">PAUZA</string>
+        <string name = "cvic">GO</string>
+        <string name = "konec"> KONIEC </string>
+        <string name="celkovyCas">całkowity czas: </string>
+        <string name="NoSound">Żaden</string>
+
+        <string name = "nadpisSoundSetup"> Dźwięk </string>
+        <string name = "nadpisNastaveniZvukuCoutDown"> Dźwięk odliczania </string>
+
+        <string name = "nadpisOdpocinekMeziTabatami"> Czas między tabatami: </string>
+        <string name = "nadpisNastavCasPauzyMeziTabatmi"> Ustaw czas między tabatami </string>
+        <string name = "nadpisNastavPocetTabat"> Ustaw liczbę tabat </string>
+        <string name = "nadpisNastavPocetCyklu"> Ustaw liczbę rund </string>
+        <string name = "title_activity_tabata"> TabataActivity </string>
+
+
+        <string name = "title_activity_set_sound"> ​​SetSoundActivity </string>
+        <string name = "nadpisNastavZvukCviceni"> Ustaw dźwięk początkowy treningu </string>
+        <string name = "nadpisNastavZvukRest"> Ustaw dźwięk czasu odpoczynku </string>
+
+        <string name = "nadpisNastavZvukRestTabatas"> Ustaw dźwięk pauzy między tabatami </string>
+
+        <string name = "nadpisNastavZvukKonecCviceni"> Ustaw dźwięk zakończenia treningów </string>
+        <string name = "nadpisNastavZvukCountdown"> Ustaw dźwięk odliczania </string>
+    <string name="nadpisNastavZvukPulkaCviceni">Ustawić dźwięk połowy rundy</string>
+    <string name="nadpisZvukPrekKoncemKola">Dźwięk przed końcem rundy</string>
+    <string name="nadpisNastavZvukDoKonceKola">Ustawić dźwięk przed końcem rundy</string>
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">ustaw sekundy</string>
+
+
+        <string name = "title_activity_home"> HomeActivity </string>
+        <string name = "title_activity_banner"> BannerActivity </string>
+
+    <string name = "napisZvuk"> dźwięk </string>
+    <string name="napisesrecenziprosim">Chcesz ocenić aplikację? ... 5 gwiazdek poproszę :-)</string>
+    <string name="recenze">Przejrzeć</string>
+    <string name="never">nigdy</string>
+    <string name="notnow">nie teraz</string>
+    <string name="ok">ok</string>
+
+
+
+    <string name="preskocPosledniKoloHorniText">Pomiń ostatni</string>
+    <string name="preskocPosledniKolo">zestaw </string>
+    <string name="timeNapis">Czas</string>
+    <string name="nadpisNastavBarvu">Ustaw kolor:</string>
+    <string name="nadpisNastaveniHlasitosti">Ustawienia głośności</string>
+    <string name="nadpisNastavCas">Ustaw czas</string>
+
+    <string name="tab_text_1">Klasyczny</string>
+    <string name="tab_text_2">Tabata</string>
+    <string name="tab_text_3">Niestandardowe</string>
+</resources>

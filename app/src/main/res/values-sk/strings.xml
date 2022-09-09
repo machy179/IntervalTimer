@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Intervalový časovač</string>
+    <string name="ulozCas">Uložiť</string>
+    <string name="prehrajCas">Prehrať</string>
+    <string name="nadpisNastavCasPripravy">Nastav čas prípravy</string>
+    <string name="nadpisNastavCasCviceni">Nastav čas cvičenia</string>
+    <string name="nadpisNastavCasPauzy">Nastav čas pauzy</string>
+    <string name="nadpisNastavCasPauzyMeziTabatami">Nastav čas medzi tabatami</string>
+    <string name="nadpisNastavCasCoolDown">Nastav čas vychladnutí</string>
+
+    <string name="nadpisCasPauzy">Čas pauzy:</string>
+    <string name="nadpisCasPauzyZvuk">Zvuk konca kola</string>
+
+    <string name="nadpisCasPauzyTabatyZvuk">Zvuk času medzi tabatami</string>
+    <string name="nadpisCasPripravy">Čas prípravy:</string>
+    <string name="nadpisCasCviceni">Čas kola:</string>
+    <string name = "nadpisCasCviceniZvuk"> Zvuk začiatku kola </string>
+    <string name = "nadpisCasCoolDown"> Čas vychladnutí: </string>
+    <string name = "nadpisCasCoolDownCas"> Zvuk celkového konca </string>
+    <string name="nadpisZvukPulkaCviceni">zvuk pol kola</string>
+    <string name="nadpisZvukPrekKoncemKola">Zvuk pred koncom kola</string>
+    <string name = "nadpisCasPauzyMeziTabatmi"> Čas medzi tabatami </string>
+    <string name = "nadpisPocetTabatC">Dĺžka kola:</string>
+    <string name = "nadpisPocetTabat"> Tabata: </string>
+    <string name = "nadpisPocetCyklu"> Kolá : </string>
+    <string name = "nadpisPocet"> Počet: </string>
+    <string name = "pauza"> Pauza </string>
+    <string name = "pokracovat"> Pokračovať </string>
+    <string name="coolDown"> vychladnutí </string>
+    <string name="odpocinek">PAUZA </string>
+    <string name="cvic">GO</string>
+    <string name="konec"> KONIEC </string>
+    <string name="celkovyCas">Celkový čas: </string>
+    <string name="NoSound">žiadny</string>
+
+    <string name = "nadpisSoundSetup"> Zvuky </string>
+    <string name = "nadpisNastaveniZvukuCoutDown"> Zvuk odpočítavanie </string>
+    <string name = "title_activity_set_sound"> SetSoundActivity </string>
+    <string name = "nadpisNastavZvukCviceni"> Nastav zvuk štartu </string>
+
+    <string name = "nadpisNastavZvukRest"> Nastav zvuk začiatku pauzy </string>
+
+    <string name = "nadpisNastavZvukRestTabatas"> Nastav zvuk začiatku pauzy medzi tabatami </string>
+
+    <string name = "nadpisNastavZvukKonecCviceni"> Nastav zvuk celkového konca </string>
+
+    <string name = "nadpisNastavZvukCountdown"> Nastav zvuk odpočítavanie </string>
+    <string name="nadpisNastavZvukPulkaCviceni">Nastav zvuk polovice kola</string>
+    <string name="nadpisNastavZvukDoKonceKola">Nastav zvuk pred koncom kola</string>
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Nastav sekundy</string>
+
+
+
+    <string name = "nadpisOdpocinekMeziTabatami"> Čas medzi tabatami: </string>
+    <string name = "nadpisNastavCasPauzyMeziTabatmi"> Nastav čas medzi tabatami </string>
+    <string name = "nadpisNastavPocetTabat"> Nastav počet tabat </string>
+    <string name = "nadpisNastavPocetCyklu"> Nastav počet kôl </string>
+    <string name = "title_activity_tabata"> TabataActivity </string>
+
+
+
+    <string name = "title_activity_home"> HomeActivity </string>
+    <string name = "title_activity_banner"> BannerActivity </string>
+
+    <string name = "napisZvuk"> zvuk </string>
+    <string name="napisesrecenziprosim">Chcete ohodnotiť aplikáciu? ... 5 hviezdičiek prosím :-)</string>
+    <string name="recenze">Recenzia</string>
+    <string name="never">nikdy</string>
+    <string name="notnow">nie teraz</string>
+    <string name="ok">ok</string>
+
+
+    <string name="preskocPosledniKoloHorniText">Vynechať posledné</string>
+    <string name="preskocPosledniKolo">kolo </string>
+    <string name="nadpisNastavBarvu">Nastav farbu:</string>
+    <string name="nadpisNastaveniHlasitosti">Nastavenie hlasitosti</string>
+    <string name="timeNapis">čas</string>
+    <string name="nadpisNastavCas">Nastav čas</string>
+
+    <string name="tab_text_1">Klasické</string>
+    <string name="tab_text_2">Tabata</string>
+    <string name="tab_text_3">Vlastné</string>
+
+
+</resources>
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.machy1979ii.intervaltimer">
+
+    <supports-screens
+        android:largeScreens="true"
+        android:resizeable="true"
+        android:xlargeScreens="true" />
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:protectionLevel="signature" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IntervalTimer">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6701702247641250~7047640994"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+        <activity
+            android:name=".SplashScreenActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:windowSoftInputMode="stateHidden|adjustPan|adjustResize"
+            android:name=".MainActivity"
+
+            android:label="@string/app_name"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:theme="@style/Theme.IntervalTimer.NoActionBar">
+
+        </activity>
+
+        <activity
+            android:name="com.machy1979ii.intervaltimer.ClassicActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:label="@string/title_activity_classic"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name="com.machy1979ii.intervaltimer.SetSoundClassicActivity"
+            android:label="@string/title_activity_set_sound"
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+        <activity
+            android:name="com.machy1979ii.intervaltimer.TabataActivity"
+
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:label="@string/title_activity_tabata"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name="com.machy1979ii.intervaltimer.SetSoundTabataActivity"
+            android:label="@string/title_activity_set_sound"
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+        <activity
+            android:name="com.machy1979ii.intervaltimer.CustomActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:label="@string/title_activity_tabata"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
+
+        <activity
+            android:name="com.machy1979ii.intervaltimer.SetSoundCustomActivity"
+            android:label="@string/title_activity_set_sound"
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+
+    </application>
+
+</manifest>

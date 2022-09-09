@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">Aralık Zamanlayıcısı</string>
+
+    <string name="ulozCas">Kaydet</string>
+
+    <string name="prehrajCas">Oyna</string>
+
+    <string name="nadpisNastavCasPripravy">Hazırlık süresini ayarlayın</string>
+
+    <string name="nadpisNastavCasCviceni">Raund zamanı ayarla</string>
+
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Saniyeleri ayarla</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavCasPauzy">Dinlenme zamanını ayarlayın</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatami">Tabatalar arasındaki zamanı ayarlayın</string>
+
+    <string name="nadpisNastavCasCoolDown">Soğuma süresini ayarlayın</string>
+
+    <string name="nadpisCasPauzy">Dinlenme zamanı:</string>
+
+    <string name="nadpisCasPauzyZvuk">Turun sonunun sesi</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasPauzyTabatyZvuk">Tabatalar arasındaki zamanın sesi</string>
+
+    <string name="nadpisCasPripravy">Hazırlanma zamanı:</string>
+
+    <string name="nadpisCasCviceni">Raund zaman:</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasCviceniZvuk">Turun başlama sesi</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasCoolDown">Bekleme süresi:</string>
+
+    <string name="nadpisCasCoolDownCas">Her turun sonunun sesi</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisZvukPulkaCviceni">Raundun yarısının sesi</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisZvukPrekKoncemKola">Turun bitiminden önce ses</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasPauzyMeziTabatmi">Tabatalar arasındaki zaman</string>
+
+    <string name="nadpisPocetTabatC">R. uzunluk:</string>
+    <string name="nadpisPocetTabat">Tabata:</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisPocetCyklu">Raundlar:</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisPocet">Numara:</string>
+
+    <string name="pauza">Duraklat</string>
+
+    <string name="pokracovat">devam et</string>
+
+    <string name="coolDown">COOL DOWN</string>
+
+    <string name="odpocinek">MOLA</string>
+
+    <string name="cvic">GO</string>
+    <!-- this is a comment -->
+
+    <string name="konec">SON</string>
+
+    <string name="celkovyCas">Toplam zaman: </string>
+
+    <string name="NoSound">Yok</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisSoundSetup">Ses</string>
+
+    <string name="nadpisNastaveniZvukuCoutDown">Geri sayımın sesi</string>
+
+    <string name="nadpisOdpocinekMeziTabatami">Tabatalar arasında dinlenin:</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatmi">Tabatalar arasında dinlenme süresini ayarlayın</string>
+
+    <string name="nadpisNastavPocetTabat">Tabataların sayısını ayarla</string>
+
+    <string name="nadpisNastavPocetCyklu">Tur sayısını ayarlayın</string>
+    <!-- ??? -->
+
+    <string name="title_activity_tabata">TabataActivity</string>
+
+    <string name="title_activity_set_sound">SetSoundActivity</string>
+
+    <string name="nadpisNastavZvukCviceni">Turun başlama sesini ayarlayın</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavZvukRest">Dinlenme süresinin başlama sesini ayarlayın</string>
+
+    <string name="nadpisNastavZvukRestTabatas">Tabatalar arasında dinlenme başlangıcı sesini ayarlayın </string>
+
+    <string name="nadpisNastavZvukKonecCviceni">Tüm antrenmanların sonunun sesini ayarlayın</string>
+
+    <string name="nadpisNastavZvukCountdown">Geri sayımın sesini ayarlayın</string>
+
+    <string name="nadpisNastavZvukPulkaCviceni">Yarım turun sesini ayarlayın</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavZvukDoKonceKola">Sesi turun bitiminden önce ayarla</string>
+    <!-- this is a comment -->
+
+    <string name="title_activity_home">Ana sayfa</string>
+
+    <string name="title_activity_banner">BannerActivity</string>
+
+    <string name="napisZvuk"> ses </string>
+
+    <string name="napisesrecenziprosim">Will you review app?...5 stars please:-)</string>
+
+    <string name="recenze">gözden geçirmek</string>
+
+    <string name="never">asla</string>
+
+    <string name="notnow">şimdi değil</string>
+
+    <string name="ok">Tamam</string>
+
+
+    <string name="preskocPosledniKoloHorniText"></string>
+    <string name="preskocPosledniKolo">Son seti atla </string>
+    <string name="timeNapis">zaman</string>
+    <string name="nadpisNastavBarvu">Rengi ayarlayın:</string>
+    <string name="nadpisNastaveniHlasitosti">Ses ayarı</string>
+    <string name="nadpisNastavCas">Saati ayarla</string>
+
+    <string name="tab_text_1">Klasik</string>
+    <string name="tab_text_2">Tabata</string>
+    <string name="tab_text_3">Özel</string>
+
+</resources>

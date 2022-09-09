@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">Temporizador de intervalo</string>
+
+    <string name="ulozCas">Salvar</string>
+
+    <string name="prehrajCas">Tocar</string>
+
+    <string name="nadpisNastavCasPripravy">Defina o tempo de preparação</string>
+
+    <string name="nadpisNastavCasCviceni">Defina o tempo de round</string>
+
+    <string name="nadpisNastavCasPauzy">Defina o tempo de descanso</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatami">Defina o tempo entre as Tabatas</string>
+
+    <string name="nadpisNastavCasCoolDown">Defina o tempo de resfriamento</string>
+
+    <string name="nadpisCasPauzy">Tempo de descanso:</string>
+
+    <string name="nadpisCasPauzyZvuk">Som de fim de round</string>
+
+    <string name="nadpisCasPauzyTabatyZvuk">Defina o tempo entre as Tabatas</string>
+
+    <string name="nadpisCasPripravy">Tempo de preparação:</string>
+
+    <string name="nadpisCasCviceni">Tempo de round:</string>
+
+    <string name="nadpisCasCviceniZvuk">Som do início de round</string>
+
+    <string name="nadpisCasCoolDown">Tempo de resfriamento:</string>
+
+    <string name="nadpisCasCoolDownCas">Som do fim de todas as rounds</string>
+
+    <string name="nadpisCasPauzyMeziTabatmi">Tempo entre as Tabatas</string>
+
+    <string name="nadpisPocetTabatC">Round-duração</string>
+    <string name="nadpisPocetTabat">Tabatas:</string>
+
+    <string name="nadpisPocetCyklu">Rounds:</string>
+
+    <string name="nadpisPocet">Número:</string>
+
+    <string name="pauza">Pausa</string>
+
+    <string name="pokracovat">Continuar</string>
+
+    <string name="coolDown">ESFRIAR</string>
+
+    <string name="odpocinek">PAUSA</string>
+
+    <string name="cvic">GO</string>
+
+    <string name="konec">FIM</string>
+
+    <string name="celkovyCas">Tempo total: </string>
+
+    <string name="nadpisSoundSetup">Som</string>
+
+    <string name="nadpisNastaveniZvukuCoutDown">Som de contagem regressiva</string>
+
+    <string name="nadpisOdpocinekMeziTabatami">Descanso entre as Tabatas:</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatmi">Defina o tempo de descanso entre as Tabatas</string>
+
+    <string name="nadpisNastavPocetTabat">Defina o número de Tabatas</string>
+
+    <string name="nadpisNastavPocetCyklu">Defina o número de rounds</string>
+
+    <string name="title_activity_tabata">Atividade do Treino HIIT</string>
+
+
+    <string name="title_activity_set_sound">Defina a atividade do som</string>
+
+    <string name="nadpisNastavZvukCviceni">Defina o som do início de round</string>
+
+    <string name="nadpisNastavZvukRest">Defina o som de início do tempo de descanso</string>
+
+    <string name="nadpisNastavZvukRestTabatas">Defina o som de início de descanso entre as Tabatas</string>
+
+    <string name="nadpisNastavZvukKonecCviceni">Defina o som do fim de todos os treinos</string>
+
+    <string name="nadpisNastavZvukCountdown">Defina o som da contagem regressiva</string>
+
+    <string name="title_activity_home">Atividade do Início</string>
+
+    <string name="title_activity_banner">Atividade do Banner</string>
+
+    <string name="napisZvuk"> som </string>
+
+
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Defina o segundos</string>
+    <string name="nadpisZvukPulkaCviceni">Som de metade de round</string><!-- this is a comment -->
+    <string name="nadpisZvukPrekKoncemKola">Som de antes do final de round</string><!-- this is a comment -->
+    <string name="NoSound">nenhum</string><!-- this is a comment -->
+    <string name="nadpisNastavZvukPulkaCviceni">Defina o som de metade de round</string><!-- this is a comment -->
+    <string name="nadpisNastavZvukDoKonceKola">Defina o som de antes do final de round</string><!-- this is a comment -->
+    <string name="napisesrecenziprosim">Você vai revisar o aplicativo? ... 5 estrelas, por favor:-)</string>
+    <string name="recenze">Revisar</string>
+    <string name="never">nunca</string>
+    <string name="notnow">agora não</string>
+    <string name="ok">ok</string>
+
+    <string name="preskocPosledniKoloHorniText"></string>
+    <string name="preskocPosledniKolo">Pular último conjunto </string>
+    <string name="timeNapis">Tempo</string>
+    <string name="nadpisNastavBarvu">Defina a cor:</string>
+    <string name="nadpisNastaveniHlasitosti">Configuração de volume</string>
+    <string name="nadpisNastavCas">Definir hora</string>
+
+    <string name="tab_text_1">Clássico</string>
+    <string name="tab_text_2">Tabata</string>
+    <string name="tab_text_3">Personalizado</string>
+
+
+</resources>

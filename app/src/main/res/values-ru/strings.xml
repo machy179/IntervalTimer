@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">интервальный таймер</string>
+
+    <string name="ulozCas">Cохранить</string>
+
+    <string name="prehrajCas">Играть в</string>
+
+    <string name="nadpisNastavCasPripravy">Установить время подготовки</string>
+
+    <string name="nadpisNastavCasCviceni">Установить время раунда</string>
+
+    <string name="nadpisNastavCasPauzy">Установить время отдыха</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatami">Установите время между табатами</string>
+
+    <string name="nadpisNastavCasCoolDown">Установите время охлаждения</string>
+
+    <string name="nadpisCasPauzy">Время отдыха:</string>
+
+    <string name="nadpisCasPauzyZvuk">Звук конца раунда</string>
+
+    <string name="nadpisCasPauzyTabatyZvuk">Звук времени между табатами</string>
+
+    <string name="nadpisCasPripravy">Время подготовки:</string>
+
+    <string name="nadpisCasCviceni">Время раунда:</string>
+
+    <string name="nadpisCasCviceniZvuk">Звук начала раунда</string>
+
+    <string name="nadpisCasCoolDown">Время охлаждения:</string>
+
+    <string name="nadpisCasCoolDownCas">Звук окончания всех раундов</string>
+
+    <string name="nadpisCasPauzyMeziTabatmi">Время между табатами</string>
+
+    <string name="nadpisPocetTabatC">длина раунда:</string>
+    <string name="nadpisPocetTabat">Табаты:</string>
+
+    <string name="nadpisPocetCyklu">Раунды:</string>
+
+    <string name="nadpisPocet">Число:</string>
+
+    <string name="pauza">Пауза</string>
+
+    <string name="pokracovat">Продолжить</string>
+
+    <string name="coolDown">COOL DOWN</string>
+
+    <string name="odpocinek">ПАУЗА</string>
+
+    <string name="cvic">GO</string>
+
+    <string name="konec">КОНЕЦ</string>
+
+    <string name="celkovyCas">Общее время: </string>
+
+    <string name="nadpisSoundSetup">Звук</string>
+
+    <string name="nadpisNastaveniZvukuCoutDown">Звук обратного отсчета</string>
+
+    <string name="nadpisOdpocinekMeziTabatami">Отдых между табатами:</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatmi">Установите время отдыха между табатами</string>
+
+    <string name="nadpisNastavPocetTabat">Установить количество табат</string>
+
+    <string name="nadpisNastavPocetCyklu">Установить количество раундов </string>
+
+    <string name="title_activity_tabata">Табата</string>
+
+
+    <string name="title_activity_set_sound">SetSoundActivity</string>
+
+    <string name="nadpisNastavZvukCviceni">Установить звук начала раунда</string>
+
+    <string name="nadpisNastavZvukRest">Установить звук начала времени отдыха</string>
+
+    <string name="nadpisNastavZvukRestTabatas">Установить звук начала отдыха между табатами </string>
+
+    <string name="nadpisNastavZvukKonecCviceni">Установить звук начала раунда</string>
+
+    <string name="nadpisNastavZvukCountdown">Установите звук обратного отсчета</string>
+
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="title_activity_banner">BannerActivity</string>
+
+    <string name="napisZvuk"> звук </string>
+
+
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Установить секунды</string>
+    <string name="nadpisZvukPulkaCviceni">Звук половины раунда</string>
+    <string name="nadpisZvukPrekKoncemKola">Звук до конца раунда</string>
+    <string name="NoSound">никто</string>
+    <string name="nadpisNastavZvukPulkaCviceni">Установите Звук половины раунда</string>
+    <string name="nadpisNastavZvukDoKonceKola">Установите Звук до конца раунда</string>
+    <string name="napisesrecenziprosim">Вы рассмотрение приложение?...5 звезд, пожалуйста:-)</string>
+    <string name="recenze">Рассмотрение</string>
+    <string name="never">никогда</string>
+    <string name="notnow">не сейчас</string>
+    <string name="ok">ok</string>
+
+    <string name="preskocPosledniKoloHorniText">Пропустить последний</string>
+    <string name="preskocPosledniKolo">раунда</string>
+    <string name="timeNapis">время</string>
+
+    <string name="nadpisNastavBarvu">Установите цвет:</string>
+    <string name="nadpisNastaveniHlasitosti">Настройка громкости</string>
+
+    <string name="nadpisNastavCas">Установить время</string>
+
+
+    <string name="tab_text_1">Классический</string>
+    <string name="tab_text_2">Табата</string>
+    <string name="tab_text_3">Пользовательский</string>
+
+
+
+</resources>

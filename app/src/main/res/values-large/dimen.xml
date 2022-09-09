@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="velikostTextuNadpis">15dp</dimen>
+    <dimen name="velikostTextuNadpisMensi">21dp</dimen>
+    <dimen name="velikostTextuHodnoty">45dp</dimen>
+    <dimen name="velikostTextuNadpisDialog">16dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniFull">115dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniDva">330dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniCtyri">150dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniTri">185dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniCoolDown">70dp</dimen>
+    <dimen name="velikostTextuCelkovyCas">35dp</dimen>
+
+    <dimen name="kulate_rohy">10dp</dimen>
+    <dimen name="velikostMezery">10dp</dimen>
+    <dimen name="velikostMezeryPismaOdpocitavace">30dp</dimen>
+    <dimen name="velikostMezeryLandTabataClassic">10dp</dimen>
+</resources>

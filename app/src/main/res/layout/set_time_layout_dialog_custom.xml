@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/velikostMezery"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <NumberPicker
+            android:id="@+id/npMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/NumberPickerStyle"
+            android:descendantFocusability="blocksDescendants"
+            />
+        <TextView
+            android:text=":"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+
+            android:theme="@style/NumberPickerStyle"
+            android:id="@+id/textDvojtecka2"/>
+        <NumberPicker
+            android:id="@+id/npSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/NumberPickerStyle"
+            android:descendantFocusability="blocksDescendants"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonUloz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_save"/>
+
+
+    <TextView
+        android:id="@+id/textViewNadpisHodnotaCasu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+
+        android:layout_marginTop="@dimen/velikostMezery"
+        android:text="@string/preskocPosledniKoloHorniText"
+        android:textColor="@color/colorPisma"
+        android:textSize="@dimen/velikostTextuNadpis"
+        android:textStyle="bold" />
+
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchPreskocPosledniKolo"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:checked="false"
+        android:textColor="@color/colorPisma"
+        app:trackTint="@color/switch_track_selector"
+        app:thumbTint="@color/switch_thumb_selector"
+        android:text="@string/preskocPosledniKolo"
+        />
+
+
+
+</LinearLayout>

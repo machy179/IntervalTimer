@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Interval Timer</string>
+    <string name="ulozCas">Uložit</string>
+    <string name="prehrajCas">Přehrát</string>
+    <string name="nadpisNastavCasPripravy">Nastav čas přípravy</string>
+    <string name="nadpisNastavCasCviceni">Nastav čas kola</string>
+    <string name="nadpisNastavCasPauzy">Nastav čas konce kola</string>
+    <string name="nadpisNastavCasPauzyMeziTabatami">Nastav čas mezi tabatami</string>
+    <string name="nadpisNastavCasCoolDown">Nastav čas vychladnutí</string>
+
+    <string name="nadpisCasPauzy">Čas pauzy:</string>
+    <string name="nadpisCasPauzyZvuk">Zvuk konce kola</string>
+
+    <string name="nadpisCasPauzyTabatyZvuk">Zvuk času mezi tabatami</string>
+    <string name="nadpisCasPripravy">Čas přípravy:</string>
+    <string name="nadpisCasCviceni">Čas kola:</string>
+    <string name="nadpisCasCviceniZvuk">Zvuk začátku kola</string>
+    <string name="nadpisCasCoolDown">Čas vychladnutí:</string>
+    <string name="nadpisCasCoolDownCas">Zvuk celkového konce</string>
+    <string name="nadpisZvukPulkaCviceni">Zvuk půlky kola</string>
+    <string name="nadpisZvukPrekKoncemKola">Zvuk před koncem kola</string>
+    <string name="nadpisNastavZvukDoKonceKola">Nastav zvuk před koncem kola</string>
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Nastav sekundy</string>
+
+
+    <string name="nadpisCasPauzyMeziTabatmi">Čas mezi tabatami</string>
+    <string name="nadpisPocetTabatC">Délka kola:</string>
+    <string name="nadpisPocetTabat">Tabaty:</string>
+    <string name="nadpisPocetCyklu">Kola:</string>
+    <string name="nadpisPocet">Počet:</string>
+    <string name="pauza">Pauza</string>
+    <string name="pokracovat">Pokračovat</string>
+    <string name="coolDown">VYCHLADNUTÍ</string>
+    <string name="odpocinek">PAUZA</string>
+    <string name="cvic">GO</string>
+    <string name="konec">KONEC</string>
+    <string name="celkovyCas">Celkový čas: </string>
+    <string name="NoSound">žádný</string>
+
+    <string name="nadpisSoundSetup">Zvuky</string>
+    <string name="nadpisNastaveniZvukuCoutDown">Zvuk odpočítávání</string>
+    <string name="title_activity_set_sound">SetSoundActivity</string>
+    <string name="nadpisNastavZvukCviceni">Nastav zvuk začátku kola</string>
+
+    <string name="nadpisNastavZvukRest">Nastav zvuk konec kola</string>
+
+    <string name="nadpisNastavZvukRestTabatas">Nastav zvuk začátku pauzy mezi tabatami</string>
+
+    <string name="nadpisNastavZvukKonecCviceni">Nastav zvuk celkového konce</string>
+
+    <string name="nadpisNastavZvukCountdown">Nastav zvuk odpočítávání</string>
+    <string name="nadpisNastavZvukPulkaCviceni">Nastav zvuk půlky kola</string>
+
+
+    <string name="nadpisOdpocinekMeziTabatami">Čas mezi tabatami:</string>
+    <string name="nadpisNastavCasPauzyMeziTabatmi">Nastav čas mezi tabatami</string>
+    <string name="nadpisNastavPocetTabat">Nastav počet tabat</string>
+    <string name="nadpisNastavPocetCyklu">Nastav počet kol</string>
+    <string name="title_activity_tabata">TabataActivity</string>
+
+
+
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_banner">BannerActivity</string>
+
+    <string name = "napisZvuk"> zvuk </string>
+    <string name="napisesrecenziprosim">Ohodnotíš aplikaci?...5 hvězd prosím:-)</string>
+    <string name="recenze">Hodnocení</string>
+    <string name="never">nikdy</string>
+    <string name="notnow">nyní ne</string>
+    <string name="ok">ok</string>
+
+    <string name="preskocPosledniKoloHorniText">Vynechat poslední</string>
+    <string name="preskocPosledniKolo">kolo </string>
+    <string name="nadpisNastavBarvu">Nastav barvu:</string>
+    <string name="nadpisNastaveniHlasitosti">Nastavení hlasitosti</string>
+    <string name="timeNapis">čas</string>
+    <string name="nadpisNastavCas">Nastav čas</string>
+
+    <string name="tab_text_1">Klasika</string>
+    <string name="tab_text_2">Tabata</string>
+    <string name="tab_text_3">Vlastní</string>
+</resources>

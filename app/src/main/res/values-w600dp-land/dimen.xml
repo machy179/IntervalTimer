@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="velikostMezery">12dp</dimen>   <!--bylo tam 6 -->
+    <dimen name="velikostMezeryPismaOdpocitavace">108dp</dimen>
+    <dimen name="kulate_rohy">12dp</dimen>  <!--bylo tam 15 -->
+</resources>

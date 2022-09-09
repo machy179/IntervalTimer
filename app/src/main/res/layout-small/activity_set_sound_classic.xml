@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/background"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginBottom="@dimen/velikostMezery"
+
+            android:elevation="@dimen/velikostStinu"
+            android:background="@drawable/backgroundreklama"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            android:weightSum="20">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_marginLeft="@dimen/velikostMezery"
+                android:layout_marginRight="@dimen/velikostMezery"
+                android:layout_marginBottom="@dimen/velikostMezery"
+                android:elevation="@dimen/velikostStinu"
+                android:background="@drawable/backgroundcolorkonectabaty"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/prazdnyobrazek">
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/nadpisNastaveniHlasitosti"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuNadpis"
+                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+
+                            android:gravity="center_vertical"
+                            >
+                            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                                android:id="@+id/slider"
+                                app:dsb_trackHeight="@dimen/sirkaposuvnikunastavenihlasitosti"
+                                app:dsb_thumbSize="@dimen/sirkacudlikunastavenihlasitosti"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:dsb_min="0"
+                                app:dsb_max="100"
+                                app:dsb_progressColor="#8C8C8C"
+                                app:dsb_trackColor="#FFFFFF"
+                                app:dsb_indicatorColor="#8C8C8C"
+                                app:dsb_indicatorPopupEnabled="true"
+                                />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/velikostMezery"
+                android:layout_marginRight="@dimen/velikostMezery"
+                android:layout_marginBottom="@dimen/velikostMezery"
+                android:layout_weight="3"
+                android:background="@drawable/backgroundcolorcaspripravy"
+                android:elevation="@dimen/velikostStinu"
+                android:onClick="showTimePickerDialogNastavZvukCountdown"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/countdownobrazek2">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/textViewHodnotaPripravaNadpis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/nadpisNastaveniZvukuCoutDown"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuNadpis"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewZvukCountdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="sound 1"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuHodnoty"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dlazdiceCasCviceniZvuk"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/velikostMezery"
+                android:layout_marginRight="@dimen/velikostMezery"
+                android:layout_marginBottom="@dimen/velikostMezery"
+                android:layout_weight="3"
+                android:background="@drawable/backgroundcolorcascviceni"
+                android:elevation="@dimen/velikostStinu"
+                android:onClick="showTimePickerDialogNastavZvukCviceni"
+
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/cviceniobrazek2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/textViewNastaveniZvukuNadpis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/nadpisCasCviceniZvuk"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuNadpis"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewHodnotaZvukCviceni"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="sound 1"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuHodnoty"
+
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dlazdiceCasPauzyZvuk"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/velikostMezery"
+                android:layout_marginRight="@dimen/velikostMezery"
+                android:layout_marginBottom="@dimen/velikostMezery"
+                android:layout_weight="3"
+                android:background="@drawable/backgroundcolorcaspauzy"
+                android:elevation="@dimen/velikostStinu"
+                android:onClick="showTimePickerDialogNastavCasPauzy"
+
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/pauzaobrazek2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/textViewHodnotaPauzyNadpis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/nadpisCasPauzyZvuk"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuNadpis"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewHodnotaZvukPauzy"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="sound 1"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuHodnoty"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/velikostMezery"
+                android:layout_marginRight="@dimen/velikostMezery"
+                android:layout_marginBottom="@dimen/velikostMezery"
+                android:layout_weight="3"
+                android:background="@drawable/backgroundcolorzvukpulkykola"
+                android:elevation="@dimen/velikostStinu"
+                android:onClick="showTimePickerDialogNastavZvukPulkaCviceni"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/prazdnyobrazek">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewHodnotaPulkaCviceniNadpis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/nadpisZvukPulkaCviceni"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuNadpis"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textViewZvukPulkaCviceni"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="sound 1"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuHodnoty"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/velikostMezery"
+                    android:layout_marginBottom="@dimen/velikostMezery"
+                    android:layout_weight="3"
+                    android:background="@drawable/backgroundcolorzvukpulkykola"
+                    android:elevation="@dimen/velikostStinu"
+                    android:onClick="showTimePickerDialogNastavZvukPrekKoncemKola"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@mipmap/prazdnyobrezekvedlesetupu">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textViewNastavZvukPrekKoncemKola"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="@string/nadpisZvukPrekKoncemKola"
+                                android:textColor="@color/colorPisma"
+                                android:textSize="@dimen/velikostTextuNadpis"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewZvukPredKoncemKola"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="sound 1"
+                                android:textColor="@color/colorPisma"
+                                android:textSize="@dimen/velikostTextuHodnoty"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/velikostMezery"
+                    android:layout_marginRight="@dimen/velikostMezery"
+                    android:layout_marginBottom="@dimen/velikostMezery"
+
+                    android:layout_weight="1"
+
+                    android:background="@drawable/backgroundcolorzvukpulkykola"
+                    android:elevation="@dimen/velikostStinu"
+                    android:onClick="showTimePickerDialogNastavCasZvukuDoKonceKola"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@mipmap/prazdnyobrazeksetup">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textViewNastavCasZvukuPredKoncemKola"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="sec."
+                                android:textColor="@color/colorPisma"
+                                android:textSize="@dimen/velikostTextuNadpis"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textViewHodnotaCasuZvukuPredKoncemKola"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="20"
+                                android:textColor="@color/colorPisma"
+                                android:textSize="@dimen/velikostTextuHodnoty"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/velikostMezery"
+                android:layout_marginRight="@dimen/velikostMezery"
+                android:layout_marginBottom="@dimen/velikostMezery"
+                android:layout_weight="3"
+                android:background="@drawable/backgroundcolorstart"
+                android:elevation="@dimen/velikostStinu"
+                android:onClick="zmacknutyOk"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/prazdnyobrazek">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewsOk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/ulozCas"
+                            android:textColor="@color/colorPisma"
+                            android:textSize="@dimen/velikostTextuHodnoty"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>

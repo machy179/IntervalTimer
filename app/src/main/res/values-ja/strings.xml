@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="app_name">インターバルタイマー</string>
+
+    <string name="ulozCas">保存</string>
+
+    <string name="prehrajCas">演奏する</string>
+
+    <string name="nadpisNastavCasPripravy">準備時間を設定する</string>
+
+    <string name="nadpisNastavCasCviceni">ラウンドタイムを設定する</string>
+
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">秒を設定する</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavCasPauzy">休憩時間を設定する</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatami">タバタ間の時間を設定する</string>
+
+    <string name="nadpisNastavCasCoolDown">クールダウン時間を設定する</string>
+
+    <string name="nadpisCasPauzy">休憩時間：</string>
+
+    <string name="nadpisCasPauzyZvuk">ラウンド終了の音</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasPauzyTabatyZvuk">タバタ間の時間の音</string>
+
+    <string name="nadpisCasPripravy">準備時間：</string>
+
+    <string name="nadpisCasCviceni">ラウンドタイム：</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasCviceniZvuk">ラウンド開始の音</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasCoolDown">クールダウン時間：</string>
+
+    <string name="nadpisCasCoolDownCas">すべてのラウンドの終わりの音</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisZvukPulkaCviceni">ラウンドの半分の音</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisZvukPrekKoncemKola">ラウンド終了前の音</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisCasPauzyMeziTabatmi">タバタ間の時間</string>
+
+    <string name="nadpisPocetTabatC">レングス</string>
+    <string name="nadpisPocetTabat">タバタス：</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisPocetCyklu">ラウンド</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisPocet">数：</string>
+
+    <string name="pauza">一時停止</string>
+
+    <string name="pokracovat">継続する</string>
+
+    <string name="coolDown">クールダウン</string>
+
+    <string name="odpocinek">休憩</string>
+
+    <string name="cvic">GO</string>
+    <!-- this is a comment -->
+
+    <string name="konec">終わり</string>
+
+    <string name="celkovyCas">合計時間：</string>
+
+    <string name="NoSound">なし</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisSoundSetup">音</string>
+
+    <string name="nadpisNastaveniZvukuCoutDown">カウントダウンの音</string>
+
+    <string name="nadpisOdpocinekMeziTabatami">タバタの間で休む：</string>
+
+    <string name="nadpisNastavCasPauzyMeziTabatmi">タバタ間の休憩時間を設定する</string>
+
+    <string name="nadpisNastavPocetTabat">タバタの数を設定する</string>
+
+    <string name="nadpisNastavPocetCyklu">ラウンド数を設定する</string>
+    <!-- ??? -->
+
+    <string name="title_activity_tabata">タバタアクティビティ</string>
+
+    <string name="title_activity_set_sound">SetSoundActivity</string>
+
+    <string name="nadpisNastavZvukCviceni">ラウンド開始音を設定</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavZvukRest">休憩時間の開始音を設定する</string>
+
+    <string name="nadpisNastavZvukRestTabatas">タバタ間の休息開始音を設定する</string>
+
+    <string name="nadpisNastavZvukKonecCviceni">すべてのトレーニングの終わりの音を設定します</string>
+
+    <string name="nadpisNastavZvukCountdown">カウントダウンの音を設定する</string>
+
+    <string name="nadpisNastavZvukPulkaCviceni">半円形の音を設定します</string>
+    <!-- this is a comment -->
+
+    <string name="nadpisNastavZvukDoKonceKola">ラウンド終了前に音をセットする</string>
+    <!-- this is a comment -->
+
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="title_activity_banner">BannerActivity</string>
+
+    <string name="napisZvuk"> 音</string>
+
+    <string name="napisesrecenziprosim">アプリをレビューしますか？...5 つ星をお願いします:-)</string>
+
+    <string name="recenze">レビュー</string>
+
+    <string name="never">決して</string>
+
+    <string name="notnow">今はやめろ</string>
+
+    <string name="ok">OK</string>
+
+
+    <string name = "preskocPosledniKoloHorniText"> 最後にスキップ</string>
+    <string name = "preskocPosledniKolo">セットする</string>
+<string name = "timeNapis">時間</string>
+<string name = "nadpisNastavBarvu">色を設定します：</string>
+<string name = "nadpisNastaveniHlasitosti">音量設定</string>
+<string name = "nadpisNastavCas">時刻を設定</string>
+
+    <string name = "tab_text_1">クラシック</string>
+<string name = "tab_text_2">田畑</string>
+<string name = "tab_text_3">カスタム</string>
+
+</resources>
