@@ -2,7 +2,9 @@ package com.machy1979ii.intervaltimer;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -33,6 +36,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
 import com.machy1979ii.intervaltimer.models.MyTime;
+import com.machy1979ii.intervaltimer.services.ClassicService;
+
 import angtrim.com.fivestarslibrary.FiveStarsDialog;
 import angtrim.com.fivestarslibrary.NegativeReviewListener;
 import angtrim.com.fivestarslibrary.ReviewListener;
@@ -83,7 +88,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     private CountDownTimer odpocitavac;
     private int dobaCasovace;
-    private long pomocny;
+    private long pomocny;  //čas v konkrétním stavu
     private int velikostCislic;
     private boolean preskocVypisCasu = false;
 
@@ -114,6 +119,43 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private int maxHlasitost = 100;
     float volume;
 
+    //proměnné pro servicu
+    private Boolean bound = false;
+    private Intent service;
+    private ClassicService s;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            ClassicService.MyBinder b= (ClassicService.MyBinder) binder;
+            if (s==null) {
+                Toast.makeText(ClassicActivity.this, "Connected s=null", Toast.LENGTH_SHORT).show();
+                s = b.getService();
+            } else {
+                Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
+            }
+            bound = true;
+
+            if((s.getResult()!=0)) {
+                //v momentě, kdy se connectne k service, tak se z ní čačte result, pokud je 0, tak je vypnutá, nebo nespuštěná, pokud je nějaké číslo
+                //tak se z ní to číslo načte a začne se odpočítávat od toho čísla, sem dám i načtení dalších dat ze servisy
+                //načtení ze servisy jsem se pokoušel dávat do onCreata, onResume, onRestart atd., ale připojení k service má asi nějaké nepatrné zpoždění, tak to fungovalo jen tady
+
+                //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA NOTIFIKACI
+                Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
+                nactiZeServisy();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            s = null;
+            bound = false;
+            Toast.makeText(ClassicActivity.this, "onServiceDisconnected", Toast.LENGTH_SHORT).show();
+        }
+
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,20 +179,62 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         //udelejLayout();
 
+            Toast.makeText(ClassicActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
+
+
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
         statusBarcolor();
-        
-        //colors
-        colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
-        colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
-        colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu"); //color
-        colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
 
-        casPripravy = getIntent().getExtras().getParcelable("caspripavy");
-        casCviceni = getIntent().getExtras().getParcelable("cascviceni");
-        casPauzy = getIntent().getExtras().getParcelable("caspauzy");
-        puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
-        casCelkovy = getIntent().getExtras().getParcelable("casCelkovy");
+
+
+       //tahle podmínka tady je proto, protože když to sem skočí z notifikace, tak by getIntent.getExtras...házelo chybu,
+        //protože to nemá kde převzít, pravděpodobně ze service sem v notifikaci tyhle věci budu muset vložit, zatím to ale jen
+        //tady zapodmínkuju
+    //    if(getIntent().getParcelableExtra("caspripavy")==null) {
+            if(getIntent().getExtras().getParcelable("caspripavy")==null){
+            Log.d("FindingError", "vlákno cas pripravy ==null");
+            casPripravy = new MyTime(0,0,20);
+            casCviceni = new MyTime(0,0,20);
+            casPauzy = new MyTime(0,0,20);
+            casCelkovy = new MyTime(0,24,0);
+            puvodniPocetCyklu = 8;
+
+            colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni); //color
+            colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy); //color
+            colorDlazdicePocetCyklu = getResources().getColor(R.color.colorSpodnichDLazdicCustomActivity); //color
+            colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy); //color
+
+        } else {
+            Log.d("FindingError", "vlákno cas pripravy NOT null");
+            casPripravy = getIntent().getExtras().getParcelable("caspripavy");
+            casCviceni = getIntent().getExtras().getParcelable("cascviceni");
+            casPauzy = getIntent().getExtras().getParcelable("caspauzy");
+
+                if(getIntent().getExtras().getParcelable("cascelkovy")==null){
+                    Log.d("FindingError", "vlákno casCelkovy = s.getCasCelkovy()");
+                    casCelkovy = new MyTime(0,30,0);
+                } else  {
+                    casCelkovy = getIntent().getExtras().getParcelable("cascelkovy");
+                    Log.d("FindingError", "vlákno casCelkovy = getIntent().getExtras().getParcelable(\"cascelkovy\")");
+                }
+
+                Log.d("FindingError", "CasCelkovy-: "+String.valueOf(casCelkovy.getHour())+String.valueOf(casCelkovy.getMin())+String.valueOf(casCelkovy.getSec()));
+
+                puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
+
+            colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
+            colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
+            colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu"); //color
+            Log.d("FindingError", "colorDlazdicePocetCyklu: "+colorDlazdicePocetCyklu);
+
+                colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
+
+        }
+
+
+
+
+
 
         zvukStart = getIntent().getIntExtra("zvukstart", 1);
         zvukStop = getIntent().getIntExtra("zvukstop", 1);
@@ -1434,11 +1518,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     }
 
 
-    @Override
-    protected void onDestroy() {
-        odpocitavac.cancel();
-        super.onDestroy();
-    }
+
 
     private void zavlojejReviewNejake() {
 
@@ -1505,5 +1585,108 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         startActivity(mainActivity);
         finish();
     }*/
+
+    //stavy Activity
+
+    /** Called when the activity is about to become visible. */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
+        //níže uvedené musí být tady, protože když se to sem vrací z onRestart, to znamená, že uživatel se vlrátí na aktivitu, tak kdyby to níže uvedené bylo v onCreate, tak by to dělalo neplechu
+        Intent intent = new Intent(this, ClassicService.class);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        service = new Intent(getApplicationContext(), ClassicService.class);
+    }
+
+    @Override
+    protected void onRestart() { //tímhle to projde, jen když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci
+        super.onRestart();
+        Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
+        if((s.getResult()!=0)) {
+            //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA APLIKACI Z POZADÍ
+            nactiZeServisy();
+        }
+    }
+
+    /** Called when the activity has become visible. */
+    @Override
+    protected void onResume() {
+        if (s != null) {
+            Toast.makeText(ClassicActivity.this, "onResume() s != null ", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(ClassicActivity.this, "onResume() s = null", Toast.LENGTH_SHORT).show();
+        // text1?.setText(s!!.result.toString())
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
+        super.onStop();
+        //  getApplicationContext().startService(service); //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
+        Toast.makeText(ClassicActivity.this, "onStop", Toast.LENGTH_SHORT).show();
+        s.nastavOdpocitavani(casCelkovy);
+        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy, casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy, colorDlazdicePocetCyklu, stav, pomocny);
+        s.setNotification4();
+        Log.d("FindingError", "casCviceni---: "+ String.valueOf(casCviceni.getHour()));
+    }
+
+    @Override
+    protected void onDestroy() {
+        odpocitavac.cancel();
+        super.onDestroy();
+        Toast.makeText(ClassicActivity.this, "onDestroy", Toast.LENGTH_SHORT).show();
+        znicService();
+    }
+
+    //metody pro service
+    private void nactiZeServisy() {
+     //   counter.cancel();
+     //   initCountDownTimer(s.getResult()*1000);
+     //   text1.setText(String.valueOf(s.getResult()));
+
+
+        aktualniCyklus = s.getAktualniCyklus();
+        puvodniPocetCyklu = s.getPuvodniPocetCyklu();
+        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
+        casPripravy = s.getCasPripravy();
+        pomocny = casPripravy.getSec()+1 + casPripravy.getMin()*60 +casPripravy.getHour()*3600;
+        colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
+        casCviceni = s.getCasCviceni();
+        if (casCviceni.getSec() < 10) {
+            textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
+        } else {
+            textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
+        }
+        colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
+        casPauzy = s.getCasPauzy();
+        colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
+
+        pomocny =s.getPomocny();
+        stav = s.getStav();
+
+         //color
+        GradientDrawable shape =  new GradientDrawable();
+        shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+        shape.setColor(colorDlazdiceCasPripravy);
+        dlazdiceOdpocitavace.setBackground(shape);
+
+        int casZeService = s.getResult();
+        casCelkovy.setHour(casZeService/3600);
+        casCelkovy.setMin((casZeService% 3600)/60);
+        casCelkovy.setSec((casZeService% 3600)%60);
+        zobrazCelkovyCas();
+        znicService();
+    }
+
+    private void znicService() { //aby šlo servicu zničit, musí se unbindnout a vlákno v ní, tedy počítadlo, zničit také
+        if (bound) {
+            Toast.makeText(ClassicActivity.this, "unbind", Toast.LENGTH_SHORT).show();
+            unbindService(serviceConnection);
+            getApplicationContext().stopService(service);
+            bound = false;
+            s.killService();
+
+        }
+    }
 
 }

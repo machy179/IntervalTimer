@@ -661,7 +661,7 @@ public class FirstFragment extends Fragment {
 
 
 
-        classicActivity.putExtra("casCelkovy", casCelkovy);
+        classicActivity.putExtra("cascelkovy", casCelkovy);
 
         classicActivity.putExtra("zvukstart", zvukStart);
         classicActivity.putExtra("zvukstop", zvukStop);
