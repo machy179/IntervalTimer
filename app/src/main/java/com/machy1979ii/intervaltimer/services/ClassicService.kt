@@ -4,17 +4,14 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.util.Log
-import android.util.TypedValue
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.machy1979ii.intervaltimer.ClassicActivity
 import com.machy1979ii.intervaltimer.R
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem
@@ -56,7 +53,7 @@ class ClassicService : Service() {
     var dlazdiceOdpocitavace = null
     var textViewCas: String = ""
 
-    private var preskocVypisCasu = false
+    var preskocVypisCasu = false
 
 
 
@@ -109,15 +106,26 @@ class ClassicService : Service() {
                 Log.d("notifikace",result.toString())
                 Log.d("Servica",result.toString())
 
-                pomocny = pomocny -1
-                updateNotification(zobrazCasPomocny())
+      //          pomocny = pomocny -1
+        //        updateNotification(zobrazCasPomocny())
                 
                 //zkopírováno z ClassicActivity
                 if (pauzaNeniZmacknuta) {
-                   // odectiAZobrazCelkovyCas()
+                    odectiAZobrazCelkovyCas()
                     when (stav.toInt()) {
                         0 -> {
                             //vlákno příprava
+                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                    resources.getText(R.string.cvic)
+                                )?.setColor(colorDlazdiceCasPripravy)?.build()
+                                //color
+                            } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
+                                R.color.colorCasPripravy
+                            ))?.build()
+                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
                             pomocny = pomocny - 1
                             if (pomocny <= 0) {
                                 //tady   restZvuk.start();
@@ -140,10 +148,10 @@ class ClassicService : Service() {
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     notification = notificationBuilder?.setOngoing(true)?.setContentText(
-                                        R.string.cvic.toString()
+                                        resources.getText(R.string.cvic)
                                     )?.setColor(colorDlazdiceCasCviceni)?.build()
                                     //color
-                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.cvic.toString())?.setColor(resources.getColor(
+                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                     R.color.colorCasCviceni
                                 ))?.build()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -222,10 +230,14 @@ class ClassicService : Service() {
                         1 -> {
                             //vlákno cvičení
                             pomocny = pomocny - 1
+                            Log.d("VlaknoService: ", "Cviceni:"+pomocny.toString())
                             if (pomocny <= 0) {
+                                Log.d("VlaknoService: ", "Cviceni=0")
                                 casPulkyKolaAktualni = casPulkyKola
                                 if (pocetCyklu == 0) {
+                                    Log.d("VlaknoService: ", "Cviceni=0, pocetCyklu=0")
                                     if (pocetTabat == 0) {
+                                        Log.d("VlaknoService: ", "Cviceni=0, pocetCyklu=0, pocetTabat=0")
                                         //    fanfareZvuk.start();
                                         if (mediaPlayer != null) {
                                             mediaPlayer!!.reset()
@@ -241,7 +253,7 @@ class ClassicService : Service() {
                                         mediaPlayer!!.start()
                                         if (casCoolDown.sec == 0 && casCoolDown.min == 0) {
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.konec.toString())?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
                                                 R.color.colorKonecTabaty
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -252,7 +264,7 @@ class ClassicService : Service() {
                                         } else {
                                             stav = 5
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.coolDown.toString())?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.coolDown))?.setColor(resources.getColor(
                                                 R.color.colorCasCoolDown
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -274,7 +286,7 @@ class ClassicService : Service() {
                                         mediaPlayer!!.start()
                                         stav = 3
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.odpocinek.toString())?.setColor(resources.getColor(
+                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
                                             R.color.colorCasPauzyMeziTabatami
                                         ))?.build()
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -305,10 +317,10 @@ class ClassicService : Service() {
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                         notification = notificationBuilder?.setOngoing(true)?.setContentText(
-                                            R.string.odpocinek.toString()
+                                            resources.getText(R.string.odpocinek)
                                         )?.setColor(colorDlazdiceCasPauzy)?.build()
                                         //color
-                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.odpocinek.toString())?.setColor(resources.getColor(
+                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
                                         R.color.colorCasPauzy
                                     ))?.build()
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -322,6 +334,7 @@ class ClassicService : Service() {
                                 }
                             }
                             if (preskocVypisCasu) {
+                                Log.d("VlaknoService: ", "preskocVypisCasu")
                                 preskocVypisCasu = false
                             } else {
                                 nastavCislice(pomocny)
@@ -468,7 +481,7 @@ class ClassicService : Service() {
                                             mediaPlayer!!.start()
                                             stav = 5
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.coolDown.toString())?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.coolDown))?.setColor(resources.getColor(
                                                 R.color.colorCasCoolDown
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -493,7 +506,7 @@ class ClassicService : Service() {
                                         mediaPlayer!!.start()
                                         stav = 3
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.odpocinek.toString())?.setColor(resources.getColor(
+                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
                                             R.color.colorCasPauzyMeziTabatami
                                         ))?.build()
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -522,10 +535,10 @@ class ClassicService : Service() {
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                         notification = notificationBuilder?.setOngoing(true)?.setContentText(
-                                            R.string.cvic.toString()
+                                            resources.getText(R.string.cvic)
                                         )?.setColor(colorDlazdiceCasCviceni)?.build()
                                         //color
-                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.cvic.toString())?.setColor(resources.getColor(
+                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                         R.color.colorCasCviceni
                                     ))?.build()
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -620,10 +633,10 @@ class ClassicService : Service() {
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     notification = notificationBuilder?.setOngoing(true)?.setContentText(
-                                        R.string.cvic.toString()
+                                        resources.getText(R.string.cvic)
                                     )?.setColor(colorDlazdiceCasCviceni)?.build()
                                     //color
-                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.cvic.toString())?.setColor(resources.getColor(
+                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                     R.color.colorCasCviceni
                                 ))?.build()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -702,7 +715,7 @@ class ClassicService : Service() {
                         4 -> {
                             //konec odpočítávání
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.konec.toString())?.setColor(resources.getColor(
+                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
                                 R.color.colorKonecTabaty
                             ))?.build()
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -727,7 +740,7 @@ class ClassicService : Service() {
                                 mediaPlayer!!.setVolume(volume, volume)
                                 mediaPlayer!!.start()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.konec.toString())?.setColor(resources.getColor(
+                                notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
                                     R.color.colorKonecTabaty
                                 ))?.build()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -795,6 +808,7 @@ class ClassicService : Service() {
                         }
                         else -> {}
                     }
+                    mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
                 //zkopírováno z ClassicActivity-konec
 
@@ -879,14 +893,6 @@ class ClassicService : Service() {
                 //pokud to bude nižší Android než 8 (version code O), tak podle dokumentace by měl channelId být ignorován
             }
 
-        //vytvoření killu servici z notifikace
-
-
-  //      val stopSelf = Intent(this, ClassicService::class.java)
-  //      stopSelf.setAction(ACTION_STOP_FOREGROUND_SERVICE);
-        //   val pStopSelf = PendingIntent.getService(this, 0, stopSelf, 0))
-
-        //    val pStopSelf = PendingIntent.getService(this, 0, stopSelf, PendingIntent.FLAG_CANCEL_CURRENT)
 
         Log.d("Servica","setNotification4-2")
         notificationBuilder = NotificationCompat.Builder(this, channelId )
@@ -896,7 +902,7 @@ class ClassicService : Service() {
             .setColor(resources.getColor(R.color.colorCasCviceni))
             .setColorized(true)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setContentTitle("This will be boxing timer")
+            .setContentTitle(resources.getText(R.string.app_name))
             .setContentText("Time: "+ result)
             .setCategory(Notification.CATEGORY_EVENT)
             .setContentIntent(pendingIntent)
@@ -959,10 +965,11 @@ class ClassicService : Service() {
     }
 
     fun nastavOdpocitavani(casOdpocitavani: MyTime?) {
+        pocetTabat = pocetTabat - 1
         Log.d("Servica","nastavOdpocitavani hour:"+ casOdpocitavani?.hour.toString())
         Log.d("Servica","nastavOdpocitavani min:"+ casOdpocitavani?.min.toString())
         Log.d("Servica","nastavOdpocitavani ses:"+ casOdpocitavani?.sec.toString())
-        initCountDownTimer((casOdpocitavani?.hour?.times(3600)!!+ casOdpocitavani?.min?.times(60)!! + casOdpocitavani?.sec).times(1000))
+        initCountDownTimer((casOdpocitavani?.hour?.times(3600)!!+ casOdpocitavani?.min?.times(60)!! + casOdpocitavani?.sec+1).times(1000))
     }
 
     fun nastavHodnoty(
@@ -1099,6 +1106,18 @@ class ClassicService : Service() {
         return if (cislo < 10) {
             "0$cislo"
         } else cislo.toString()
+    }
+
+    private fun odectiAZobrazCelkovyCas() {
+        if ((casCelkovy!!.hour == 0) and (casCelkovy!!.min == 0) and (casCelkovy!!.sec == 0)) {
+        } else {
+            if (casCelkovy!!.sec == 0) {
+                casCelkovy!!.min = casCelkovy!!.min - 1
+                casCelkovy!!.sec = 59
+            } else {
+                casCelkovy!!.sec = casCelkovy!!.sec - 1
+            }
+        }
     }
 
 }

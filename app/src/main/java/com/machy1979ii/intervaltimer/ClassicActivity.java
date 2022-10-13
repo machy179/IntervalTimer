@@ -1634,6 +1634,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 hlasitost, maxHlasitost, volume);
 
         s.setNotification4();
+        odpocitavac.cancel();
+
         Log.d("FindingError", "casCviceni---: "+ String.valueOf(casCviceni.getHour()));
     }
 
@@ -1651,12 +1653,17 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
      //   initCountDownTimer(s.getResult()*1000);
      //   text1.setText(String.valueOf(s.getResult()));
 
+        stav = s.getStav();
+        pomocny = s.getPomocny();
+        preskocVypisCasu = s.getPreskocVypisCasu();
+        casCelkovy = s.getCasCelkovy();
+        pocetCyklu = s.getPocetCyklu();
 
         aktualniCyklus = s.getAktualniCyklus();
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
         casPripravy = s.getCasPripravy();
-        pomocny = casPripravy.getSec()+1 + casPripravy.getMin()*60 +casPripravy.getHour()*3600;
+      //  pomocny = casPripravy.getSec()+1 + casPripravy.getMin()*60 +casPripravy.getHour()*3600;
         colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
         casCviceni = s.getCasCviceni();
         if (casCviceni.getSec() < 10) {
@@ -1668,19 +1675,76 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         casPauzy = s.getCasPauzy();
         colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
 
-        pomocny =s.getPomocny();
-        stav = s.getStav();
 
          //color
-        GradientDrawable shape =  new GradientDrawable();
-        shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-        shape.setColor(colorDlazdiceCasPripravy);
-        dlazdiceOdpocitavace.setBackground(shape);
+        //color
+        switch (stav) {
+            case 0:
+                Log.d("STAV: ", "0");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasPripravy);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                break;
+            case 1:
+                Log.d("STAV: ", "1");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Log.d("STAV: ", "1a");
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasCviceni);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                break;
+            case 2:
+                Log.d("STAV: ", "2");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasPauzy);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                break;
+            case 3:
+                Log.d("STAV: ", "3");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasCviceni);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                break;
+            case 4:
+                Log.d("STAV: ", "4");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                break;
+            case 5:
+                Log.d("STAV: ", "5");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+            break;
 
-        int casZeService = s.getResult();
-        casCelkovy.setHour(casZeService/3600);
-        casCelkovy.setMin((casZeService% 3600)/60);
-        casCelkovy.setSec((casZeService% 3600)%60);
+        }
+
+
+
         zobrazCelkovyCas();
         znicService();
     }
