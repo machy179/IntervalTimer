@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
@@ -13,8 +14,10 @@ import android.util.Log
 import android.util.TypedValue
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.machy1979ii.intervaltimer.ClassicActivity
 import com.machy1979ii.intervaltimer.R
+import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem
 import com.machy1979ii.intervaltimer.models.MyTime
 
 class ClassicService : Service() {
@@ -48,6 +51,12 @@ class ClassicService : Service() {
     var pocetCyklu = 0
     var pauzaMeziTabatami = 0
     var pomocny: Long = 0
+    var pauzaNeniZmacknuta = true
+
+    var dlazdiceOdpocitavace = null
+    var textViewCas: String = ""
+
+    private var preskocVypisCasu = false
 
 
 
@@ -94,6 +103,7 @@ class ClassicService : Service() {
     fun initCountDownTimer(time: Int?) {
         Log.d("Servica","initCountDownTimer:"+time.toString())
         counter = object : CountDownTimer(time!!.toLong(), 1000) {
+            
             override fun onTick(millisUntilFinished: Long) {
                 result =(millisUntilFinished / 1000).toInt()
                 Log.d("notifikace",result.toString())
@@ -101,6 +111,692 @@ class ClassicService : Service() {
 
                 pomocny = pomocny -1
                 updateNotification(zobrazCasPomocny())
+                
+                //zkopírováno z ClassicActivity
+                if (pauzaNeniZmacknuta) {
+                   // odectiAZobrazCelkovyCas()
+                    when (stav.toInt()) {
+                        0 -> {
+                            //vlákno příprava
+                            pomocny = pomocny - 1
+                            if (pomocny <= 0) {
+                                //tady   restZvuk.start();
+                                //  PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStart);
+                                //nakonec jsem to musel vyřešit takhle, chtěl jsem spouštět zvuk přímo ve třídě PraceSeZvukem, ale po přehrání pár zvuků
+                                //to přestalo přehrávat zvuky, tak jsem to udělal takhle, navíc jsem to pořešil reset() a release(), našel jsem to v nějakém návodu
+                                if (mediaPlayer != null) {
+                                    mediaPlayer!!.reset()
+                                    mediaPlayer!!.release()
+                                    mediaPlayer = null
+                                }
+                                mediaPlayer = MediaPlayer.create(
+                                    applicationContext,
+                                    PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart)
+                                )
+                                mediaPlayer!!.setVolume(volume, volume)
+                                mediaPlayer!!.start()
+                                stav = (stav + 1).toByte()
+
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                        R.string.cvic.toString()
+                                    )?.setColor(colorDlazdiceCasCviceni)?.build()
+                                    //color
+                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.cvic.toString())?.setColor(resources.getColor(
+                                    R.color.colorCasCviceni
+                                ))?.build()
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                pomocny =
+                                    (casCviceni!!.sec + casCviceni!!.min * 60 + casCviceni!!.hour * 3600 + 1).toLong()
+                                pomocny =
+                                    pomocny - 1 //protože při GO už to je jedna sekunda a pak mi to při celkovém času nehrálo
+
+                                preskocVypisCasu = true
+                            }
+                            if (preskocVypisCasu) {
+                                preskocVypisCasu = false
+                            } else {
+                                nastavCislice(pomocny)
+                                when (pomocny.toInt()) {
+                                    4 -> {
+                                        //musel jsem tam dát ještě při odpočítávání falešný tik na 4té sekundě, protože u pomalejších zařízeních mi
+                                        //ten třetí tik přehrával pomalu (když několik sekund před tím nebyl zvuk spuštěn) a než se stihnul přehrát, tak už to bylo na dvojce, tak jsem sem dal
+                                        //falešný 4 tik, který načtu, spustím a ihned vypnu. U dalších tiků problém nebyl. Nevím proč, ale nějak MediaPlayer jak není několik sekund
+                                        //spuštěn, tak pak se načítá pomalu a v pomalejších zařízeních je to znát
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        mediaPlayer!!.stop()
+                                    }
+                                    3 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    2 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    1 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    else -> {}
+                                }
+                            }
+                        }
+                        1 -> {
+                            //vlákno cvičení
+                            pomocny = pomocny - 1
+                            if (pomocny <= 0) {
+                                casPulkyKolaAktualni = casPulkyKola
+                                if (pocetCyklu == 0) {
+                                    if (pocetTabat == 0) {
+                                        //    fanfareZvuk.start();
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukStartStopPodlePozice(
+                                                zvukCelkovyKonec
+                                            )
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        if (casCoolDown.sec == 0 && casCoolDown.min == 0) {
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.konec.toString())?.setColor(resources.getColor(
+                                                R.color.colorKonecTabaty
+                                            ))?.build()
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                            stav = 4
+                                            preskocVypisCasu = true
+                                            Log.d("Jsem na konci: ", "1")
+                                        } else {
+                                            stav = 5
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.coolDown.toString())?.setColor(resources.getColor(
+                                                R.color.colorCasCoolDown
+                                            ))?.build()
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                            preskocVypisCasu = true
+                                            Log.d("Jsem na konci: ", "2")
+                                        }
+                                    } else {
+                                        //tady   restZvuk.start();
+                                        // PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStop);
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStop)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        stav = 3
+                                        //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.odpocinek.toString())?.setColor(resources.getColor(
+                                            R.color.colorCasPauzyMeziTabatami
+                                        ))?.build()
+                                        //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                        pomocny =
+                                            (casMezitabatami.sec + casMezitabatami.min * 60 + casMezitabatami.hour * 3600 + 1).toLong()
+                                        pomocny =
+                                            pomocny - 1 //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
+
+                                        preskocVypisCasu = true
+                                        pocetTabat = pocetTabat - 1
+                                    }
+                                } else {
+                                    //tady                            restZvuk.start();
+                                    //  PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStop);
+                                    if (mediaPlayer != null) {
+                                        mediaPlayer!!.reset()
+                                        mediaPlayer!!.release()
+                                    }
+                                    mediaPlayer = MediaPlayer.create(
+                                        applicationContext,
+                                        PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStop)
+                                    )
+                                    mediaPlayer!!.setVolume(volume, volume)
+                                    mediaPlayer!!.start()
+                                    stav = (stav + 1).toByte()
+
+                                    //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                            R.string.odpocinek.toString()
+                                        )?.setColor(colorDlazdiceCasPauzy)?.build()
+                                        //color
+                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.odpocinek.toString())?.setColor(resources.getColor(
+                                        R.color.colorCasPauzy
+                                    ))?.build()
+                                    //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                    pomocny =
+                                        (casPauzy!!.sec + casPauzy!!.min * 60 + casPauzy!!.hour * 3600 + 1).toLong()
+                                    pomocny =
+                                        pomocny - 1 //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
+
+                                    preskocVypisCasu = true
+                                }
+                            }
+                            if (preskocVypisCasu) {
+                                preskocVypisCasu = false
+                            } else {
+                                nastavCislice(pomocny)
+                                if (casZvukuPredKoncemKola != 0 && casZvukuPredKoncemKola.toLong() == pomocny && zvukPredkoncemKola != PraceSeZvukem.vratPocetZvukuPulkaCviceni()) {
+                                    //pokud bude nastavený zvuk v půlce kola, tak to odehraje tohle níže, má to větší přednost než countdown, takže pokud by to přicházelo na
+                                    //stejný čas, tak to odehraje pouze zvuk půlky kola
+                                    //aaa
+                                    Log.d("Jsem v půlce kola", "halo")
+                                    if (mediaPlayer != null) {
+                                        mediaPlayer!!.reset()
+                                        mediaPlayer!!.release()
+                                    }
+                                    mediaPlayer = MediaPlayer.create(
+                                        applicationContext,
+                                        PraceSeZvukem.vratZvukStartStopPodlePozice(
+                                            zvukPredkoncemKola
+                                        )
+                                    )
+                                    mediaPlayer!!.setVolume(volume, volume)
+                                    mediaPlayer!!.start()
+                                } else if (casPulkyKolaAktualni != 0 && casPulkyKolaAktualni.toLong() == pomocny && zvukPulkaCviceni != PraceSeZvukem.vratPocetZvukuPulkaCviceni()) {
+                                    //pokud bude nastavený zvuk v půlce kola, tak to odehraje tohle níže, má to větší přednost než countdown, takže pokud by to přicházelo na
+                                    //stejný čas, tak to odehraje pouze zvuk půlky kola
+                                    if (mediaPlayer != null) {
+                                        mediaPlayer!!.reset()
+                                        mediaPlayer!!.release()
+                                    }
+                                    Log.d("Jsem v půlce kola", "halo")
+                                    mediaPlayer = MediaPlayer.create(
+                                        applicationContext,
+                                        PraceSeZvukem.vratZvukStartStopPodlePozice(zvukPulkaCviceni)
+                                    )
+                                    mediaPlayer!!.setVolume(volume, volume)
+                                    mediaPlayer!!.start()
+                                } else {
+                                    Log.d("cas: ", pomocny.toString())
+                                    when (pomocny.toInt()) {
+                                        4 -> {
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer!!.reset()
+                                                mediaPlayer!!.release()
+                                            }
+                                            mediaPlayer = MediaPlayer.create(
+                                                applicationContext,
+                                                PraceSeZvukem.vratZvukCountdownPodlePozice(
+                                                    zvukCountdown
+                                                )
+                                            )
+                                            //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
+                                            mediaPlayer!!.setVolume(volume, volume)
+                                            mediaPlayer!!.start()
+                                            mediaPlayer!!.stop()
+                                        }
+                                        3 -> {
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer!!.reset()
+                                                mediaPlayer!!.release()
+                                            }
+                                            mediaPlayer = MediaPlayer.create(
+                                                applicationContext,
+                                                PraceSeZvukem.vratZvukCountdownPodlePozice(
+                                                    zvukCountdown
+                                                )
+                                            )
+                                            mediaPlayer!!.setVolume(volume, volume)
+                                            mediaPlayer!!.start()
+                                        }
+                                        2 -> {
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer!!.reset()
+                                                mediaPlayer!!.release()
+                                            }
+                                            mediaPlayer = MediaPlayer.create(
+                                                applicationContext,
+                                                PraceSeZvukem.vratZvukCountdownPodlePozice(
+                                                    zvukCountdown
+                                                )
+                                            )
+                                            mediaPlayer!!.setVolume(volume, volume)
+                                            mediaPlayer!!.start()
+                                        }
+                                        1 -> {
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer!!.reset()
+                                                mediaPlayer!!.release()
+                                            }
+                                            mediaPlayer = MediaPlayer.create(
+                                                applicationContext,
+                                                PraceSeZvukem.vratZvukCountdownPodlePozice(
+                                                    zvukCountdown
+                                                )
+                                            )
+                                            mediaPlayer!!.setVolume(volume, volume)
+                                            mediaPlayer!!.start()
+                                        }
+                                        else -> {}
+                                    }
+                                }
+                            }
+                        }
+                        2 -> {
+                            //vlákno pauza
+                            pomocny = pomocny - 1
+                            if (pomocny <= 0) {
+                                if (pocetCyklu == 0) {
+                                    if (pocetTabat == 0) {
+                                        if (casCoolDown.sec == 0 && casCoolDown.min == 0) {
+                                            //   fanfareZvuk.start();
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer!!.reset()
+                                                mediaPlayer!!.release()
+                                            }
+                                            mediaPlayer = MediaPlayer.create(
+                                                applicationContext,
+                                                PraceSeZvukem.vratZvukStartStopPodlePozice(
+                                                    zvukCelkovyKonec
+                                                )
+                                            )
+                                            mediaPlayer!!.setVolume(volume, volume)
+                                            mediaPlayer!!.start()
+                                            stav = 4
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText("")?.setColor(resources.getColor(
+                                                R.color.colorKonecTabaty
+                                            ))?.build()
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+
+                                            preskocVypisCasu = true
+                                        } else {
+                                            //tady                            restZvuk.start();
+                                            //   PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukCelkovyKonec);
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer!!.reset()
+                                                mediaPlayer!!.release()
+                                            }
+                                            mediaPlayer = MediaPlayer.create(
+                                                applicationContext,
+                                                PraceSeZvukem.vratZvukStartStopPodlePozice(
+                                                    zvukCelkovyKonec
+                                                )
+                                            )
+                                            mediaPlayer!!.setVolume(volume, volume)
+                                            mediaPlayer!!.start()
+                                            stav = 5
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.coolDown.toString())?.setColor(resources.getColor(
+                                                R.color.colorCasCoolDown
+                                            ))?.build()
+                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                            pomocny =
+                                                (casCoolDown.sec + casCoolDown.min * 60 + casCoolDown.hour * 3600 + 1).toLong()
+
+                                            preskocVypisCasu = true
+                                        }
+                                    } else {
+                                        //tady                            restZvuk.start();
+                                        //  PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStop);
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStop)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        stav = 3
+                                        //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.odpocinek.toString())?.setColor(resources.getColor(
+                                            R.color.colorCasPauzyMeziTabatami
+                                        ))?.build()
+                                        //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                        pomocny =
+                                            (casMezitabatami.sec + casMezitabatami.min * 60 + casMezitabatami.hour * 3600 + 1).toLong()
+                                        pomocny =
+                                            pomocny - 1 //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
+                                        preskocVypisCasu = true
+                                        pocetTabat = pocetTabat - 1
+                                    }
+                                } else {
+                                    //tady                            restZvuk.start();
+                                    //  PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStart);
+                                    if (mediaPlayer != null) {
+                                        mediaPlayer!!.reset()
+                                        mediaPlayer!!.release()
+                                    }
+                                    mediaPlayer = MediaPlayer.create(
+                                        applicationContext,
+                                        PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart)
+                                    )
+                                    mediaPlayer!!.setVolume(volume, volume)
+                                    mediaPlayer!!.start()
+                                    stav = 1
+                                    //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                            R.string.cvic.toString()
+                                        )?.setColor(colorDlazdiceCasCviceni)?.build()
+                                        //color
+                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.cvic.toString())?.setColor(resources.getColor(
+                                        R.color.colorCasCviceni
+                                    ))?.build()
+                                    //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                    aktualniCyklus = aktualniCyklus + 1
+
+                                    pomocny =
+                                        (casCviceni!!.sec + casCviceni!!.min * 60 + casCviceni!!.hour * 3600 + 1).toLong()
+                                    pomocny =
+                                        pomocny - 1 //protože při GO už to je jedna sekunda a pak mi to při celkovém času nehrálo
+
+                                    preskocVypisCasu = true
+                                    pocetCyklu = pocetCyklu - 1
+                                }
+                            }
+                            if (preskocVypisCasu) {
+                                preskocVypisCasu = false
+                            } else {
+                                nastavCislice(pomocny)
+                                when (pomocny.toInt()) {
+                                    4 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        mediaPlayer!!.stop()
+                                    }
+                                    3 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    2 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    1 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    else -> {}
+                                }
+                            }
+                        }
+                        3 -> {
+                            //vlákno pauza mezi tabatami
+                            pomocny = pomocny - 1
+                            if (pomocny <= 0) {
+                                //tady                            restZvuk.start();
+                                // PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStart);
+                                if (mediaPlayer != null) {
+                                    mediaPlayer!!.reset()
+                                    mediaPlayer!!.release()
+                                }
+                                mediaPlayer = MediaPlayer.create(
+                                    applicationContext,
+                                    PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart)
+                                )
+                                mediaPlayer!!.setVolume(volume, volume)
+                                mediaPlayer!!.start()
+                                stav = 1
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                        R.string.cvic.toString()
+                                    )?.setColor(colorDlazdiceCasCviceni)?.build()
+                                    //color
+                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.cvic.toString())?.setColor(resources.getColor(
+                                    R.color.colorCasCviceni
+                                ))?.build()
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+
+                                aktualniCyklus = 1
+                                aktualniTabata = aktualniTabata + 1
+                                //       textViewAktualniPocetTabat.setText(String.valueOf(aktualniTabata)+"/"+String.valueOf(puvodniPocetTabat));
+                                pomocny =
+                                    (casCviceni!!.sec + casCviceni!!.min * 60 + casCviceni!!.hour * 3600 + 1).toLong()
+                                pomocny =
+                                    pomocny - 1 //protože při GO už to je jedna sekunda a pak mi to při celkovém času nehrálo
+
+                                preskocVypisCasu = true
+                                pocetCyklu = puvodniPocetCyklu - 1
+                            }
+                            if (preskocVypisCasu) {
+                                preskocVypisCasu = false
+                            } else {
+                                nastavCislice(pomocny)
+                                when (pomocny.toInt()) {
+                                    4 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        mediaPlayer!!.stop()
+                                    }
+                                    3 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    2 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    1 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    else -> {}
+                                }
+                            }
+                        }
+                        4 -> {
+                            //konec odpočítávání
+                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                            notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.konec.toString())?.setColor(resources.getColor(
+                                R.color.colorKonecTabaty
+                            ))?.build()
+                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                            counter?.cancel()
+                            Log.d("Jsem na konci: ", "3")
+                        }
+                        5 -> {
+                            //čas cool down, je to tam doděláno dodatečně, proto to má číslo 5 a ne 4
+                            pomocny = pomocny - 1
+                            if (pomocny <= 0) {
+                                //   restZvuk.start();
+
+                                //  PraceSeZvukem.spustZvukKonec(getApplicationContext(),zvukCelkovyKonec);
+                                if (mediaPlayer != null) {
+                                    mediaPlayer!!.reset()
+                                    mediaPlayer!!.release()
+                                }
+                                mediaPlayer = MediaPlayer.create(
+                                    applicationContext,
+                                    PraceSeZvukem.vratZvukStartStopPodlePozice(zvukCelkovyKonec)
+                                )
+                                mediaPlayer!!.setVolume(volume, volume)
+                                mediaPlayer!!.start()
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                notification = notificationBuilder?.setOngoing(true)?.setContentText(R.string.konec.toString())?.setColor(resources.getColor(
+                                    R.color.colorKonecTabaty
+                                ))?.build()
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                stav = 4
+                                preskocVypisCasu = false
+                            }
+                            if (preskocVypisCasu) {
+                                preskocVypisCasu = false
+                            } else {
+                                nastavCislice(pomocny)
+                                when (pomocny.toInt()) {
+                                    4 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                        mediaPlayer!!.stop()
+                                    }
+                                    3 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    2 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    1 -> {
+                                        if (mediaPlayer != null) {
+                                            mediaPlayer!!.reset()
+                                            mediaPlayer!!.release()
+                                        }
+                                        mediaPlayer = MediaPlayer.create(
+                                            applicationContext,
+                                            PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown)
+                                        )
+                                        mediaPlayer!!.setVolume(volume, volume)
+                                        mediaPlayer!!.start()
+                                    }
+                                    else -> {}
+                                }
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+                //zkopírováno z ClassicActivity-konec
 
             }
 
@@ -143,6 +839,16 @@ class ClassicService : Service() {
         notificationIntent?.putExtra("barvaPauzy", colorDlazdiceCasPauzy) //color
         notificationIntent?.putExtra("barvaPocetCyklu", colorDlazdicePocetCyklu)
         notificationIntent?.putExtra("barvaPripravy", colorDlazdiceCasPripravy)
+
+        notificationIntent?.putExtra("zvukstart", zvukStart)
+        notificationIntent?.putExtra("zvukstop", zvukStop)
+        notificationIntent?.putExtra("zvukcelkovykonec", zvukCelkovyKonec)
+        notificationIntent?.putExtra("zvukcountdown", zvukCountdown)
+        notificationIntent?.putExtra("zvukpulkakola", zvukPulkaCviceni)
+        notificationIntent?.putExtra("zvukpredkoncemkola", zvukPredkoncemKola)
+        notificationIntent?.putExtra("caszvukupupredkoncemkola", casZvukuPredKoncemKola)
+
+        notificationIntent?.putExtra("hlasitost", hlasitost)
 
         Log.d(
             "FindingError",
@@ -271,8 +977,9 @@ class ClassicService : Service() {
         casCelkovy: MyTime,
         colorDlazdicePocetCyklu: Int,
         stav: Byte,
-        pomocny: Long
-    ) {
+        pomocny: Long,
+        pauzaNeniZmacknuta: Boolean,
+        pocetCyklu: Int) {
         this.aktualniCyklus = aktualniCyklus
         this.puvodniPocetCyklu = puvodniPocetCyklu
         this.casPripravy = casPripravy
@@ -285,6 +992,8 @@ class ClassicService : Service() {
         this.colorDlazdicePocetCyklu = colorDlazdicePocetCyklu
         this.stav = stav
         this.pomocny = pomocny
+        this.pocetCyklu = pocetCyklu
+        this.pauzaNeniZmacknuta = pauzaNeniZmacknuta
 
         Log.d(
             "FindingError",
@@ -323,6 +1032,42 @@ class ClassicService : Service() {
 
     }
 
+    fun nastavZvuky(zvukStart: Int, zvukStop: Int, zvukCelkovyKonec: Int,
+                    zvukCountdown: Int, zvukPulkaCviceni: Int, casPulkyKola: Int,
+                    casPulkyKolaAktualni: Int, zvukPredkoncemKola: Int,casZvukuPredKoncemKola: Int,
+                    hlasitost: Int, maxHlasitost: Int, volume: Float) {
+        this.zvukStart = zvukStart
+        this.zvukStop = zvukStop
+        this.zvukCelkovyKonec = zvukCelkovyKonec
+        this.zvukCountdown = zvukCountdown
+        this.zvukPulkaCviceni = zvukPulkaCviceni
+        this.casPulkyKola = casPulkyKola
+        this.casPulkyKolaAktualni = casPulkyKolaAktualni
+        this.zvukPredkoncemKola = zvukPredkoncemKola
+        this.casZvukuPredKoncemKola = casZvukuPredKoncemKola
+        this.hlasitost = hlasitost
+        this.maxHlasitost = maxHlasitost
+        this.volume = volume
+
+
+
+        notificationIntent?.putExtra("zvukstart", zvukStart)
+        notificationIntent?.putExtra("zvukstop", zvukStop)
+        notificationIntent?.putExtra("zvukcelkovykonec", zvukCelkovyKonec)
+        notificationIntent?.putExtra("zvukcountdown", zvukCountdown)
+        notificationIntent?.putExtra("zvukpulkakola", zvukPulkaCviceni)
+        notificationIntent?.putExtra("zvukpredkoncemkola", zvukPredkoncemKola)
+        notificationIntent?.putExtra("caszvukupupredkoncemkola", casZvukuPredKoncemKola)
+
+        notificationIntent?.putExtra("hlasitost", hlasitost)
+
+
+
+
+
+    }
+
+
     private fun zobrazCasPomocny(): String {
         if (pomocny < 60) {
             return pomocny.toString()
@@ -333,6 +1078,27 @@ class ClassicService : Service() {
             return hour.toString()+":"+min.toString()+":"+sec.toString()
         }
 
+    }
+
+    private fun nastavCislice(hodnotaAktualni: Long) {
+        if (hodnotaAktualni < 60) {
+            notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                vratDeseticisla(pomocny.toInt())
+            )?.build()
+        } else {
+            val minuty = (hodnotaAktualni % 60).toInt()
+            notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                vratDeseticisla(((pomocny - minuty) / 60).toInt()) + ":" + vratDeseticisla(
+                    minuty
+                ))?.build()
+
+        }
+    }
+
+    private fun vratDeseticisla(cislo: Int): String? {
+        return if (cislo < 10) {
+            "0$cislo"
+        } else cislo.toString()
     }
 
 }
