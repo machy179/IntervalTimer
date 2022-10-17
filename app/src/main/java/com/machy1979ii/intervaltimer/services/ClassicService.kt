@@ -86,6 +86,20 @@ class ClassicService : Service() {
     private var maxHlasitost = 100
     var volume  = 0f
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+/*        val notification: Notification = NotificationCompat.Builder(this, CHANNELID)
+            .setContentTitle("title")
+            .setContentText("text")
+            .setSmallIcon(R.drawable.baseline_pause_white_24)
+            .build()
+        startForeground(2001, notification)*/
+
+        Log.d("StartService","2");
+
+        //to tady je proto, aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
+        return START_NOT_STICKY
+    }
 
     override fun onBind(intent: Intent): IBinder? {
         return mBinder

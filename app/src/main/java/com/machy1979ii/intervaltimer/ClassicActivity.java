@@ -1622,6 +1622,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     @Override
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
         super.onStop();
+        //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
+        //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("StartService","1");
+            startForegroundService(service);
+            Log.d("StartService","3");
+        } else
+            this.startService(service);
         //  getApplicationContext().startService(service); //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
         Toast.makeText(ClassicActivity.this, "onStop", Toast.LENGTH_SHORT).show();
         s.nastavOdpocitavani(casCelkovy);
