@@ -121,6 +121,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     //proměnné pro servicu
     private Boolean bound = false;
+    private Boolean spustenoZPozadi = false; //příznak, že aplikace byla spuštěna z pozadí a ne z notifikace
     private Intent service;
     private ClassicService s;
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -129,12 +130,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         public void onServiceConnected(ComponentName name, IBinder binder) {
             ClassicService.MyBinder b= (ClassicService.MyBinder) binder;
             if (s==null) {
-                Toast.makeText(ClassicActivity.this, "Connected s=null", Toast.LENGTH_SHORT).show();
+         //       Toast.makeText(ClassicActivity.this, "Connected s=null", Toast.LENGTH_SHORT).show();
                 s = b.getService();
             } else {
-                Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
             }
             bound = true;
+
+            Log.d("Servica1","onServiceConnected ---");
 
             if((s.getResult()!=0)) {
                 //v momentě, kdy se connectne k service, tak se z ní čačte result, pokud je 0, tak je vypnutá, nebo nespuštěná, pokud je nějaké číslo
@@ -142,7 +145,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 //načtení ze servisy jsem se pokoušel dávat do onCreata, onResume, onRestart atd., ale připojení k service má asi nějaké nepatrné zpoždění, tak to fungovalo jen tady
 
                 //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA NOTIFIKACI
-                Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
+          //      Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
+                Log.d("Servica1","onServiceConnected");
                 nactiZeServisy();
             }
         }
@@ -155,7 +159,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         }
 
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +182,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         //udelejLayout();
 
-            Toast.makeText(ClassicActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
+      //      Toast.makeText(ClassicActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
 
 
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
@@ -269,7 +272,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         spustCasovac();
     }
 
-
     private void spustCasovac() {
         pauzaMeziTabatami = casMezitabatami.getSec();
         pocetCyklu = puvodniPocetCyklu;
@@ -317,7 +319,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     public void onReview(int stars) {
 
     }
-
 
     //odpočítavač
     public class OdpocitavacCasu extends CountDownTimer {
@@ -1517,15 +1518,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         return vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
     }
 
-
-
-
     private void zavlojejReviewNejake() {
 
         //  zavolejDruhyZpusobReview(); //tohle by mělo fungovat
         zavolejTretiZpusob();
     }
-
 
     private void zavolejDruhyZpusobReview() {
 
@@ -1538,7 +1535,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //       FiveStarMe.showRateDialogIfMeetsConditions(this);
 
     }
-
 
     private void zavolejTretiZpusob() {
         FiveStarsDialog fiveStarsDialog = new FiveStarsDialog(this, "machy79@seznam.cz"); //...ale poslání na e-mail mám vypnuté
@@ -1565,8 +1561,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 .showAfter(6); //počet spuštění, aby se žádost o review spustila (je to na konci v END)
     }
 
-
-
     public void statusBarcolor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -1586,52 +1580,54 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         finish();
     }*/
 
-    //stavy Activity
-
-    /** Called when the activity is about to become visible. */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
-        //níže uvedené musí být tady, protože když se to sem vrací z onRestart, to znamená, že uživatel se vlrátí na aktivitu, tak kdyby to níže uvedené bylo v onCreate, tak by to dělalo neplechu
-        Intent intent = new Intent(this, ClassicService.class);
-        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
-        service = new Intent(getApplicationContext(), ClassicService.class);
-    }
-
-    @Override
-    protected void onRestart() { //tímhle to projde, jen když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci
-        super.onRestart();
-        Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
-        if((s.getResult()!=0)) {
-            //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA APLIKACI Z POZADÍ
-            nactiZeServisy();
-        }
-    }
 
     /** Called when the activity has become visible. */
     @Override
     protected void onResume() {
-        if (s != null) {
-            Toast.makeText(ClassicActivity.this, "onResume() s != null ", Toast.LENGTH_SHORT).show();
-        } else Toast.makeText(ClassicActivity.this, "onResume() s = null", Toast.LENGTH_SHORT).show();
-        // text1?.setText(s!!.result.toString())
         super.onResume();
     }
 
-    @Override
+
+    @Override //pridat pro service
+    protected void onStart() {
+        super.onStart();
+  //      Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
+        //níže uvedené musí být tady, protože když se to sem vrací z onRestart, to znamená, že uživatel se vlrátí na aktivitu, tak kdyby to níže uvedené bylo v onCreate, tak by to dělalo neplechu
+
+
+        Log.d("Servica1","4");
+        Intent intent = new Intent(this, ClassicService.class);
+        Log.d("Servica1","5");
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        Log.d("Servica1","6");
+        service = new Intent(getApplicationContext(), ClassicService.class);
+        Log.d("Servica1","7");
+
+
+    }
+
+    @Override //pridat pro service
+    protected void onRestart() { //tímhle to projde, jen když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci
+        super.onRestart();
+   //     Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
+        if((s.getResult()!=0)) {
+
+            //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA APLIKACI Z POZADÍ
+            Log.d("Servica1","1");
+      //      bound = true;
+            spustenoZPozadi = true; //tahle proměnná je tady proto, že když se to neověřovalo, zda se apka spouští z pozadí nebo naopak z notifikace,
+            //tak se killservice spustilo dvakrát a dělalo to samozřejmě neplechu
+            nactiZeServisy();
+            spustOdpocitavac();
+        }
+    }
+
+    @Override //pridat pro service
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
         super.onStop();
-        //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
-        //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d("StartService","1");
-            startForegroundService(service);
-            Log.d("StartService","3");
-        } else
-            this.startService(service);
+
         //  getApplicationContext().startService(service); //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
-        Toast.makeText(ClassicActivity.this, "onStop", Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(ClassicActivity.this, "onStop", Toast.LENGTH_SHORT).show();
         s.nastavOdpocitavani(casCelkovy);
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
@@ -1642,25 +1638,31 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 hlasitost, maxHlasitost, volume);
 
         s.setNotification4();
+
+        //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
+        //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("StartService","1");
+            startForegroundService(service);
+            Log.d("StartService","3");
+        } else
+            this.startService(service);
+
         odpocitavac.cancel();
 
         Log.d("FindingError", "casCviceni---: "+ String.valueOf(casCviceni.getHour()));
     }
 
-    @Override
+    @Override  //pridat pro service
     protected void onDestroy() {
         odpocitavac.cancel();
         super.onDestroy();
-        Toast.makeText(ClassicActivity.this, "onDestroy", Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(ClassicActivity.this, "onDestroy", Toast.LENGTH_SHORT).show();
         znicService();
     }
 
     //metody pro service
     private void nactiZeServisy() {
-     //   counter.cancel();
-     //   initCountDownTimer(s.getResult()*1000);
-     //   text1.setText(String.valueOf(s.getResult()));
-
         stav = s.getStav();
         pomocny = s.getPomocny();
         preskocVypisCasu = s.getPreskocVypisCasu();
@@ -1671,7 +1673,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
         casPripravy = s.getCasPripravy();
-      //  pomocny = casPripravy.getSec()+1 + casPripravy.getMin()*60 +casPripravy.getHour()*3600;
+
         colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
         casCviceni = s.getCasCviceni();
         if (casCviceni.getSec() < 10) {
@@ -1683,9 +1685,22 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         casPauzy = s.getCasPauzy();
         colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
 
+        //zvuky
+        zvukStart = s.getZvukStart();
+        zvukStop = s.getZvukStop();
+        zvukCelkovyKonec = s.getZvukCelkovyKonec();
+        zvukCountdown = s.getZvukCountdown();
+        zvukPulkaCviceni = s.getZvukPulkaCviceni();
+        casPulkyKola = s.getCasPulkyKola();
+        casPulkyKolaAktualni = s.getCasPulkyKolaAktualni();
+        zvukPredkoncemKola = s.getZvukPredkoncemKola();
+        casZvukuPredKoncemKola = s.getCasZvukuPredKoncemKola();
+        hlasitost = s.getHlasitost();
+        maxHlasitost = s.getMaxHlasitost();
+        volume = s.getVolume();
+        //zvuky
 
-         //color
-        //color
+
         switch (stav) {
             case 0:
                 Log.d("STAV: ", "0");
@@ -1751,19 +1766,25 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         }
 
-
-
+        Log.d("Servica1","bound="+bound.toString());
         zobrazCelkovyCas();
-        znicService();
+
+        if(spustenoZPozadi) { //když to sem projde z pozadí a ne jen z notifikace, tak je vlastně tato activita
+            //načtena a je potřebe jen servisu killnout a ne ji zcela zničit, je potřeba si na ni nechat connection, tak proto je zde tato podmínka
+            s.killService();
+            spustenoZPozadi = false;
+        } else znicService();
     }
 
     private void znicService() { //aby šlo servicu zničit, musí se unbindnout a vlákno v ní, tedy počítadlo, zničit také
         if (bound) {
-            Toast.makeText(ClassicActivity.this, "unbind", Toast.LENGTH_SHORT).show();
+            Log.d("Servica1","2");
+      //      Toast.makeText(ClassicActivity.this, "unbind", Toast.LENGTH_SHORT).show();
             unbindService(serviceConnection);
             getApplicationContext().stopService(service);
             bound = false;
             s.killService();
+            Log.d("Servica1","3");
 
         }
     }

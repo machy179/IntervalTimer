@@ -65,25 +65,25 @@ class ClassicService : Service() {
     //    private MediaPlayer restZvuk;
     //   private MediaPlayer startZvuk;
     //    private MediaPlayer fanfareZvuk;
-    private var zvukStart = 1
-    private var zvukStop = 1
-    private var zvukCelkovyKonec = 1
-    private var zvukCountdown = 1
-    private var zvukPulkaCviceni = 33 //33 je, když není nastaven zvuk
+    var zvukStart = 1
+    var zvukStop = 1
+    var zvukCelkovyKonec = 1
+    var zvukCountdown = 1
+    var zvukPulkaCviceni = 33 //33 je, když není nastaven zvuk
 
-    private var casPulkyKola = 0 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
+    var casPulkyKola = 0 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
 
-    private var casPulkyKolaAktualni = 0 //je potřeba ještě tuto proměnnou, protože když nastavím jinou délku kola zrovna v kole, tak by to habrovalo
+    var casPulkyKolaAktualni = 0 //je potřeba ještě tuto proměnnou, protože když nastavím jinou délku kola zrovna v kole, tak by to habrovalo
 
-    private var zvukPredkoncemKola = 33 //33 je, když není nastaven zvuk
+    var zvukPredkoncemKola = 33 //33 je, když není nastaven zvuk
 
-    private var casZvukuPredKoncemKola = 20 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
+    var casZvukuPredKoncemKola = 20 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
 
 
     private var mediaPlayer: MediaPlayer? = null
 
-    private var hlasitost = 100
-    private var maxHlasitost = 100
+    var hlasitost = 100
+    var maxHlasitost = 100
     var volume  = 0f
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
