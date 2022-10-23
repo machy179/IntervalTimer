@@ -852,8 +852,8 @@ class ClassicService : Service() {
 
     fun setNotification4() {
 
-    //    val notificationIntent = Intent(this, ClassicActivity::class.java)
         notificationIntent = Intent(this, ClassicActivity::class.java)
+   //     notificationIntent = Intent(this, parentActivity:class.java)
 
         notificationIntent?.putExtra("caspripavy", casPripravy)
         notificationIntent?.putExtra("cascviceni", casCviceni)

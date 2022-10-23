@@ -53,8 +53,13 @@
 
         </activity>
 
+        <!-- Pro servicu a notifikaci je třeba dát do níže uvedené aktivity
+            android:launchMode="singleTask" - aby se to z notifikace vracelo do té původní aktivity a nevolala se jiná
+            ClassicActivita, takhle by tam bylo zavoláno X activit a navíc by vracení z notifikace do Activity bylo pomalé
+        -->
         <activity
             android:name="com.machy1979ii.intervaltimer.ClassicActivity"
+            android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_classic"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -65,9 +70,13 @@
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
+        <!-- Pro servicu a notifikaci je třeba dát do níže uvedené aktivity
+    android:launchMode="singleTask" - aby se to z notifikace vracelo do té původní aktivity a nevolala se jiná
+    ClassicActivita, takhle by tam bylo zavoláno X activit a navíc by vracení z notifikace do Activity bylo pomalé
+-->
         <activity
             android:name="com.machy1979ii.intervaltimer.TabataActivity"
-
+            android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_tabata"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -78,8 +87,13 @@
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
+        <!-- Pro servicu a notifikaci je třeba dát do níže uvedené aktivity
+    android:launchMode="singleTask" - aby se to z notifikace vracelo do té původní aktivity a nevolala se jiná
+    ClassicActivita, takhle by tam bylo zavoláno X activit a navíc by vracení z notifikace do Activity bylo pomalé
+-->
         <activity
             android:name="com.machy1979ii.intervaltimer.CustomActivity"
+            android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_tabata"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

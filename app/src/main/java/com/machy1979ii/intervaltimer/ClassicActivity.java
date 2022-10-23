@@ -1628,6 +1628,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         //  getApplicationContext().startService(service); //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
     //    Toast.makeText(ClassicActivity.this, "onStop", Toast.LENGTH_SHORT).show();
+
         s.nastavOdpocitavani(casCelkovy);
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
