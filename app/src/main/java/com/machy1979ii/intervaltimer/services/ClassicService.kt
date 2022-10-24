@@ -98,7 +98,8 @@ class ClassicService : Service() {
         Log.d("StartService","2");
 
         //to tady je proto, aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        return START_NOT_STICKY
+     //   return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -884,9 +885,11 @@ class ClassicService : Service() {
         )
 
 
+        // aby se přepnulo na existující instanci aktivity a vymazali všechny další aktivity nad ní zdroj: https://www.peachpit.com/articles/article.aspx?p=1874864
+        //ke stejné funkci, aby byla otevřená pouze jedna ClassicActivity jsem dal do manifestu k této activitě android:launchMode="singleTask", takže níže uvedené možná není už potřeba a dubluje se to
 
-
-
+        notificationIntent?.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        notificationIntent?.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         //   notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
