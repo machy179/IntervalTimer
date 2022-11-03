@@ -188,26 +188,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
         statusBarcolor();
 
-
-
-       //tahle podmínka tady je proto, protože když to sem skočí z notifikace, tak by getIntent.getExtras...házelo chybu,
-        //protože to nemá kde převzít, pravděpodobně ze service sem v notifikaci tyhle věci budu muset vložit, zatím to ale jen
-        //tady zapodmínkuju
-    //    if(getIntent().getParcelableExtra("caspripavy")==null) {
-            if(getIntent().getExtras().getParcelable("caspripavy")==null){
-            Log.d("FindingError", "vlákno cas pripravy ==null");
-            casPripravy = new MyTime(0,0,20);
-            casCviceni = new MyTime(0,0,20);
-            casPauzy = new MyTime(0,0,20);
-            casCelkovy = new MyTime(0,24,0);
-            puvodniPocetCyklu = 8;
-
-            colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni); //color
-            colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy); //color
-            colorDlazdicePocetCyklu = getResources().getColor(R.color.colorSpodnichDLazdicCustomActivity); //color
-            colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy); //color
-
-        } else {
             Log.d("FindingError", "vlákno cas pripravy NOT null");
             casPripravy = getIntent().getExtras().getParcelable("caspripavy");
             casCviceni = getIntent().getExtras().getParcelable("cascviceni");
@@ -232,7 +212,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
                 colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
 
-        }
+
 
 
 
@@ -1625,47 +1605,44 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     @Override //pridat pro service
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
         super.onStop();
+        Log.d("SSS", "StopService");
+    //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
 
-        //  getApplicationContext().startService(service); //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
-    //    Toast.makeText(ClassicActivity.this, "onStop", Toast.LENGTH_SHORT).show();
 
-        s.nastavOdpocitavani(casCelkovy);
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
                 colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
+        s.nastavOdpocitavani(casCelkovy);
+
         s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
                 zvukCountdown, zvukPulkaCviceni, casPulkyKola,
                 casPulkyKolaAktualni, zvukPredkoncemKola, casZvukuPredKoncemKola,
                 hlasitost, maxHlasitost, volume);
 
-        s.setNotification4();
+        s.setNotification();
+
 
         //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
         //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d("StartService","1");
             startForegroundService(service);
-            Log.d("StartService","3");
         } else
             this.startService(service);
 
         odpocitavac.cancel();
 
-        Log.d("FindingError", "casCviceni---: "+ String.valueOf(casCviceni.getHour()));
     }
 
     @Override  //pridat pro service
     protected void onDestroy() {
         odpocitavac.cancel();
         super.onDestroy();
-     //   Toast.makeText(ClassicActivity.this, "onDestroy", Toast.LENGTH_SHORT).show();
         znicService();
     }
 
     //metody pro service
     private void nactiZeServisy() {
-        stav = s.getStav();
-        pomocny = s.getPomocny();
+
         preskocVypisCasu = s.getPreskocVypisCasu();
         casCelkovy = s.getCasCelkovy();
         pocetCyklu = s.getPocetCyklu();
@@ -1701,7 +1678,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         volume = s.getVolume();
         //zvuky
 
-
+        stav = s.getStav();
         switch (stav) {
             case 0:
                 Log.d("STAV: ", "0");
@@ -1766,6 +1743,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             break;
 
         }
+
+
+        pomocny = s.getPomocny();
 
         Log.d("Servica1","bound="+bound.toString());
         zobrazCelkovyCas();
