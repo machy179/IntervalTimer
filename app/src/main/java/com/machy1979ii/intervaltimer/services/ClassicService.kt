@@ -25,10 +25,7 @@ class ClassicService : Service() {
     private var stopSelf: Intent? = null
     private var pStopSelf: PendingIntent? = null
 
-    private val NOTIFICATION_TIME_OUT = 6000L
-
     private val mBinder: IBinder = MyBinder()
- //   private val channelId = "Notification from Service"
     private val channelId = "1"
     private var notification: Notification? = null
     private var notificationBuilder: NotificationCompat.Builder? =null
@@ -916,12 +913,10 @@ class ClassicService : Service() {
             .setContentIntent(pendingIntent)
             .setContentText("")
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-
+            .setOnlyAlertOnce(true) //aby se heads-up oběvilo jen jednou a ne po každém notify()
             .addAction(R.mipmap.play, getString(R.string.pauza), ppauzePlay)
             .addAction(R.drawable.back_pokus, getString(R.string.konec), pStopSelf) //pokud budu chtít dát nějakou další akci například
             .build()
-
-
 
         nastavPocatecniHodnoty() //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
         //tikání časovače ignorovalo další propisování nové hodnoty do notifikace, se aktuální čas v pauze špatně propisoval
@@ -938,7 +933,7 @@ class ClassicService : Service() {
         Log.d("SSS", "createNotificationChannel()-zacatek")
         val channelName = "Interval Timer Classic Background Service"
         chan = NotificationChannel(channelId,
-            channelName, NotificationManager.IMPORTANCE_DEFAULT) //Kdybych chtěl, aby byla notifikace i v malém okně heads-up, musím dát iportance na HIGH nebo MAY
+            channelName, NotificationManager.IMPORTANCE_HIGH) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
         chan!!.description = "Interval Timer Classic Background Service description"
         chan!!.setShowBadge(true)
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
