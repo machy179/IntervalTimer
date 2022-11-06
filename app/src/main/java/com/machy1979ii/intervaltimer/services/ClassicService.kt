@@ -25,6 +25,8 @@ class ClassicService : Service() {
     private var stopSelf: Intent? = null
     private var pStopSelf: PendingIntent? = null
 
+    private val NOTIFICATION_TIME_OUT = 6000L
+
     private val mBinder: IBinder = MyBinder()
  //   private val channelId = "Notification from Service"
     private val channelId = "1"
@@ -80,28 +82,41 @@ class ClassicService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if ("ACTION_STOP_SERVICE".equals(intent?.getAction())) {
             Log.d("SSS","called to cancel service")
-            killService()
+           // killService()
+            val intent1 = Intent("znicClassicActivityAClassicService")
+            sendBroadcast(intent1)
         } else if ("ACTION_PLAY_PAUSE_SERVICE".equals(intent?.getAction())) {
             Log.d("SSS","called to play pause service")
             when (pauzaNeniZmacknuta) {
                 true ->  {
                     Log.d("SSS","---true")
                     pauzaNeniZmacknuta=false
-                    notification = notificationBuilder?.setOngoing(true)?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
-                        ?.addAction(R.mipmap.play, "Play", ppauzePlay)
-                        ?.addAction(R.drawable.back_pokus, "cancel", pStopSelf)
+
+                    notification = notificationBuilder?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
+                        ?.addAction(R.mipmap.play, getString(R.string.pokracovat), ppauzePlay)
+                        ?.addAction(R.drawable.back_pokus,  getString(R.string.konec), pStopSelf)
                         ?.build()
+
+
+
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+              //      mNotificationManager?.cancel(ONGOING_NOTIFICATION)
+
                 }
 
                 false -> {
                     Log.d("SSS","---false")
                     pauzaNeniZmacknuta=true
-                    notification = notificationBuilder?.setOngoing(true)?.clearActions()
-                        ?.addAction(R.mipmap.play, "Pause", ppauzePlay)
-                        ?.addAction(R.drawable.back_pokus, "cancel", pStopSelf)
+
+                    notification = notificationBuilder?.clearActions()
+                        ?.addAction(R.mipmap.play, getString(R.string.pauza), ppauzePlay)
+                        ?.addAction(R.drawable.back_pokus, getString(R.string.konec), pStopSelf)
                         ?.build()
+
+
+
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+               //     mNotificationManager?.cancel(ONGOING_NOTIFICATION)
                 }
                 else -> print("s does not encode x")
                 }
@@ -145,11 +160,11 @@ class ClassicService : Service() {
                             //vlákno příprava
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                notification = notificationBuilder?.setContentText(
                                     resources.getText(R.string.cvic)
                                 )?.setColor(colorDlazdiceCasPripravy)?.build()
                                 //color
-                            } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
+                            } else notification = notificationBuilder?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                 R.color.colorCasPripravy
                             ))?.build()
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -176,11 +191,11 @@ class ClassicService : Service() {
 
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                    notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                    notification = notificationBuilder?.setContentText(
                                         resources.getText(R.string.cvic)
                                     )?.setColor(colorDlazdiceCasCviceni)?.build()
                                     //color
-                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
+                                } else notification = notificationBuilder?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                     R.color.colorCasCviceni
                                 ))?.build()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -282,7 +297,7 @@ class ClassicService : Service() {
                                         mediaPlayer!!.start()
                                         if (casCoolDown.sec == 0 && casCoolDown.min == 0) {
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
                                                 R.color.colorKonecTabaty
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -293,7 +308,7 @@ class ClassicService : Service() {
                                         } else {
                                             stav = 5
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.coolDown))?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setContentText(resources.getText(R.string.coolDown))?.setColor(resources.getColor(
                                                 R.color.colorCasCoolDown
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -315,7 +330,7 @@ class ClassicService : Service() {
                                         mediaPlayer!!.start()
                                         stav = 3
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
+                                        notification = notificationBuilder?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
                                             R.color.colorCasPauzyMeziTabatami
                                         ))?.build()
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -345,11 +360,11 @@ class ClassicService : Service() {
 
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                        notification = notificationBuilder?.setContentText(
                                             resources.getText(R.string.odpocinek)
                                         )?.setColor(colorDlazdiceCasPauzy)?.build()
                                         //color
-                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
+                                    } else notification = notificationBuilder?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
                                         R.color.colorCasPauzy
                                     ))?.build()
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -486,7 +501,7 @@ class ClassicService : Service() {
                                             mediaPlayer!!.start()
                                             stav = 4
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText("")?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setContentText("")?.setColor(resources.getColor(
                                                 R.color.colorKonecTabaty
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -510,7 +525,7 @@ class ClassicService : Service() {
                                             mediaPlayer!!.start()
                                             stav = 5
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.coolDown))?.setColor(resources.getColor(
+                                            notification = notificationBuilder?.setContentText(resources.getText(R.string.coolDown))?.setColor(resources.getColor(
                                                 R.color.colorCasCoolDown
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -535,7 +550,7 @@ class ClassicService : Service() {
                                         mediaPlayer!!.start()
                                         stav = 3
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
+                                        notification = notificationBuilder?.setContentText(resources.getText(R.string.odpocinek))?.setColor(resources.getColor(
                                             R.color.colorCasPauzyMeziTabatami
                                         ))?.build()
                                         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -563,11 +578,11 @@ class ClassicService : Service() {
                                     stav = 1
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                        notification = notificationBuilder?.setContentText(
                                             resources.getText(R.string.cvic)
                                         )?.setColor(colorDlazdiceCasCviceni)?.build()
                                         //color
-                                    } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
+                                    } else notification = notificationBuilder?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                         R.color.colorCasCviceni
                                     ))?.build()
                                     //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -661,11 +676,11 @@ class ClassicService : Service() {
                                 stav = 1
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                    notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                                    notification = notificationBuilder?.setContentText(
                                         resources.getText(R.string.cvic)
                                     )?.setColor(colorDlazdiceCasCviceni)?.build()
                                     //color
-                                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
+                                } else notification = notificationBuilder?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                                     R.color.colorCasCviceni
                                 ))?.build()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -744,7 +759,7 @@ class ClassicService : Service() {
                         4 -> {
                             //konec odpočítávání
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                            notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
+                            notification = notificationBuilder?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
                                 R.color.colorKonecTabaty
                             ))?.build()
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -769,7 +784,7 @@ class ClassicService : Service() {
                                 mediaPlayer!!.setVolume(volume, volume)
                                 mediaPlayer!!.start()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
+                                notification = notificationBuilder?.setContentText(resources.getText(R.string.konec))?.setColor(resources.getColor(
                                     R.color.colorKonecTabaty
                                 ))?.build()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -839,11 +854,11 @@ class ClassicService : Service() {
                     }
                     Log.d("Servica stav/pomocny: ",stav.toString()+"/"+pomocny.toString())
 
-               //     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+                    mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
                 Log.d("SSS","pocetTabat: "+pocetTabat.toString())
 
-                mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+               // mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 //zkopírováno z ClassicActivity-konec
 
             }
@@ -870,7 +885,6 @@ class ClassicService : Service() {
             0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
         )
 
-        val bubbleIntent = PendingIntent.getActivity(this, 0,  notificationIntent, 0)
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 createNotificationChannel()
@@ -891,30 +905,22 @@ class ClassicService : Service() {
 
         notificationBuilder = NotificationCompat.Builder(this, channelId )
         notification = notificationBuilder!!
-            .setOngoing(true)
+          //  .setOngoing(true) //bylo by heads-up okno pořád otevřené, ale v mém případě se notifikace každou sec stejně obnoví, takže znovu zviditelní
             .setAutoCancel(true) //ABY SE PO KLIKNUTÍ NA NOTIFIKACI SAMA ZNIČILA. K TOMU ALE MUSÍM MÍT V PŘEDEŠLÉ ACTIVITY NASTAVENO, ŽE SE TADY MUSÍ ZNIČIT ODPOČÍTÁVÁNÍ - ZNIČIT VLÁKNO
             .setSmallIcon(R.mipmap.ic_launcher)
             .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.mipmap.ic_launcher))
             .setColorized(true)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            //.setPriority(NotificationCompat.PRIORITY_HIGH)   // heads-up
+            .setPriority(NotificationCompat.PRIORITY_HIGH)   // heads-up
             .setContentTitle(resources.getText(R.string.app_name))
             .setCategory(Notification.CATEGORY_EVENT)
             .setContentIntent(pendingIntent)
-            //.setDefaults(Notification.DEFAULT_ALL)
-          //  .setDefaults(DEFAULT_SOUND)
-         //   .setDefaults(DEFAULT_VIBRATE) //Important for heads-up
-          //  .setProgress(100,0,false)
             .setContentText("")
-          //  .setTicker("Test Ticker Text")
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-        //    .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-       //     .setVibrate(LongArray(0))
 
-
-            .addAction(R.mipmap.play, "Pause", ppauzePlay)
-            .addAction(R.drawable.back_pokus, "cancel", pStopSelf) //pokud budu chtít dát nějakou další akci například
+            .addAction(R.mipmap.play, getString(R.string.pauza), ppauzePlay)
+            .addAction(R.drawable.back_pokus, getString(R.string.konec), pStopSelf) //pokud budu chtít dát nějakou další akci například
             .build()
+
 
 
         nastavPocatecniHodnoty() //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
@@ -932,7 +938,7 @@ class ClassicService : Service() {
         Log.d("SSS", "createNotificationChannel()-zacatek")
         val channelName = "Interval Timer Classic Background Service"
         chan = NotificationChannel(channelId,
-            channelName, NotificationManager.IMPORTANCE_HIGH)
+            channelName, NotificationManager.IMPORTANCE_DEFAULT) //Kdybych chtěl, aby byla notifikace i v malém okně heads-up, musím dát iportance na HIGH nebo MAY
         chan!!.description = "Interval Timer Classic Background Service description"
         chan!!.setShowBadge(true)
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
@@ -948,6 +954,8 @@ class ClassicService : Service() {
         Log.d("SSS", "createNotificationChannel()-konec")
         return channelId
     }
+
+
 
 
 
@@ -1019,20 +1027,20 @@ class ClassicService : Service() {
                 Log.d("SSS", "00")
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    notification = notificationBuilder?.setOngoing(true)?.setColor(colorDlazdiceCasPripravy)?.build()
+                    notification = notificationBuilder?.setColor(colorDlazdiceCasPripravy)?.build()
                     //color
-                } else notification = notificationBuilder?.setOngoing(true)?.setColor(resources.getColor(
+                } else notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasPripravy
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
 
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    notification = notificationBuilder?.setOngoing(true)?.setContentText(
+                    notification = notificationBuilder?.setContentText(
                         resources.getText(R.string.cvic)
                     )?.setColor(colorDlazdiceCasPripravy)?.build()
                     //color
-                } else notification = notificationBuilder?.setOngoing(true)?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
+                } else notification = notificationBuilder?.setContentText(resources.getText(R.string.cvic))?.setColor(resources.getColor(
                     R.color.colorCasPripravy
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -1041,9 +1049,9 @@ class ClassicService : Service() {
                 Log.d("SSS", "11")
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    notification = notificationBuilder?.setOngoing(true)?.setColor(colorDlazdiceCasCviceni)?.build()
+                    notification = notificationBuilder?.setColor(colorDlazdiceCasCviceni)?.build()
                     //color
-                } else notification = notificationBuilder?.setOngoing(true)?.setColor(resources.getColor(
+                } else notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasCviceni
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -1052,9 +1060,9 @@ class ClassicService : Service() {
                 Log.d("SSS", "22")
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    notification = notificationBuilder?.setOngoing(true)?.setColor(colorDlazdiceCasPauzy)?.build()
+                    notification = notificationBuilder?.setColor(colorDlazdiceCasPauzy)?.build()
                     //color
-                } else notification = notificationBuilder?.setOngoing(true)?.setColor(resources.getColor(
+                } else notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasPauzy
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -1062,7 +1070,7 @@ class ClassicService : Service() {
             3 -> {
                 Log.d("SSS", "33")
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                notification = notificationBuilder?.setOngoing(true)?.setColor(resources.getColor(
+                notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasPauzyMeziTabatami
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -1070,7 +1078,7 @@ class ClassicService : Service() {
             4 -> {
                 Log.d("SSS", "44")
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                notification = notificationBuilder?.setOngoing(true)?.setColor(resources.getColor(
+                notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorKonecTabaty
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -1078,7 +1086,7 @@ class ClassicService : Service() {
             5 -> {
                 Log.d("SSS", "55")
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                notification = notificationBuilder?.setOngoing(true)?.setColor(resources.getColor(
+                notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasCoolDown
                 ))?.build()
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -1113,14 +1121,14 @@ class ClassicService : Service() {
         Log.d("SSS", hodnotaAktualni.toString())
 
         if (hodnotaAktualni < 60) {
-            notification = notificationBuilder?.setOngoing(true)?.setContentText(
+            notification = notificationBuilder?.setContentText(
                 "$aktualniCyklus/$puvodniPocetCyklu"+"          " +  vratDeseticisla(pomocny.toInt())
             )?.build()
 
             vratDeseticisla(pomocny.toInt())?.let { Log.d("SSS", it) }
         } else {
             val minuty = (hodnotaAktualni % 60).toInt()
-            notification = notificationBuilder?.setOngoing(true)?.setContentText(
+            notification = notificationBuilder?.setContentText(
                 "$aktualniCyklus/$puvodniPocetCyklu"+"          " +  vratDeseticisla(((pomocny - minuty) / 60).toInt()) + ":" + vratDeseticisla(
                     minuty
                 ))?.build()

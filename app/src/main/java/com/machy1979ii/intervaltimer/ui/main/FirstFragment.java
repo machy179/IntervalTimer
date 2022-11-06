@@ -650,6 +650,7 @@ public class FirstFragment extends Fragment {
         // až tam dám activityu TabataActivity, tak to dole vše odkomentovat, ale asi se to nebude jmenovat TabataActivity, ale ClassicActivity
 
         Intent classicActivity = new Intent(getActivity().getApplicationContext(), ClassicActivity.class);
+   //     classicActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         classicActivity.putExtra("caspripavy", casPripravy);
         classicActivity.putExtra("barvaPripravy", colorDlazdiceCasPripravy); //color
 

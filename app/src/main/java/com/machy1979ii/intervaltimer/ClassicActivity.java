@@ -2,8 +2,11 @@ package com.machy1979ii.intervaltimer;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -160,10 +163,25 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     };
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("SSS","called to cancel service-Activity");
+                //ve skutečnosti to úplně nekillne aplikaci, ale vypne to jen tuto aktivitu, plus service a notifikaci,
+            //a pokud se uživatel mrkne na spuštěné aplikace, tak uvidí tuto aplikaci. Po kliknutí to skočí do MainActivity
+            //prý by se nemělo killovat aplikaci programově, takhle podobně to má jiný timer v Google Play
+            finish();
+
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        registerReceiver(mMessageReceiver, new IntentFilter("znicClassicActivityAClassicService")); //pridat pro service
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1636,8 +1654,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     @Override  //pridat pro service
     protected void onDestroy() {
         odpocitavac.cancel();
-        super.onDestroy();
         znicService();
+        unregisterReceiver(mMessageReceiver);
+    //    android.os.Process.killProcess(android.os.Process.myPid());
+        super.onDestroy();
     }
 
     //metody pro service
