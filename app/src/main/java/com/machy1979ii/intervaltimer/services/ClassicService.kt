@@ -15,6 +15,7 @@ import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem
 import com.machy1979ii.intervaltimer.models.MyTime
 
 
+
 class ClassicService : Service() {
     private var wakeLock: PowerManager.WakeLock? = null //aby servica nepadala do Doze Modu, tak je tady třeba tomu zabránit takto,
                                                         // plus dát do manifestu  <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -69,7 +70,6 @@ class ClassicService : Service() {
 
     var casZvukuPredKoncemKola = 20 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
 
-
     private var mediaPlayer: MediaPlayer? = null
 
     var hlasitost = 100
@@ -77,50 +77,33 @@ class ClassicService : Service() {
     var volume  = 0f
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        //nejdříve zjistí, jestli to sem neskočilo z broadcastu
         if ("ACTION_STOP_SERVICE".equals(intent?.getAction())) {
-            Log.d("SSS","called to cancel service")
-           // killService()
             val intent1 = Intent("znicClassicActivityAClassicService")
             sendBroadcast(intent1)
         } else if ("ACTION_PLAY_PAUSE_SERVICE".equals(intent?.getAction())) {
-            Log.d("SSS","called to play pause service")
             when (pauzaNeniZmacknuta) {
                 true ->  {
-                    Log.d("SSS","---true")
                     pauzaNeniZmacknuta=false
-
                     notification = notificationBuilder?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
                         ?.addAction(R.mipmap.play, getString(R.string.pokracovat), ppauzePlay)
-                        ?.addAction(R.drawable.back_pokus,  getString(R.string.konec), pStopSelf)
+                        ?.addAction(R.mipmap.minus,  getString(R.string.konec), pStopSelf)
                         ?.build()
-
-
-
-                    mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
-              //      mNotificationManager?.cancel(ONGOING_NOTIFICATION)
-
+                 mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
-
                 false -> {
-                    Log.d("SSS","---false")
                     pauzaNeniZmacknuta=true
-
                     notification = notificationBuilder?.clearActions()
-                        ?.addAction(R.mipmap.play, getString(R.string.pauza), ppauzePlay)
-                        ?.addAction(R.drawable.back_pokus, getString(R.string.konec), pStopSelf)
+                        ?.addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
+                        ?.addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf)
                         ?.build()
-
-
-
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
-               //     mNotificationManager?.cancel(ONGOING_NOTIFICATION)
                 }
-                else -> print("s does not encode x")
                 }
         }
 
 
-
+        //potom se musí pořešit, aby servica neskákala do Doze Modu
         // we need this lock so our service gets not affected by Doze Mode
         wakeLock =
             (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
@@ -146,8 +129,6 @@ class ClassicService : Service() {
 
             override fun onTick(millisUntilFinished: Long) {
                 result =(millisUntilFinished / 1000).toInt()
-
-                Log.d("Servica result:",result.toString())
 
                 //zkopírováno z ClassicActivity
                 if (pauzaNeniZmacknuta) {
@@ -271,14 +252,11 @@ class ClassicService : Service() {
                         1 -> {
                             //vlákno cvičení
                             pomocny = pomocny - 1
-                            Log.d("VlaknoService: ", "Cviceni:"+pomocny.toString())
+
                             if (pomocny <= 0) {
-                                Log.d("VlaknoService: ", "Cviceni=0")
                                 casPulkyKolaAktualni = casPulkyKola
                                 if (pocetCyklu == 0) {
-                                    Log.d("VlaknoService: ", "Cviceni=0, pocetCyklu=0")
                                     if (pocetTabat == 0) {
-                                        Log.d("VlaknoService: ", "Cviceni=0, pocetCyklu=0, pocetTabat=0")
                                         //    fanfareZvuk.start();
                                         if (mediaPlayer != null) {
                                             mediaPlayer!!.reset()
@@ -301,7 +279,6 @@ class ClassicService : Service() {
 
                                             stav = 4
                                             preskocVypisCasu = true
-                                            Log.d("Jsem na konci: ", "1")
                                         } else {
                                             stav = 5
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
@@ -310,7 +287,6 @@ class ClassicService : Service() {
                                             ))?.build()
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                             preskocVypisCasu = true
-                                            Log.d("Jsem na konci: ", "2")
                                         }
                                     } else {
                                         //tady   restZvuk.start();
@@ -375,7 +351,6 @@ class ClassicService : Service() {
                                 }
                             }
                             if (preskocVypisCasu) {
-                                Log.d("VlaknoService: ", "preskocVypisCasu")
                                 preskocVypisCasu = false
                             } else {
                                 nastavCislice(pomocny)
@@ -383,7 +358,6 @@ class ClassicService : Service() {
                                     //pokud bude nastavený zvuk v půlce kola, tak to odehraje tohle níže, má to větší přednost než countdown, takže pokud by to přicházelo na
                                     //stejný čas, tak to odehraje pouze zvuk půlky kola
                                     //aaa
-                                    Log.d("Jsem v půlce kola", "halo")
                                     if (mediaPlayer != null) {
                                         mediaPlayer!!.reset()
                                         mediaPlayer!!.release()
@@ -403,7 +377,6 @@ class ClassicService : Service() {
                                         mediaPlayer!!.reset()
                                         mediaPlayer!!.release()
                                     }
-                                    Log.d("Jsem v půlce kola", "halo")
                                     mediaPlayer = MediaPlayer.create(
                                         applicationContext,
                                         PraceSeZvukem.vratZvukStartStopPodlePozice(zvukPulkaCviceni)
@@ -411,7 +384,6 @@ class ClassicService : Service() {
                                     mediaPlayer!!.setVolume(volume, volume)
                                     mediaPlayer!!.start()
                                 } else {
-                                    Log.d("cas: ", pomocny.toString())
                                     when (pomocny.toInt()) {
                                         4 -> {
                                             if (mediaPlayer != null) {
@@ -761,7 +733,6 @@ class ClassicService : Service() {
                             ))?.build()
                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                             counter?.cancel()
-                            Log.d("Jsem na konci: ", "3")
                         }
                         5 -> {
                             //čas cool down, je to tam doděláno dodatečně, proto to má číslo 5 a ne 4
@@ -849,13 +820,11 @@ class ClassicService : Service() {
                         }
                         else -> {}
                     }
-                    Log.d("Servica stav/pomocny: ",stav.toString()+"/"+pomocny.toString())
 
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
-                Log.d("SSS","pocetTabat: "+pocetTabat.toString())
 
-               // mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+
                 //zkopírováno z ClassicActivity-konec
 
             }
@@ -868,7 +837,7 @@ class ClassicService : Service() {
     }
 
     fun setNotification() {
-        Log.d("SSS", "setNotification-zacatek")
+
         notificationIntent = Intent(this, ClassicActivity::class.java)
 
         // aby se přepnulo na existující instanci aktivity a vymazali všechny další aktivity nad ní zdroj: https://www.peachpit.com/articles/article.aspx?p=1874864
@@ -899,23 +868,22 @@ class ClassicService : Service() {
         pauzePlay!!.action = "ACTION_PLAY_PAUSE_SERVICE"
         ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, 0)
 
-
         notificationBuilder = NotificationCompat.Builder(this, channelId )
         notification = notificationBuilder!!
-          //  .setOngoing(true) //bylo by heads-up okno pořád otevřené, ale v mém případě se notifikace každou sec stejně obnoví, takže znovu zviditelní
+          //  .setOngoing(true) //bylo by heads-up okno pořád otevřené
             .setAutoCancel(true) //ABY SE PO KLIKNUTÍ NA NOTIFIKACI SAMA ZNIČILA. K TOMU ALE MUSÍM MÍT V PŘEDEŠLÉ ACTIVITY NASTAVENO, ŽE SE TADY MUSÍ ZNIČIT ODPOČÍTÁVÁNÍ - ZNIČIT VLÁKNO
             .setSmallIcon(R.mipmap.ic_launcher)
             .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.mipmap.ic_launcher))
             .setColorized(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)   // heads-up
+            .setPriority(NotificationCompat.PRIORITY_MAX)   // heads-up
             .setContentTitle(resources.getText(R.string.app_name))
             .setCategory(Notification.CATEGORY_EVENT)
             .setContentIntent(pendingIntent)
             .setContentText("")
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true) //aby se heads-up oběvilo jen jednou a ne po každém notify()
-            .addAction(R.mipmap.play, getString(R.string.pauza), ppauzePlay)
-            .addAction(R.drawable.back_pokus, getString(R.string.konec), pStopSelf) //pokud budu chtít dát nějakou další akci například
+            .addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
+            .addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf) //pokud budu chtít dát nějakou další akci například
             .build()
 
         nastavPocatecniHodnoty() //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
@@ -924,40 +892,30 @@ class ClassicService : Service() {
         notification!!.flags = Notification.DEFAULT_LIGHTS
         notification!!.flags = Notification.FLAG_AUTO_CANCEL
         startForeground(ONGOING_NOTIFICATION,notification)
-        Log.d("SSS", "setNotification-konec")
+
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(): String{
-        Log.d("SSS", "createNotificationChannel()-zacatek")
         val channelName = "Interval Timer Classic Background Service"
         chan = NotificationChannel(channelId,
             channelName, NotificationManager.IMPORTANCE_HIGH) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
         chan!!.description = "Interval Timer Classic Background Service description"
-        chan!!.setShowBadge(true)
+        chan!!.setShowBadge(true) //aby v případě notifikace byla u spouštěcí ikony aplikace značka, že je spuštěna notifikace, jako když je například u WA nová zpráva, tak u ikony na domovské stránce je značka nové zpárvy
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 
         mNotificationManager = getSystemService(
             NotificationManager::class.java
         )
-   //     mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager!!.createNotificationChannel(chan!!)
 
-
-
-        Log.d("SSS", "createNotificationChannel()-konec")
         return channelId
     }
-
-
-
-
 
     fun killService() {
         //aby šlo tuto servisu zničit, musím  kilnout i vlákno odpočítávání, tedy counter
         counter?.cancel() //musím killnout
-        Log.d("SSS","killservice-start");
         // we need this release because of Doze Mode
         try {
             wakeLock?.let {
@@ -972,13 +930,10 @@ class ClassicService : Service() {
         }
     }
 
-    fun nastavOdpocitavani(casOdpocitavani: MyTime?) {
+    fun nastavOdpocitavani() {
         pocetTabat = pocetTabat - 1
         initCountDownTimer(100000.times(1000))
-
-
-     //   initCountDownTimer((casOdpocitavani?.hour?.times(3600)!!+ casOdpocitavani?.min?.times(60)!! + casOdpocitavani?.sec+2).times(1000))
-    }
+  }
 
     fun nastavHodnoty(
         aktualniCyklus: Int,
@@ -996,7 +951,6 @@ class ClassicService : Service() {
         pauzaNeniZmacknuta: Boolean,
         pocetCyklu: Int) {
 
-        Log.d("SSS", "0")
         this.aktualniCyklus = aktualniCyklus
         this.puvodniPocetCyklu = puvodniPocetCyklu
         this.casPripravy = casPripravy
@@ -1016,10 +970,9 @@ class ClassicService : Service() {
 
     fun nastavPocatecniHodnoty() {
 
-        Log.d("SSS", "1")
         when (stav.toInt()) {
             0 -> {
-                Log.d("SSS", "00")
+
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     notification = notificationBuilder?.setColor(colorDlazdiceCasPripravy)?.build()
@@ -1041,7 +994,7 @@ class ClassicService : Service() {
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
             }
             1 -> {
-                Log.d("SSS", "11")
+
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     notification = notificationBuilder?.setColor(colorDlazdiceCasCviceni)?.build()
@@ -1052,7 +1005,7 @@ class ClassicService : Service() {
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
             }
             2 -> {
-                Log.d("SSS", "22")
+
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     notification = notificationBuilder?.setColor(colorDlazdiceCasPauzy)?.build()
@@ -1063,7 +1016,7 @@ class ClassicService : Service() {
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
             }
             3 -> {
-                Log.d("SSS", "33")
+
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasPauzyMeziTabatami
@@ -1071,7 +1024,7 @@ class ClassicService : Service() {
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
             }
             4 -> {
-                Log.d("SSS", "44")
+
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorKonecTabaty
@@ -1079,7 +1032,7 @@ class ClassicService : Service() {
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
             }
             5 -> {
-                Log.d("SSS", "55")
+
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                 notification = notificationBuilder?.setColor(resources.getColor(
                     R.color.colorCasCoolDown
@@ -1088,10 +1041,8 @@ class ClassicService : Service() {
             }
         }
         nastavCislice(this.pomocny)
-        Log.d("SSS", "2")
+
     }
-
-
 
     fun nastavZvuky(zvukStart: Int, zvukStop: Int, zvukCelkovyKonec: Int,
                     zvukCountdown: Int, zvukPulkaCviceni: Int, casPulkyKola: Int,
@@ -1113,25 +1064,18 @@ class ClassicService : Service() {
     }
 
     private fun nastavCislice(hodnotaAktualni: Long) {
-        Log.d("SSS", hodnotaAktualni.toString())
 
         if (hodnotaAktualni < 60) {
             notification = notificationBuilder?.setContentText(
                 "$aktualniCyklus/$puvodniPocetCyklu"+"          " +  vratDeseticisla(pomocny.toInt())
             )?.build()
 
-            vratDeseticisla(pomocny.toInt())?.let { Log.d("SSS", it) }
         } else {
             val minuty = (hodnotaAktualni % 60).toInt()
             notification = notificationBuilder?.setContentText(
                 "$aktualniCyklus/$puvodniPocetCyklu"+"          " +  vratDeseticisla(((pomocny - minuty) / 60).toInt()) + ":" + vratDeseticisla(
                     minuty
                 ))?.build()
-
-            Log.d("SSS", vratDeseticisla(((pomocny - minuty) / 60).toInt()) + ":" + vratDeseticisla(
-                minuty
-            ))
-
         }
     }
 
@@ -1151,9 +1095,6 @@ class ClassicService : Service() {
                 casCelkovy!!.sec = casCelkovy!!.sec - 1
             }
         }
-
-   //     notification = notificationBuilder?.setProgress(100,curentProgress, false)?.build()
-   //     curentProgress++
     }
 
 }

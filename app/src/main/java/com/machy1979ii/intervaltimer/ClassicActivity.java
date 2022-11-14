@@ -1591,27 +1591,23 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         super.onStart();
   //      Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
         //níže uvedené musí být tady, protože když se to sem vrací z onRestart, to znamená, že uživatel se vlrátí na aktivitu, tak kdyby to níže uvedené bylo v onCreate, tak by to dělalo neplechu
+        Log.d("ServicaZPozadi","onStart");
 
-
-        Log.d("Servica1","4");
         Intent intent = new Intent(this, ClassicService.class);
-        Log.d("Servica1","5");
         bindService(intent, serviceConnection, BIND_AUTO_CREATE);
-        Log.d("Servica1","6");
         service = new Intent(getApplicationContext(), ClassicService.class);
-        Log.d("Servica1","7");
 
 
     }
 
     @Override //pridat pro service
-    protected void onRestart() { //tímhle to projde, jen když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci
+    protected void onRestart() { //tímhle to projde, když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci nebo když klikne na notifikaci
         super.onRestart();
    //     Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
+        Log.d("ServicaZPozadi","onRestart");
         if((s.getResult()!=0)) {
-
+            Log.d("ServicaZPozadi","onRestart2");
             //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA APLIKACI Z POZADÍ
-            Log.d("Servica1","1");
       //      bound = true;
             spustenoZPozadi = true; //tahle proměnná je tady proto, že když se to neověřovalo, zda se apka spouští z pozadí nebo naopak z notifikace,
             //tak se killservice spustilo dvakrát a dělalo to samozřejmě neplechu
@@ -1623,14 +1619,13 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     @Override //pridat pro service
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
         super.onStop();
-        Log.d("SSS", "StopService");
     //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
 
 
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
                 colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
-        s.nastavOdpocitavani(casCelkovy);
+        s.nastavOdpocitavani();
 
         s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
                 zvukCountdown, zvukPulkaCviceni, casPulkyKola,
@@ -1670,21 +1665,21 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         aktualniCyklus = s.getAktualniCyklus();
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
-        casPripravy = s.getCasPripravy();
+      //  casPripravy = s.getCasPripravy();
 
-        colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
-        casCviceni = s.getCasCviceni();
-        if (casCviceni.getSec() < 10) {
-            textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
-        } else {
-            textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
-        }
-        colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
-        casPauzy = s.getCasPauzy();
-        colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
+      //  colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
+      //  casCviceni = s.getCasCviceni();
+      //  if (casCviceni.getSec() < 10) {
+      //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
+      //  } else {
+      //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
+      //  }
+      //  colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
+      //  casPauzy = s.getCasPauzy();
+      //  colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
 
         //zvuky
-        zvukStart = s.getZvukStart();
+/*        zvukStart = s.getZvukStart();
         zvukStop = s.getZvukStop();
         zvukCelkovyKonec = s.getZvukCelkovyKonec();
         zvukCountdown = s.getZvukCountdown();
@@ -1695,13 +1690,12 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         casZvukuPredKoncemKola = s.getCasZvukuPredKoncemKola();
         hlasitost = s.getHlasitost();
         maxHlasitost = s.getMaxHlasitost();
-        volume = s.getVolume();
+        volume = s.getVolume();*/
         //zvuky
 
         stav = s.getStav();
         switch (stav) {
             case 0:
-                Log.d("STAV: ", "0");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
                     //color
@@ -1713,9 +1707,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
                 break;
             case 1:
-                Log.d("STAV: ", "1");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    Log.d("STAV: ", "1a");
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                     //color
                     GradientDrawable shape =  new GradientDrawable();
@@ -1726,7 +1718,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
                 break;
             case 2:
-                Log.d("STAV: ", "2");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
                     //color
@@ -1738,7 +1729,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
                 break;
             case 3:
-                Log.d("STAV: ", "3");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                     //color
@@ -1750,13 +1740,12 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
                 break;
             case 4:
-                Log.d("STAV: ", "4");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
                 break;
             case 5:
-                Log.d("STAV: ", "5");
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
@@ -1767,11 +1756,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         pomocny = s.getPomocny();
 
-        Log.d("Servica1","bound="+bound.toString());
         zobrazCelkovyCas();
 
         if(spustenoZPozadi) { //když to sem projde z pozadí a ne jen z notifikace, tak je vlastně tato activita
             //načtena a je potřebe jen servisu killnout a ne ji zcela zničit, je potřeba si na ni nechat connection, tak proto je zde tato podmínka
+            Log.d("ServicaZPozadi","spustenoZPozadi=true");
             s.killService();
             spustenoZPozadi = false;
         } else znicService();
