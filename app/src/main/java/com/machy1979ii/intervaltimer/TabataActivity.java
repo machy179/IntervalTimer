@@ -2,7 +2,12 @@ package com.machy1979ii.intervaltimer;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -12,6 +17,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -36,6 +42,8 @@ import angtrim.com.fivestarslibrary.FiveStarsDialog;
 import angtrim.com.fivestarslibrary.NegativeReviewListener;
 import angtrim.com.fivestarslibrary.ReviewListener;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukemTabata;
+import com.machy1979ii.intervaltimer.services.ClassicService;
+import com.machy1979ii.intervaltimer.services.TabataService;
 
 public class TabataActivity extends AppCompatActivity implements NegativeReviewListener, ReviewListener {
 
@@ -111,11 +119,67 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     private int maxHlasitost = 100;
     float volume;
 
+    //proměnné pro servicu
+    private Boolean bound = false;
+    private Boolean spustenoZPozadi = false; //příznak, že aplikace byla spuštěna z pozadí a ne z notifikace
+    private Intent service;
+    private TabataService s;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            TabataService.MyBinder b= (TabataService.MyBinder) binder;
+            if (s==null) {
+                //       Toast.makeText(ClassicActivity.this, "Connected s=null", Toast.LENGTH_SHORT).show();
+                s = b.getService();
+            } else {
+                //     Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
+            }
+            bound = true;
+
+            Log.d("Servica1","onServiceConnected ---");
+
+            if((s.getResult()!=0)) {
+                //v momentě, kdy se connectne k service, tak se z ní čačte result, pokud je 0, tak je vypnutá, nebo nespuštěná, pokud je nějaké číslo
+                //tak se z ní to číslo načte a začne se odpočítávat od toho čísla, sem dám i načtení dalších dat ze servisy
+                //načtení ze servisy jsem se pokoušel dávat do onCreata, onResume, onRestart atd., ale připojení k service má asi nějaké nepatrné zpoždění, tak to fungovalo jen tady
+
+                //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA NOTIFIKACI
+                //      Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
+                Log.d("Servica1","onServiceConnected");
+                nactiZeServisy();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            s = null;
+            bound = false;
+            Toast.makeText(TabataActivity.this, "onServiceDisconnected", Toast.LENGTH_SHORT).show();
+        }
+
+    };
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("SSS","called to cancel service-Activity");
+            //ve skutečnosti to úplně nekillne aplikaci, ale vypne to jen tuto aktivitu, plus service a notifikaci,
+            //a pokud se uživatel mrkne na spuštěné aplikace, tak uvidí tuto aplikaci. Po kliknutí to skočí do MainActivity
+            //prý by se nemělo killovat aplikaci programově, takhle podobně to má jiný timer v Google Play
+            finish();
+
+        }
+
+    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerReceiver(mMessageReceiver, new IntentFilter("znicTabataActivityATabataService")); //pridat pro service
 
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
@@ -1369,22 +1433,10 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        odpocitavac.cancel();
-        super.onDestroy();
-    }
-
-
-
     private void zavlojejReviewNejake() {
 
         zavolejTretiZpusob();
     }
-
-
-
-
 
     private void zavolejTretiZpusob() {
         FiveStarsDialog fiveStarsDialog = new FiveStarsDialog(this,"machy79@seznam.cz"); //...ale poslání na e-mail mám vypnuté
@@ -1412,16 +1464,16 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     }
 
     //od tud zkouším, aby se v Samsungu A70 a dalších apka nezastavovala když jde do pozadí
-    protected void onResume() {
+  /*  protected void onResume() {
 
         super.onResume();//visible
 
         Log.d(HOME_ACTIVITY_TAG, "Activity resumed");
 
 
-    }
+    }*/
 
-    @Override
+/*    @Override
 
     protected void onPause() {
 
@@ -1432,9 +1484,9 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
         TabataActivity.this.onResume();
 
-    }
+    }*/
 
-    @Override
+ /*   @Override
 
     protected void onStop() {
 
@@ -1445,7 +1497,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         TabataActivity.this.onResume();
 
     }
-
+*/
     public void statusBarcolor(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -1464,5 +1516,205 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         startActivity(mainActivity);
         finish();
     }*/
+
+    /** Called when the activity has become visible. */
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override //pridat pro service
+    protected void onStart() {
+        super.onStart();
+        //      Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
+        //níže uvedené musí být tady, protože když se to sem vrací z onRestart, to znamená, že uživatel se vlrátí na aktivitu, tak kdyby to níže uvedené bylo v onCreate, tak by to dělalo neplechu
+        Log.d("ServicaZPozadi","onStart");
+
+        Intent intent = new Intent(this, TabataService.class);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+        service = new Intent(getApplicationContext(), TabataService.class);
+
+
+    }
+
+    @Override //pridat pro service
+    protected void onRestart() { //tímhle to projde, když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci nebo když klikne na notifikaci
+        super.onRestart();
+        //     Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
+        Log.d("ServicaZPozadi","onRestart");
+        if((s.getResult()!=0)) {
+            Log.d("ServicaZPozadi","onRestart2");
+            //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA APLIKACI Z POZADÍ
+            //      bound = true;
+            spustenoZPozadi = true; //tahle proměnná je tady proto, že když se to neověřovalo, zda se apka spouští z pozadí nebo naopak z notifikace,
+            //tak se killservice spustilo dvakrát a dělalo to samozřejmě neplechu
+            nactiZeServisy();
+            spustOdpocitavac();
+        }
+    }
+
+    @Override //pridat pro service
+    protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
+        super.onStop();
+        //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
+
+
+        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
+                casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
+                colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
+        s.nastavOdpocitavani();
+
+        s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
+                zvukCountdown, hlasitost, maxHlasitost, volume);
+
+        s.setNotification();
+
+
+        //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
+        //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(service);
+        } else
+            this.startService(service);
+
+        odpocitavac.cancel();
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        odpocitavac.cancel();
+        znicService();
+        unregisterReceiver(mMessageReceiver);
+
+        super.onDestroy();
+    }
+
+    //metody pro service
+    private void nactiZeServisy() {
+
+        preskocVypisCasu = s.getPreskocVypisCasu();
+        casCelkovy = s.getCasCelkovy();
+        pocetCyklu = s.getPocetCyklu();
+
+        aktualniCyklus = s.getAktualniCyklus();
+        pocetTabat = s.getPocetTabat();
+        puvodniPocetCyklu = s.getPuvodniPocetCyklu();
+        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
+        //  casPripravy = s.getCasPripravy();
+
+        //  colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
+        //  casCviceni = s.getCasCviceni();
+        //  if (casCviceni.getSec() < 10) {
+        //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
+        //  } else {
+        //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
+        //  }
+        //  colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
+        //  casPauzy = s.getCasPauzy();
+        //  colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
+
+        //zvuky
+/*        zvukStart = s.getZvukStart();
+        zvukStop = s.getZvukStop();
+        zvukCelkovyKonec = s.getZvukCelkovyKonec();
+        zvukCountdown = s.getZvukCountdown();
+        zvukPulkaCviceni = s.getZvukPulkaCviceni();
+        casPulkyKola = s.getCasPulkyKola();
+        casPulkyKolaAktualni = s.getCasPulkyKolaAktualni();
+        zvukPredkoncemKola = s.getZvukPredkoncemKola();
+        casZvukuPredKoncemKola = s.getCasZvukuPredKoncemKola();
+        hlasitost = s.getHlasitost();
+        maxHlasitost = s.getMaxHlasitost();
+        volume = s.getVolume();*/
+        //zvuky
+
+        stav = s.getStav();
+        switch (stav) {
+            case 0:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasPripravy);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                break;
+            case 1:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasCviceni);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                break;
+            case 2:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasPauzy);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                break;
+            case 3:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
+                    //color
+                    GradientDrawable shape =  new GradientDrawable();
+                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
+                    shape.setColor(colorDlazdiceCasCviceni);
+                    dlazdiceOdpocitavace.setBackground(shape);
+                    //color
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                break;
+            case 4:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                break;
+            case 5:
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
+                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                break;
+
+        }
+
+
+        pomocny = s.getPomocny();
+
+        zobrazCelkovyCas();
+
+        if(spustenoZPozadi) { //když to sem projde z pozadí a ne jen z notifikace, tak je vlastně tato activita
+            //načtena a je potřebe jen servisu killnout a ne ji zcela zničit, je potřeba si na ni nechat connection, tak proto je zde tato podmínka
+            Log.d("ServicaZPozadi","spustenoZPozadi=true");
+            s.killService();
+            spustenoZPozadi = false;
+        } else znicService();
+    }
+
+    private void znicService() { //aby šlo servicu zničit, musí se unbindnout a vlákno v ní, tedy počítadlo, zničit také
+        if (bound) {
+            Log.d("Servica1","2");
+            //      Toast.makeText(ClassicActivity.this, "unbind", Toast.LENGTH_SHORT).show();
+            unbindService(serviceConnection);
+            getApplicationContext().stopService(service);
+            bound = false;
+            s.killService();
+            Log.d("Servica1","3");
+
+        }
+    }
+
 
 }

@@ -110,7 +110,12 @@
 
         <service
             android:name=".services.ClassicService"
-            android:label="Word service" >
+            android:label="Classic service" >
+        </service>
+
+        <service
+            android:name=".services.TabataService"
+            android:label="Tabata service" >
         </service>
 
 
