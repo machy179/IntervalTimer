@@ -1559,8 +1559,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
 
 
-        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
-                casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
+        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, pocetTabat, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
+                casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,casMezitabatami,
                 colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
         s.nastavOdpocitavani();
 

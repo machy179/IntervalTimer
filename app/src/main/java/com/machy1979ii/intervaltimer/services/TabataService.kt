@@ -293,6 +293,7 @@ class TabataService: Service() {
                                             preskocVypisCasu = true
                                         }
                                     } else {
+                                        Log.d("casMezitabatami: ", "vlakno cviceni pocetTabat==0")
                                         //tady   restZvuk.start();
                                         // PraceSeZvukem.spustZvukStartStop(getApplicationContext(),zvukStop);
                                         if (mediaPlayer != null) {
@@ -315,7 +316,7 @@ class TabataService: Service() {
                                             (casMezitabatami.sec + casMezitabatami.min * 60 + casMezitabatami.hour * 3600 + 1).toLong()
                                         pomocny =
                                             pomocny - 1 //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
-
+                                        Log.d("casMezitabatami sec: ", casMezitabatami.sec.toString())
                                         preskocVypisCasu = true
                                         pocetTabat = pocetTabat - 1
                                     }
@@ -938,14 +939,15 @@ class TabataService: Service() {
     }
 
     fun nastavOdpocitavani() {
-        pocetTabat = pocetTabat - 1
+      //  pocetTabat = pocetTabat - 1
         initCountDownTimer(100000.times(1000))
     }
 
     fun nastavHodnoty(
         aktualniCyklus: Int,
         puvodniPocetCyklu: Int,
-        aktualniTabata:Int,
+        aktualniTabata: Int,
+        pocetTabat: Int,
         puvodniPocetTabat:Int,
         casPripravy: MyTime?,
         colorDlazdiceCasPripravy: Int?,
@@ -954,6 +956,7 @@ class TabataService: Service() {
         casPauzy: MyTime?,
         colorDlazdiceCasPauzy: Int?,
         casCelkovy: MyTime,
+        casMezitabatami: MyTime,
         colorDlazdiceCasPauzyMeziTabatami: Int,
         stav: Byte,
         pomocny: Long,
@@ -963,6 +966,7 @@ class TabataService: Service() {
         this.aktualniCyklus = aktualniCyklus
         this.puvodniPocetCyklu = puvodniPocetCyklu
         this.aktualniTabata = aktualniTabata
+        this.pocetTabat = pocetTabat
         this.puvodniPocetTabat = puvodniPocetTabat
         this.casPripravy = casPripravy
         this.colorDlazdiceCasPripravy = colorDlazdiceCasPripravy!!
@@ -971,11 +975,14 @@ class TabataService: Service() {
         this.casPauzy = casPauzy
         this.colorDlazdiceCasPauzy =  colorDlazdiceCasPauzy!!
         this.casCelkovy = casCelkovy
+        this.casMezitabatami = casMezitabatami
         this.colorDlazdiceCasPauzyMeziTabatami = colorDlazdiceCasPauzyMeziTabatami
         this.stav = stav
         this.pomocny = pomocny
         this.pocetCyklu = pocetCyklu
         this.pauzaNeniZmacknuta = pauzaNeniZmacknuta
+
+        Log.d("casMezitabatami 1 sec: ", casMezitabatami.sec.toString())
 
     }
 
