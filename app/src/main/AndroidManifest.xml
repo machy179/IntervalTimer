@@ -118,6 +118,11 @@
             android:label="Tabata service" >
         </service>
 
+        <service
+            android:name=".services.CustomService"
+            android:label="Custom service" >
+        </service>
+
 
     </application>
 
