@@ -1561,7 +1561,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, pocetTabat, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,casMezitabatami,
-                colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
+                colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu, casCoolDown);
         s.nastavOdpocitavani();
 
         s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
@@ -1597,39 +1597,13 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         preskocVypisCasu = s.getPreskocVypisCasu();
         casCelkovy = s.getCasCelkovy();
         pocetCyklu = s.getPocetCyklu();
+        pauzaNeniZmacknuta = s.getPauzaNeniZmacknuta();
+        aktualniTabata = s.getAktualniTabata();
 
         aktualniCyklus = s.getAktualniCyklus();
         pocetTabat = s.getPocetTabat();
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
-        //  casPripravy = s.getCasPripravy();
-
-        //  colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
-        //  casCviceni = s.getCasCviceni();
-        //  if (casCviceni.getSec() < 10) {
-        //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
-        //  } else {
-        //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
-        //  }
-        //  colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
-        //  casPauzy = s.getCasPauzy();
-        //  colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
-
-        //zvuky
-/*        zvukStart = s.getZvukStart();
-        zvukStop = s.getZvukStop();
-        zvukCelkovyKonec = s.getZvukCelkovyKonec();
-        zvukCountdown = s.getZvukCountdown();
-        zvukPulkaCviceni = s.getZvukPulkaCviceni();
-        casPulkyKola = s.getCasPulkyKola();
-        casPulkyKolaAktualni = s.getCasPulkyKolaAktualni();
-        zvukPredkoncemKola = s.getZvukPredkoncemKola();
-        casZvukuPredKoncemKola = s.getCasZvukuPredKoncemKola();
-        hlasitost = s.getHlasitost();
-        maxHlasitost = s.getMaxHlasitost();
-        volume = s.getVolume();*/
-        //zvuky
-
         stav = s.getStav();
         switch (stav) {
             case 0:
@@ -1690,8 +1664,25 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
         }
 
+        if (pauzaNeniZmacknuta)  {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.pausestojatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.pauselezatotabataactivity);
+            }
+        } else {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
+            }
+        }
 
         pomocny = s.getPomocny();
+        nastavCislice(pomocny);
+
+        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
+        textViewAktualniPocetTabat.setText(String.valueOf(aktualniTabata)+"/"+String.valueOf(puvodniPocetTabat));
 
         zobrazCelkovyCas();
 

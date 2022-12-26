@@ -1661,38 +1661,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         preskocVypisCasu = s.getPreskocVypisCasu();
         casCelkovy = s.getCasCelkovy();
         pocetCyklu = s.getPocetCyklu();
+        pauzaNeniZmacknuta = s.getPauzaNeniZmacknuta();
 
         aktualniCyklus = s.getAktualniCyklus();
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
-      //  casPripravy = s.getCasPripravy();
-
-      //  colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
-      //  casCviceni = s.getCasCviceni();
-      //  if (casCviceni.getSec() < 10) {
-      //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
-      //  } else {
-      //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
-      //  }
-      //  colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
-      //  casPauzy = s.getCasPauzy();
-      //  colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
-
-        //zvuky
-/*        zvukStart = s.getZvukStart();
-        zvukStop = s.getZvukStop();
-        zvukCelkovyKonec = s.getZvukCelkovyKonec();
-        zvukCountdown = s.getZvukCountdown();
-        zvukPulkaCviceni = s.getZvukPulkaCviceni();
-        casPulkyKola = s.getCasPulkyKola();
-        casPulkyKolaAktualni = s.getCasPulkyKolaAktualni();
-        zvukPredkoncemKola = s.getZvukPredkoncemKola();
-        casZvukuPredKoncemKola = s.getCasZvukuPredKoncemKola();
-        hlasitost = s.getHlasitost();
-        maxHlasitost = s.getMaxHlasitost();
-        volume = s.getVolume();*/
-        //zvuky
-
         stav = s.getStav();
         switch (stav) {
             case 0:
@@ -1753,8 +1726,22 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         }
 
+        if (pauzaNeniZmacknuta)  {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.pausestojatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.pauselezatotabataactivity);
+            }
+        } else {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
+            }
+        }
 
         pomocny = s.getPomocny();
+        nastavCislice(pomocny);
 
         zobrazCelkovyCas();
 

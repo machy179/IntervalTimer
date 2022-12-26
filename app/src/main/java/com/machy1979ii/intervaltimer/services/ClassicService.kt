@@ -882,9 +882,26 @@ class ClassicService : Service() {
             .setContentText("")
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true) //aby se heads-up oběvilo jen jednou a ne po každém notify()
-            .addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
+         //   .addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
             .addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf) //pokud budu chtít dát nějakou další akci například
             .build()
+
+        when (pauzaNeniZmacknuta) {
+            false ->  {
+                notification = notificationBuilder?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
+                    ?.addAction(R.mipmap.play, getString(R.string.pokracovat), ppauzePlay)
+                    ?.addAction(R.mipmap.minus,  getString(R.string.konec), pStopSelf)
+                    ?.build()
+          //      mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+            }
+            true -> {
+                notification = notificationBuilder?.clearActions()
+                    ?.addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
+                    ?.addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf)
+                    ?.build()
+          //      mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+            }
+        }
 
         nastavPocatecniHodnoty() //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
         //tikání časovače ignorovalo další propisování nové hodnoty do notifikace, se aktuální čas v pauze špatně propisoval
