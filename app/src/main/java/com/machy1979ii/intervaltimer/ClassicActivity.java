@@ -150,8 +150,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA NOTIFIKACI
           //      Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
                 Log.d("Servica1","onServiceConnected");
+                Log.d("ServicaZPozadi","s.getResult()!=0");
+
                 nactiZeServisy();
-            }
+            } else Log.d("ServicaZPozadi","s.getResult()==0");
+
         }
 
         @Override
@@ -1613,7 +1616,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             //tak se killservice spustilo dvakrát a dělalo to samozřejmě neplechu
             nactiZeServisy();
             spustOdpocitavac();
-        }
+        } else Log.d("ServicaZPozadi","onRestart3");
     }
 
     @Override //pridat pro service
@@ -1625,6 +1628,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
                 colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
+        Log.d("ChybaCykly",String.valueOf(pocetCyklu));
         s.nastavOdpocitavani();
 
         s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,

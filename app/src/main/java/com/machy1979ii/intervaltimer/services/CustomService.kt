@@ -16,8 +16,9 @@ import com.machy1979ii.intervaltimer.models.MyTime
 import com.machy1979ii.intervaltimer.models.PolozkaCasuKola
 
 
-class CustomService: Service() {
-    private var wakeLock: PowerManager.WakeLock? = null //aby servica nepadala do Doze Modu, tak je tady třeba tomu zabránit takto,
+class CustomService : Service() {
+    private var wakeLock: PowerManager.WakeLock? =
+        null //aby servica nepadala do Doze Modu, tak je tady třeba tomu zabránit takto,
     // plus dát do manifestu  <uses-permission android:name="android.permission.WAKE_LOCK" />
     //a proměnnou wakeLock vložit do kódu tak, jak jsem ji vložil...viz https://robertohuertas.com/2019/06/29/android_foreground_services/
 
@@ -29,7 +30,7 @@ class CustomService: Service() {
     private val mBinder: IBinder = MyBinder()
     private val channelId = "1"
     private var notification: Notification? = null
-    private var notificationBuilder: NotificationCompat.Builder? =null
+    private var notificationBuilder: NotificationCompat.Builder? = null
     private val ONGOING_NOTIFICATION = 1010
     private var mNotificationManager: NotificationManager? = null
     var notificationIntent: Intent? = null
@@ -65,13 +66,16 @@ class CustomService: Service() {
     var zvukCountdown = 1
     var zvukPulkaCviceni = 33 //33 je, když není nastaven zvuk
 
-    var casPulkyKola = 0 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
+    var casPulkyKola =
+        0 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
 
-    var casPulkyKolaAktualni = 0 //je potřeba ještě tuto proměnnou, protože když nastavím jinou délku kola zrovna v kole, tak by to habrovalo
+    var casPulkyKolaAktualni =
+        0 //je potřeba ještě tuto proměnnou, protože když nastavím jinou délku kola zrovna v kole, tak by to habrovalo
 
     var zvukPredkoncemKola = 33 //33 je, když není nastaven zvuk
 
-    var casZvukuPredKoncemKola = 20 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
+    var casZvukuPredKoncemKola =
+        20 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
 
     var polozkyCasyKol = ArrayList<PolozkaCasuKola>()
     var aktualniPolozkaCasu: PolozkaCasuKola? = null
@@ -83,7 +87,7 @@ class CustomService: Service() {
 
     var hlasitost = 100
     var maxHlasitost = 100
-    var volume  = 0f
+    var volume = 0f
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //nejdříve zjistí, jestli to sem neskočilo z broadcastu
@@ -92,18 +96,23 @@ class CustomService: Service() {
             sendBroadcast(intent1)
         } else if ("ACTION_PLAY_PAUSE_SERVICE".equals(intent?.getAction())) {
             when (pauzaNeniZmacknuta) {
-                true ->  {
-                    pauzaNeniZmacknuta=false
-                    notification = notificationBuilder?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
-                        ?.addAction(R.mipmap.play, getString(R.string.pokracovat), ppauzePlay)
-                        ?.addAction(R.mipmap.minus,  getString(R.string.konec), pStopSelf)
-                        ?.build()
+                true -> {
+                    pauzaNeniZmacknuta = false
+                    notification =
+                        notificationBuilder?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
+                            ?.addAction(R.mipmap.play, getString(R.string.pokracovat), ppauzePlay)
+                            ?.addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf)
+                            ?.build()
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
                 false -> {
-                    pauzaNeniZmacknuta=true
+                    pauzaNeniZmacknuta = true
                     notification = notificationBuilder?.clearActions()
-                        ?.addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
+                        ?.addAction(
+                            R.mipmap.pausestojatotabataactivity,
+                            getString(R.string.pauza),
+                            ppauzePlay
+                        )
                         ?.addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf)
                         ?.build()
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
@@ -137,7 +146,7 @@ class CustomService: Service() {
         counter = object : CountDownTimer(time!!.toLong(), 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
-                result =(millisUntilFinished / 1000).toInt()
+                result = (millisUntilFinished / 1000).toInt()
 
 
                 //zkopírováno z CustomActivity
@@ -147,127 +156,131 @@ class CustomService: Service() {
                     }
                     pomocny = pomocny - 1
 
-                        nastavCislice(pomocny)
-                        when (pomocny.toInt()) {
-                            4 -> {
-                                //musel jsem tam dát ještě při odpočítávání falešný tik na 4té sekundě, protože u pomalejších zařízeních mi
-                                //ten třetí tik přehrával pomalu (když několik sekund před tím nebyl zvuk spuštěn) a než se stihnul přehrát, tak už to bylo na dvojce, tak jsem sem dal
-                                //falešný 4 tik, který načtu, spustím a ihned vypnu. U dalších tiků problém nebyl. Nevím proč, ale nějak MediaPlayer jak není několik sekund
-                                //spuštěn, tak pak se načítá pomalu a v pomalejších zařízeních je to znát
-                                if (mediaPlayer != null) {
-                                    mediaPlayer!!.reset()
-                                    mediaPlayer!!.release()
-                                }
-                                mediaPlayer = MediaPlayer.create(
-                                    applicationContext,
-                                    PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
-                                )
-                                //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukStartStopPodlePozice(zvukStart));
-                                mediaPlayer!!.setVolume(volume, volume)
-                                mediaPlayer!!.start()
-                                mediaPlayer!!.stop()
+                    nastavCislice(pomocny)
+                    when (pomocny.toInt()) {
+                        4 -> {
+                            //musel jsem tam dát ještě při odpočítávání falešný tik na 4té sekundě, protože u pomalejších zařízeních mi
+                            //ten třetí tik přehrával pomalu (když několik sekund před tím nebyl zvuk spuštěn) a než se stihnul přehrát, tak už to bylo na dvojce, tak jsem sem dal
+                            //falešný 4 tik, který načtu, spustím a ihned vypnu. U dalších tiků problém nebyl. Nevím proč, ale nějak MediaPlayer jak není několik sekund
+                            //spuštěn, tak pak se načítá pomalu a v pomalejších zařízeních je to znát
+                            if (mediaPlayer != null) {
+                                mediaPlayer!!.reset()
+                                mediaPlayer!!.release()
                             }
-                            3 -> {
-                                if (mediaPlayer != null) {
-                                    mediaPlayer!!.reset()
-                                    mediaPlayer!!.release()
-                                }
-                                mediaPlayer = MediaPlayer.create(
-                                    applicationContext,
-                                    PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
-                                )
-                                //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukStartStopPodlePozice(zvukStart));
-                                mediaPlayer!!.setVolume(volume, volume)
-                                mediaPlayer!!.start()
-                            }
-                            2 -> {
-                                if (mediaPlayer != null) {
-                                    mediaPlayer!!.reset()
-                                    mediaPlayer!!.release()
-                                }
-                                mediaPlayer = MediaPlayer.create(
-                                    applicationContext,
-                                    PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
-                                )
-                                mediaPlayer!!.setVolume(volume, volume)
-                                mediaPlayer!!.start()
-                            }
-                            1 -> {
-                                if (mediaPlayer != null) {
-                                    mediaPlayer!!.reset()
-                                    mediaPlayer!!.release()
-                                }
-                                mediaPlayer = MediaPlayer.create(
-                                    applicationContext,
-                                    PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
-                                )
-                                mediaPlayer!!.setVolume(volume, volume)
-                                mediaPlayer!!.start()
-                            }
-                            0 -> {
-                                //tady   restZvuk.start();
-                                //  PraceSeZvukemTabata.spustZvukStartStop(getApplicationContext(),zvukStart);
-                                //nakonec jsem to musel vyřešit takhle, chtěl jsem spouštět zvuk přímo ve třídě PraceSeZvukemTabata, ale po přehrání pár zvuků
-                                //to přestalo přehrávat zvuky, tak jsem to udělal takhle, navíc jsem to pořešil reset() a release(), našel jsem to v nějakém návodu
-                                if (mediaPlayer != null) {
-                                    mediaPlayer!!.reset()
-                                    mediaPlayer!!.release()
-                                    mediaPlayer = null
-                                }
-
-                                //je konec odpočítávání předchozí polozkyCasu, tak se musí v tomto vláknu nastavit nová polozkaCasu
-                                pocitadloPolozekCasu++
-                                if (pocitadloPolozekCasu != polozkyCasyKol.size) { //zjistí, zda není celkový konec odpočítávání
-                                    aktualniCyklus = pocitadloPolozekCasu
-                                  //  textViewAktualniPocetCyklu.setText("$aktualniCyklus/$puvodniPocetCyklu")
-                                    aktualniPolozkaCasu = polozkyCasyKol.get(pocitadloPolozekCasu)
-                                    mediaPlayer = MediaPlayer.create(
-                                        applicationContext,
-                                        PraceSeZvukemTabata.vratZvukStartStopPodlePozice(
-                                            aktualniPolozkaCasu!!.getZvuk()
-                                        )
-                                    )
-                                    mediaPlayer!!.setVolume(volume, volume)
-                                    mediaPlayer!!.start()
-                                    //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        notification = notificationBuilder?.setColor(aktualniPolozkaCasu!!.getColorDlazdice())?.build()
-                                        //color
-                                    } else notification = notificationBuilder?.setColor(resources.getColor(
-                                        R.color.colorCasCviceni
-                                    ))?.build()
-                                    //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-
-                                    notification = notificationBuilder?.setContentText(
-                                        "$aktualniCyklus/$puvodniPocetCyklu "+"          " +"${aktualniPolozkaCasu?.nazevCasu} "
-                                    )?.build()
-
-
-
-                                    pomocny = (aktualniPolozkaCasu!!.getTime()
-                                        .getSec() + aktualniPolozkaCasu!!.getTime()
-                                        .getMin() * 60 + aktualniPolozkaCasu!!.getTime()
-                                        .getHour() * 3600 + 1).toLong()
-                                    pomocny =
-                                        pomocny - 1 //protože na začátku už to je jedna sekunda a pak mi to při celkovém času nehrálo
-                                    nastavStartKola(aktualniPolozkaCasu!!.getNazevCasu())
-                                    //  nastavCislice(pomocny);
-                                } else { //je celkový konec odpočítávání
-                                    jeKonecOdpocitavani = true
-                                    nastaveniPozadiKonce()
-                                    mediaPlayer = MediaPlayer.create(
-                                        applicationContext,
-                                        PraceSeZvukemTabata.vratZvukKonecPodlePozice(
-                                            zvukCelkovyKonec
-                                        )
-                                    )
-                                    mediaPlayer!!.setVolume(volume, volume)
-                                    mediaPlayer!!.start()
-                                    counter!!.cancel()
-                                }
-                            }
-                            else -> {}
+                            mediaPlayer = MediaPlayer.create(
+                                applicationContext,
+                                PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
+                            )
+                            //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukStartStopPodlePozice(zvukStart));
+                            mediaPlayer!!.setVolume(volume, volume)
+                            mediaPlayer!!.start()
+                            mediaPlayer!!.stop()
                         }
+                        3 -> {
+                            if (mediaPlayer != null) {
+                                mediaPlayer!!.reset()
+                                mediaPlayer!!.release()
+                            }
+                            mediaPlayer = MediaPlayer.create(
+                                applicationContext,
+                                PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
+                            )
+                            //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukStartStopPodlePozice(zvukStart));
+                            mediaPlayer!!.setVolume(volume, volume)
+                            mediaPlayer!!.start()
+                        }
+                        2 -> {
+                            if (mediaPlayer != null) {
+                                mediaPlayer!!.reset()
+                                mediaPlayer!!.release()
+                            }
+                            mediaPlayer = MediaPlayer.create(
+                                applicationContext,
+                                PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
+                            )
+                            mediaPlayer!!.setVolume(volume, volume)
+                            mediaPlayer!!.start()
+                        }
+                        1 -> {
+                            if (mediaPlayer != null) {
+                                mediaPlayer!!.reset()
+                                mediaPlayer!!.release()
+                            }
+                            mediaPlayer = MediaPlayer.create(
+                                applicationContext,
+                                PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown)
+                            )
+                            mediaPlayer!!.setVolume(volume, volume)
+                            mediaPlayer!!.start()
+                        }
+                        0 -> {
+                            //tady   restZvuk.start();
+                            //  PraceSeZvukemTabata.spustZvukStartStop(getApplicationContext(),zvukStart);
+                            //nakonec jsem to musel vyřešit takhle, chtěl jsem spouštět zvuk přímo ve třídě PraceSeZvukemTabata, ale po přehrání pár zvuků
+                            //to přestalo přehrávat zvuky, tak jsem to udělal takhle, navíc jsem to pořešil reset() a release(), našel jsem to v nějakém návodu
+                            if (mediaPlayer != null) {
+                                mediaPlayer!!.reset()
+                                mediaPlayer!!.release()
+                                mediaPlayer = null
+                            }
+
+                            //je konec odpočítávání předchozí polozkyCasu, tak se musí v tomto vláknu nastavit nová polozkaCasu
+                            pocitadloPolozekCasu++
+                            if (pocitadloPolozekCasu != polozkyCasyKol.size) { //zjistí, zda není celkový konec odpočítávání
+                                aktualniCyklus = pocitadloPolozekCasu
+                                //  textViewAktualniPocetCyklu.setText("$aktualniCyklus/$puvodniPocetCyklu")
+                                aktualniPolozkaCasu = polozkyCasyKol.get(pocitadloPolozekCasu)
+                                mediaPlayer = MediaPlayer.create(
+                                    applicationContext,
+                                    PraceSeZvukemTabata.vratZvukStartStopPodlePozice(
+                                        aktualniPolozkaCasu!!.getZvuk()
+                                    )
+                                )
+                                mediaPlayer!!.setVolume(volume, volume)
+                                mediaPlayer!!.start()
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    notification =
+                                        notificationBuilder?.setColor(aktualniPolozkaCasu!!.getColorDlazdice())
+                                            ?.build()
+                                    //color
+                                } else notification = notificationBuilder?.setColor(
+                                    resources.getColor(
+                                        R.color.colorCasCviceni
+                                    )
+                                )?.build()
+                                //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
+
+                                notification = notificationBuilder?.setContentText(
+                                    "$aktualniCyklus/$puvodniPocetCyklu " + "          " + "${aktualniPolozkaCasu?.nazevCasu} "
+                                )?.build()
+
+
+
+                                pomocny = (aktualniPolozkaCasu!!.getTime()
+                                    .getSec() + aktualniPolozkaCasu!!.getTime()
+                                    .getMin() * 60 + aktualniPolozkaCasu!!.getTime()
+                                    .getHour() * 3600 + 1).toLong()
+                                pomocny =
+                                    pomocny - 1 //protože na začátku už to je jedna sekunda a pak mi to při celkovém času nehrálo
+                                nastavStartKola(aktualniPolozkaCasu!!.getNazevCasu())
+                                //  nastavCislice(pomocny);
+                            } else { //je celkový konec odpočítávání
+                                jeKonecOdpocitavani = true
+                                nastaveniPozadiKonce()
+                                mediaPlayer = MediaPlayer.create(
+                                    applicationContext,
+                                    PraceSeZvukemTabata.vratZvukKonecPodlePozice(
+                                        zvukCelkovyKonec
+                                    )
+                                )
+                                mediaPlayer!!.setVolume(volume, volume)
+                                mediaPlayer!!.start()
+                                counter!!.cancel()
+                            }
+                        }
+                        else -> {}
+                    }
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
                 //zkopírováno z CustomActivity-konec
@@ -313,7 +326,7 @@ class CustomService: Service() {
         pauzePlay!!.action = "ACTION_PLAY_PAUSE_SERVICE"
         ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, 0)
 
-        notificationBuilder = NotificationCompat.Builder(this, channelId )
+        notificationBuilder = NotificationCompat.Builder(this, channelId)
         notification = notificationBuilder!!
             //  .setOngoing(true) //bylo by heads-up okno pořád otevřené
             .setAutoCancel(true) //ABY SE PO KLIKNUTÍ NA NOTIFIKACI SAMA ZNIČILA. K TOMU ALE MUSÍM MÍT V PŘEDEŠLÉ ACTIVITY NASTAVENO, ŽE SE TADY MUSÍ ZNIČIT ODPOČÍTÁVÁNÍ - ZNIČIT VLÁKNO
@@ -327,25 +340,53 @@ class CustomService: Service() {
             .setContentText("")
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true) //aby se heads-up oběvilo jen jednou a ne po každém notify()
-            .addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
-            .addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf) //pokud budu chtít dát nějakou další akci například
+            //   .addAction(R.mipmap.pausestojatotabataactivity, getString(R.string.pauza), ppauzePlay)
+            .addAction(
+                R.mipmap.minus,
+                getString(R.string.konec),
+                pStopSelf
+            ) //pokud budu chtít dát nějakou další akci například
             .build()
+
+        when (pauzaNeniZmacknuta) {
+            false -> {
+                notification =
+                    notificationBuilder?.clearActions()    //musím vymazat všechny addAction a pak je tam znova dát, abych mohl Pause vyměnit za play, jinak jsem to nevymyslel
+                        ?.addAction(R.mipmap.play, getString(R.string.pokracovat), ppauzePlay)
+                        ?.addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf)
+                        ?.build()
+                //      mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+            }
+            true -> {
+                notification = notificationBuilder?.clearActions()
+                    ?.addAction(
+                        R.mipmap.pausestojatotabataactivity,
+                        getString(R.string.pauza),
+                        ppauzePlay
+                    )
+                    ?.addAction(R.mipmap.minus, getString(R.string.konec), pStopSelf)
+                    ?.build()
+                //      mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
+            }
+        }
 
         nastavPocatecniHodnoty() //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
         //tikání časovače ignorovalo další propisování nové hodnoty do notifikace, se aktuální čas v pauze špatně propisoval
 
         notification!!.flags = Notification.DEFAULT_LIGHTS
         notification!!.flags = Notification.FLAG_AUTO_CANCEL
-        startForeground(ONGOING_NOTIFICATION,notification)
+        startForeground(ONGOING_NOTIFICATION, notification)
 
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(): String{
+    private fun createNotificationChannel(): String {
         val channelName = "Interval Timer Custom Background Service"
-        chan = NotificationChannel(channelId,
-            channelName, NotificationManager.IMPORTANCE_HIGH) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
+        chan = NotificationChannel(
+            channelId,
+            channelName, NotificationManager.IMPORTANCE_HIGH
+        ) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
         chan!!.description = "Interval Timer Custom Background Service description"
         chan!!.setShowBadge(true) //aby v případě notifikace byla u spouštěcí ikony aplikace značka, že je spuštěna notifikace, jako když je například u WA nová zpráva, tak u ikony na domovské stránce je značka nové zpárvy
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
@@ -371,7 +412,7 @@ class CustomService: Service() {
             }
             stopForeground(true)
             stopSelf()
-            Log.d("SSS","killservice-stop");
+            Log.d("SSS", "killservice-stop");
         } catch (e: Exception) {
         }
     }
@@ -393,7 +434,8 @@ class CustomService: Service() {
         polozkyCasyKol: ArrayList<PolozkaCasuKola>,
         aktualniPolozkaCasu: PolozkaCasuKola,
         pocitadloPolozekCasu: Int,
-        jeKonecOdpocitavani: Boolean) {
+        jeKonecOdpocitavani: Boolean
+    ) {
 
         this.aktualniCyklus = aktualniCyklus
         this.puvodniPocetCyklu = puvodniPocetCyklu
@@ -486,19 +528,24 @@ class CustomService: Service() {
         }*/
         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            notification = notificationBuilder?.setColor(aktualniPolozkaCasu!!.getColorDlazdice())?.build()
+            notification =
+                notificationBuilder?.setColor(aktualniPolozkaCasu!!.getColorDlazdice())?.build()
             //color
-        } else notification = notificationBuilder?.setColor(resources.getColor(
-            R.color.colorCasCviceni
-        ))?.build()
+        } else notification = notificationBuilder?.setColor(
+            resources.getColor(
+                R.color.colorCasCviceni
+            )
+        )?.build()
         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
         nastavCislice(this.pomocny)
         mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
 
     }
 
-    fun nastavZvuky(zvukCelkovyKonec: Int,
-                    zvukCountdown: Int, hlasitost: Int, maxHlasitost: Int, volume: Float) {
+    fun nastavZvuky(
+        zvukCelkovyKonec: Int,
+        zvukCountdown: Int, hlasitost: Int, maxHlasitost: Int, volume: Float
+    ) {
 
         this.zvukCelkovyKonec = zvukCelkovyKonec
         this.zvukCountdown = zvukCountdown
@@ -512,15 +559,20 @@ class CustomService: Service() {
 
         if (hodnotaAktualni < 60) {
             notification = notificationBuilder?.setContentText(
-                "$aktualniCyklus/$puvodniPocetCyklu "+"${aktualniPolozkaCasu?.nazevCasu} "+"          " +  vratDeseticisla(pomocny.toInt())
+                "$aktualniCyklus/$puvodniPocetCyklu " + "${aktualniPolozkaCasu?.nazevCasu} " + "          " + vratDeseticisla(
+                    pomocny.toInt()
+                )
             )?.build()
 
         } else {
             val minuty = (hodnotaAktualni % 60).toInt()
             notification = notificationBuilder?.setContentText(
-                 "$aktualniCyklus/$puvodniPocetCyklu "+"${aktualniPolozkaCasu?.nazevCasu} "+"          " +  vratDeseticisla(((pomocny - minuty) / 60).toInt()) + ":" + vratDeseticisla(
+                "$aktualniCyklus/$puvodniPocetCyklu " + "${aktualniPolozkaCasu?.nazevCasu} " + "          " + vratDeseticisla(
+                    ((pomocny - minuty) / 60).toInt()
+                ) + ":" + vratDeseticisla(
                     minuty
-                ))?.build()
+                )
+            )?.build()
         }
     }
 
@@ -551,10 +603,15 @@ class CustomService: Service() {
 
     private fun nastaveniPozadiKonce() {
         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-        notification = notificationBuilder?.setContentText(resources.getText(
-            R.string.konec))?.setColor(resources.getColor(
-            R.color.colorKonecTabaty
-        ))?.build()
+        notification = notificationBuilder?.setContentText(
+            resources.getText(
+                R.string.konec
+            )
+        )?.setColor(
+            resources.getColor(
+                R.color.colorKonecTabaty
+            )
+        )?.build()
         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
     }
 

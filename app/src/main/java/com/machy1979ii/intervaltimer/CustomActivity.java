@@ -139,9 +139,10 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
 
                 //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA NOTIFIKACI
                 //      Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
-                Log.d("Servica1","onServiceConnected");
+                Log.d("ServicaZPozadi","s.getResult()!=0");
+                Log.d("Servica1","onServiceConnected ---");
                 nactiZeServisy();
-            }
+            } else Log.d("ServicaZPozadi","s.getResult()==0");
         }
 
         @Override
@@ -780,8 +781,10 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
             spustenoZPozadi = true; //tahle proměnná je tady proto, že když se to neověřovalo, zda se apka spouští z pozadí nebo naopak z notifikace,
             //tak se killservice spustilo dvakrát a dělalo to samozřejmě neplechu
             nactiZeServisy();
-            spustOdpocitavac();
-        }
+            if (jeKonecOdpocitavani) {
+                nastaveniPozadiKonce();
+            } else spustOdpocitavac();
+        } else Log.d("ServicaZPozadi","onRestart3");
     }
 
     @Override //pridat pro service
@@ -837,94 +840,10 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         aktualniCyklus = s.getAktualniCyklus();
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
-        //  casPripravy = s.getCasPripravy();
 
-        //  colorDlazdiceCasPripravy = s.getColorDlazdiceCasPripravy();
-        //  casCviceni = s.getCasCviceni();
-        //  if (casCviceni.getSec() < 10) {
-        //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
-        //  } else {
-        //      textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
-        //  }
-        //  colorDlazdiceCasCviceni = s.getColorDlazdiceCasCviceni();
-        //  casPauzy = s.getCasPauzy();
-        //  colorDlazdiceCasPauzy = s.getColorDlazdiceCasPauzy();
-
-        //zvuky
-/*        zvukStart = s.getZvukStart();
-        zvukStop = s.getZvukStop();
-        zvukCelkovyKonec = s.getZvukCelkovyKonec();
-        zvukCountdown = s.getZvukCountdown();
-        zvukPulkaCviceni = s.getZvukPulkaCviceni();
-        casPulkyKola = s.getCasPulkyKola();
-        casPulkyKolaAktualni = s.getCasPulkyKolaAktualni();
-        zvukPredkoncemKola = s.getZvukPredkoncemKola();
-        casZvukuPredKoncemKola = s.getCasZvukuPredKoncemKola();
-        hlasitost = s.getHlasitost();
-        maxHlasitost = s.getMaxHlasitost();
-        volume = s.getVolume();*/
-        //zvuky
 
         stav = s.getStav();
-    /*    switch (stav) {
-            case 0:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
-                    //color
-                    GradientDrawable shape =  new GradientDrawable();
-                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-                    shape.setColor(colorDlazdiceCasPripravy);
-                    dlazdiceOdpocitavace.setBackground(shape);
-                    //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
-                break;
-            case 1:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
-                    //color
-                    GradientDrawable shape =  new GradientDrawable();
-                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-                    shape.setColor(colorDlazdiceCasCviceni);
-                    dlazdiceOdpocitavace.setBackground(shape);
-                    //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
-                break;
-            case 2:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
-                    //color
-                    GradientDrawable shape =  new GradientDrawable();
-                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-                    shape.setColor(colorDlazdiceCasPauzy);
-                    dlazdiceOdpocitavace.setBackground(shape);
-                    //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
-                break;
-            case 3:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
-                    //color
-                    GradientDrawable shape =  new GradientDrawable();
-                    shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-                    shape.setColor(colorDlazdiceCasCviceni);
-                    dlazdiceOdpocitavace.setBackground(shape);
-                    //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
-                break;
-            case 4:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
-                break;
-            case 5:
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
-                break;
-
-        }
-*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
             //color
@@ -940,7 +859,32 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         } else {
             textViewAktualniPocetTabat.setText(String.valueOf(aktualniPolozkaCasu.getTime().getMin()) + ":" + String.valueOf(aktualniPolozkaCasu.getTime().getSec()));
         }
+
+        if (pauzaNeniZmacknuta)  {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.pausestojatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.pauselezatotabataactivity);
+            }
+        } else {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
+            }
+        }
+
+
         pomocny = s.getPomocny();
+        nastavCislice(pomocny);
+
+        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
+        //zapíše čas cvičení
+        if (aktualniPolozkaCasu.getTime().getSec() < 10) {
+            textViewAktualniPocetTabat.setText(String.valueOf(aktualniPolozkaCasu.getTime().getMin()) + ":0" + String.valueOf(aktualniPolozkaCasu.getTime().getSec()));
+        } else {
+            textViewAktualniPocetTabat.setText(String.valueOf(aktualniPolozkaCasu.getTime().getMin()) + ":" + String.valueOf(aktualniPolozkaCasu.getTime().getSec()));
+        }
 
         zobrazCelkovyCas();
 
