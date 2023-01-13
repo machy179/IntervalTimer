@@ -419,7 +419,12 @@ class CustomService : Service() {
 
     fun nastavOdpocitavani() {
         //  pocetTabat = pocetTabat - 1
-        initCountDownTimer(100000.times(1000))
+        if(!jeKonecOdpocitavani)
+        {
+            initCountDownTimer(100000.times(1000))
+        } else {
+            nastaveniPozadiKonce()
+        }
     }
 
     fun nastavHodnoty(
