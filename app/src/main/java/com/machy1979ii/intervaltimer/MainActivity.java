@@ -1,10 +1,12 @@
 package com.machy1979ii.intervaltimer;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         // if ..... tak viewPager.setCurrentItem(1);
 
         udelejZpravuGDPR();
+        askPermissionPostNotification();
+
+
 
 
 
@@ -183,6 +189,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void askPermissionPostNotification() {
+        // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
+
+        int permissionCheck = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS);
+
+        if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
+            // User may have declined earlier, ask Android if we should show him a reason
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS)) {
+                    // show an explanation to the user
+                    // Good practise: don't block thread after the user sees the explanation, try again to request the permission.
+                } else {
+                    // request the permission.
+                    // CALLBACK_NUMBER is a integer constants
+                    ActivityCompat.requestPermissions(MainActivity.this,  new String[]{Manifest.permission.POST_NOTIFICATIONS},7);
+                    // The callback method gets the result of the request.
+                }
+            }
+        } else {
+// got permission use it
+        }
+    }
 
 
 }

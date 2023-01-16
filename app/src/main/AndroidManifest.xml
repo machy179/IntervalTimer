@@ -7,6 +7,8 @@
         android:resizeable="true"
         android:xlargeScreens="true" />
 
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -21,7 +23,7 @@
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"></uses-permission>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
 
@@ -37,7 +39,8 @@
 
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,7 +51,7 @@
         <activity
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize"
             android:name=".MainActivity"
-
+            android:exported="false"
             android:label="@string/app_name"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/Theme.IntervalTimer.NoActionBar">
@@ -64,6 +67,7 @@
             android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_classic"
+            android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
@@ -81,6 +85,7 @@
             android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_tabata"
+            android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
@@ -98,6 +103,7 @@
             android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:label="@string/title_activity_tabata"
+            android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 
@@ -109,16 +115,19 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
         <service
+            android:exported="false"
             android:name=".services.ClassicService"
             android:label="Classic service" >
         </service>
 
         <service
+            android:exported="false"
             android:name=".services.TabataService"
             android:label="Tabata service" >
         </service>
 
         <service
+            android:exported="false"
             android:name=".services.CustomService"
             android:label="Custom service" >
         </service>

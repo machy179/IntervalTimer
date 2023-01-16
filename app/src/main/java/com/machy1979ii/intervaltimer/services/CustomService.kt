@@ -320,11 +320,11 @@ class CustomService : Service() {
 
         stopSelf = Intent(this, CustomService::class.java)
         stopSelf!!.action = "ACTION_STOP_SERVICE"
-        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, 0)
+        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, PendingIntent.FLAG_IMMUTABLE)
 
         pauzePlay = Intent(this, CustomService::class.java)
         pauzePlay!!.action = "ACTION_PLAY_PAUSE_SERVICE"
-        ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, 0)
+        ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder = NotificationCompat.Builder(this, channelId)
         notification = notificationBuilder!!
@@ -542,7 +542,13 @@ class CustomService : Service() {
             )
         )?.build()
         //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-        nastavCislice(this.pomocny)
+        if(!jeKonecOdpocitavani)
+        {
+            nastavCislice(this.pomocny)
+        } else {
+            nastaveniPozadiKonce()
+        }
+
         mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
 
     }

@@ -16,6 +16,8 @@ import com.machy1979ii.intervaltimer.models.MyTime
 
 
 class ClassicService : Service() {
+
+
     private var wakeLock: PowerManager.WakeLock? =
         null //aby servica nepadala do Doze Modu, tak je tady třeba tomu zabránit takto,
     // plus dát do manifestu  <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -860,11 +862,13 @@ class ClassicService : Service() {
 
         stopSelf = Intent(this, ClassicService::class.java)
         stopSelf!!.action = "ACTION_STOP_SERVICE"
-        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, 0)
+//        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, 0)
+        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, PendingIntent.FLAG_IMMUTABLE)
 
         pauzePlay = Intent(this, ClassicService::class.java)
         pauzePlay!!.action = "ACTION_PLAY_PAUSE_SERVICE"
-        ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, 0)
+ //       ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, 0)
+        ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder = NotificationCompat.Builder(this, channelId)
         notification = notificationBuilder!!

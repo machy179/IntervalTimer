@@ -942,11 +942,11 @@ class TabataService : Service() {
 
         stopSelf = Intent(this, TabataService::class.java)
         stopSelf!!.action = "ACTION_STOP_SERVICE"
-        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, 0)
+        pStopSelf = PendingIntent.getService(this, 0, stopSelf!!, PendingIntent.FLAG_IMMUTABLE)
 
         pauzePlay = Intent(this, TabataService::class.java)
         pauzePlay!!.action = "ACTION_PLAY_PAUSE_SERVICE"
-        ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, 0)
+        ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder = NotificationCompat.Builder(this, channelId)
         notification = notificationBuilder!!

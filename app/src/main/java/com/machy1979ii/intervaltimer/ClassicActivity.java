@@ -1,5 +1,6 @@
 package com.machy1979ii.intervaltimer;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
@@ -207,6 +210,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
 
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
+
         statusBarcolor();
 
             Log.d("FindingError", "vlákno cas pripravy NOT null");
@@ -1621,10 +1625,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     @Override //pridat pro service
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
+
         super.onStop();
     //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
-
-
         s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
                 colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
@@ -1767,6 +1770,31 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             s.killService();
             Log.d("Servica1","3");
 
+        }
+    }
+
+
+
+    private void askPermissionPostNotification() {
+        // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
+
+        int permissionCheck = ActivityCompat.checkSelfPermission(ClassicActivity.this,Manifest.permission.POST_NOTIFICATIONS);
+
+        if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
+            // User may have declined earlier, ask Android if we should show him a reason
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(ClassicActivity.this, Manifest.permission.POST_NOTIFICATIONS)) {
+                    // show an explanation to the user
+                    // Good practise: don't block thread after the user sees the explanation, try again to request the permission.
+                } else {
+                    // request the permission.
+                    // CALLBACK_NUMBER is a integer constants
+                    ActivityCompat.requestPermissions(ClassicActivity.this,  new String[]{Manifest.permission.POST_NOTIFICATIONS},7);
+                    // The callback method gets the result of the request.
+                }
+            }
+        } else {
+// got permission use it
         }
     }
 
