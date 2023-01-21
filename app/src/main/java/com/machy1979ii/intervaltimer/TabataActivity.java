@@ -1582,7 +1582,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     }
 
 
-    @Override
+    @Override //pridat pro service
     protected void onDestroy() {
         odpocitavac.cancel();
         znicService();

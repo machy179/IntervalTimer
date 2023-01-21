@@ -18,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 33
         versionCode 14
-        versionName "1.8"
+        versionName "2.0"
         multiDexEnabled = true
     //    android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
         ndkVersion "23.1.7779620" // to jsem sem dal, abych se pokusil udělat obfuscation soubor pro ladění chyb v programu na google play - tam je uvedeno že k app bundle souboru je přiložen mapovací soubor ReTrace

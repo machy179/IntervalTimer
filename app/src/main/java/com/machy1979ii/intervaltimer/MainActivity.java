@@ -191,16 +191,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void askPermissionPostNotification() {
         // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
-
+        Log.i("askpermission", "2");
         int permissionCheck = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS);
-
+        Log.i("askpermission", "3");
         if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
             // User may have declined earlier, ask Android if we should show him a reason
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS)) {
+                    Log.i("askpermission", "4");
                     // show an explanation to the user
                     // Good practise: don't block thread after the user sees the explanation, try again to request the permission.
                 } else {
+                    Log.i("askpermission", "5");
                     // request the permission.
                     // CALLBACK_NUMBER is a integer constants
                     ActivityCompat.requestPermissions(MainActivity.this,  new String[]{Manifest.permission.POST_NOTIFICATIONS},7);
@@ -212,5 +214,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+//...
 }
