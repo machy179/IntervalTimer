@@ -40,6 +40,8 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
 import com.machy1979ii.intervaltimer.models.MyTime;
 import com.machy1979ii.intervaltimer.services.ClassicService;
@@ -72,7 +74,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private int colorDlazdicePocetCyklu; //color
     private int aktualniTabata = 1;
     private int puvodniPocetTabat = 1;
-    private int puvodniPocetCyklu;
+    private int puvodniPocetCyklu = 8;
     private int aktualniCyklus = 1;
     private int pocetCyklu;
     private int pauzaMeziTabatami;
@@ -81,7 +83,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private TextView textViewCasNadpis;
     private TextView textViewAktualniPocetCyklu;
     private TextView textViewAktualniPocetTabat;
-//    private TextView textViewPauza;
+    //    private TextView textViewPauza;
     private LinearLayout linearLayoutPauza;
     private LinearLayout dlazdiceOdpocitavace;
     private TextView textViewCelkovyCas;
@@ -134,29 +136,29 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
-            ClassicService.MyBinder b= (ClassicService.MyBinder) binder;
-            if (s==null) {
-         //       Toast.makeText(ClassicActivity.this, "Connected s=null", Toast.LENGTH_SHORT).show();
+            ClassicService.MyBinder b = (ClassicService.MyBinder) binder;
+            if (s == null) {
+                //       Toast.makeText(ClassicActivity.this, "Connected s=null", Toast.LENGTH_SHORT).show();
                 s = b.getService();
             } else {
-           //     Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
+                //     Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
             }
             bound = true;
 
-            Log.d("Servica1","onServiceConnected ---");
+            Log.d("Servica1", "onServiceConnected ---");
 
-            if((s.getResult()!=0)) {
+            if ((s.getResult() != 0)) {
                 //v momentě, kdy se connectne k service, tak se z ní čačte result, pokud je 0, tak je vypnutá, nebo nespuštěná, pokud je nějaké číslo
                 //tak se z ní to číslo načte a začne se odpočítávat od toho čísla, sem dám i načtení dalších dat ze servisy
                 //načtení ze servisy jsem se pokoušel dávat do onCreata, onResume, onRestart atd., ale připojení k service má asi nějaké nepatrné zpoždění, tak to fungovalo jen tady
 
                 //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA NOTIFIKACI
-          //      Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
-                Log.d("Servica1","onServiceConnected");
-                Log.d("ServicaZPozadi","s.getResult()!=0");
+                //      Toast.makeText(ClassicActivity.this, "from service nacte", Toast.LENGTH_SHORT).show();
+                Log.d("Servica1", "onServiceConnected");
+                Log.d("ServicaZPozadi", "s.getResult()!=0");
 
                 nactiZeServisy();
-            } else Log.d("ServicaZPozadi","s.getResult()==0");
+            } else Log.d("ServicaZPozadi", "s.getResult()==0");
 
         }
 
@@ -173,8 +175,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("SSS","called to cancel service-Activity");
-                //ve skutečnosti to úplně nekillne aplikaci, ale vypne to jen tuto aktivitu, plus service a notifikaci,
+            Log.d("SSS", "called to cancel service-Activity");
+            //ve skutečnosti to úplně nekillne aplikaci, ale vypne to jen tuto aktivitu, plus service a notifikaci,
             //a pokud se uživatel mrkne na spuštěné aplikace, tak uvidí tuto aplikaci. Po kliknutí to skočí do MainActivity
             //prý by se nemělo killovat aplikaci programově, takhle podobně to má jiný timer v Google Play
             finish();
@@ -206,42 +208,46 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         //udelejLayout();
 
-      //      Toast.makeText(ClassicActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
+        //      Toast.makeText(ClassicActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
 
 
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
 
         statusBarcolor();
 
-            Log.d("FindingError", "vlákno cas pripravy NOT null");
+        if (getIntent().getExtras().getParcelable("caspripavy") == null) {
+            casPripravy = new MyTime(0, 0, 20);
+        } else {
             casPripravy = getIntent().getExtras().getParcelable("caspripavy");
+        }
+
+        if (getIntent().getExtras().getParcelable("cascviceni") == null) {
+            casCviceni = new MyTime(0, 2, 0);
+        } else {
             casCviceni = getIntent().getExtras().getParcelable("cascviceni");
+        }
+
+        if (getIntent().getExtras().getParcelable("caspauzy") == null) {
+            casPauzy = new MyTime(0, 1, 0);
+        } else {
             casPauzy = getIntent().getExtras().getParcelable("caspauzy");
-
-                if(getIntent().getExtras().getParcelable("cascelkovy")==null){
-                    Log.d("FindingError", "vlákno casCelkovy = s.getCasCelkovy()");
-                    casCelkovy = new MyTime(0,30,0);
-                } else  {
-                    casCelkovy = getIntent().getExtras().getParcelable("cascelkovy");
-                    Log.d("FindingError", "vlákno casCelkovy = getIntent().getExtras().getParcelable(\"cascelkovy\")");
-                }
-
-                Log.d("FindingError", "CasCelkovy-: "+String.valueOf(casCelkovy.getHour())+String.valueOf(casCelkovy.getMin())+String.valueOf(casCelkovy.getSec()));
-
-                puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
-
-            colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
-            colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
-            colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu"); //color
-            Log.d("FindingError", "colorDlazdicePocetCyklu: "+colorDlazdicePocetCyklu);
-
-                colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
+        }
 
 
+        if (getIntent().getExtras().getParcelable("cascelkovy") == null) {
+            casCelkovy = new MyTime(0, 23, 20);
+        } else {
+            casCelkovy = getIntent().getExtras().getParcelable("cascelkovy");
+        }
 
+        puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
 
+        colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
+        colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
+        colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu"); //color
+        Log.d("FindingError", "colorDlazdicePocetCyklu: " + colorDlazdicePocetCyklu);
 
-
+        colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
 
 
         zvukStart = getIntent().getIntExtra("zvukstart", 1);
@@ -289,14 +295,15 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
             //color
-            GradientDrawable shape =  new GradientDrawable();
+            GradientDrawable shape = new GradientDrawable();
             shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
             shape.setColor(colorDlazdiceCasPripravy);
             dlazdiceOdpocitavace.setBackground(shape);
 
-        } else  dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorCasPripravy));
+        } else
+            dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
 
-        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
+        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus) + "/" + String.valueOf(puvodniPocetCyklu));
         //zapíše čas cvičení
         if (casCviceni.getSec() < 10) {
             textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":0" + String.valueOf(casCviceni.getSec()));
@@ -304,13 +311,13 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             textViewAktualniPocetTabat.setText(String.valueOf(casCviceni.getMin()) + ":" + String.valueOf(casCviceni.getSec()));
         }
 
-        pomocny = casPripravy.getSec()+1 + casPripravy.getMin()*60 +casPripravy.getHour()*3600;
+        pomocny = casPripravy.getSec() + 1 + casPripravy.getMin() * 60 + casPripravy.getHour() * 3600;
         if (pomocny < 60) {
-            textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
+            textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
             velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
         }
-        pocetCyklu = pocetCyklu -1;
-        pocetTabat = pocetTabat -1;
+        pocetCyklu = pocetCyklu - 1;
+        pocetTabat = pocetTabat - 1;
         spustOdpocitavac();
 
     }
@@ -356,15 +363,15 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 mediaPlayer = null;
                             }
                             mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                            mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                            mediaPlayer.setVolume(volume, volume);
+                            mediaPlayer.start();
 
 
                             stav = (byte) (stav + 1);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                 dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                                 //color
-                                GradientDrawable shape =  new GradientDrawable();
+                                GradientDrawable shape = new GradientDrawable();
                                 shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                                 shape.setColor(colorDlazdiceCasCviceni);
                                 dlazdiceOdpocitavace.setBackground(shape);
@@ -380,7 +387,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                             textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
                             velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
                             textViewCas.setText(R.string.cvic);
-                            if (aktualniCyklus>1)  {
+                            if (aktualniCyklus > 1) {
                                 textViewBeziciCasCisloKola.setText(String.valueOf(aktualniCyklus));
                             }
                             preskocVypisCasu = true;
@@ -403,7 +410,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                     //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     mediaPlayer.stop();
                                     break;
@@ -414,7 +421,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                     //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 2:
@@ -423,7 +430,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 1:
@@ -432,7 +439,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 default:
@@ -457,13 +464,13 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukCelkovyKonec));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
 
                                     if (casCoolDown.getSec() == 0 && casCoolDown.getMin() == 0) {
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
-                                        
+
                                         } else
                                             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
 
@@ -502,7 +509,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStop));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
 
                                     stav = 3;
@@ -531,14 +538,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     mediaPlayer.release();
                                 }
                                 mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStop));
-                                mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                mediaPlayer.setVolume(volume, volume);
+                                mediaPlayer.start();
 
                                 stav = (byte) (stav + 1);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
                                     //color
-                                    GradientDrawable shape =  new GradientDrawable();
+                                    GradientDrawable shape = new GradientDrawable();
                                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                                     shape.setColor(colorDlazdiceCasPauzy);
                                     dlazdiceOdpocitavace.setBackground(shape);
@@ -572,8 +579,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     mediaPlayer.release();
                                 }
                                 mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukPredkoncemKola));
-                                mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                mediaPlayer.setVolume(volume, volume);
+                                mediaPlayer.start();
                             } else if ((casPulkyKolaAktualni != 0) && (casPulkyKolaAktualni == pomocny && zvukPulkaCviceni != PraceSeZvukem.vratPocetZvukuPulkaCviceni())) {
                                 //pokud bude nastavený zvuk v půlce kola, tak to odehraje tohle níže, má to větší přednost než countdown, takže pokud by to přicházelo na
                                 //stejný čas, tak to odehraje pouze zvuk půlky kola
@@ -583,8 +590,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 }
                                 Log.d("Jsem v půlce kola", "halo");
                                 mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukPulkaCviceni));
-                                mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                mediaPlayer.setVolume(volume, volume);
+                                mediaPlayer.start();
                             } else {
                                 Log.d("cas: ", String.valueOf(pomocny));
                                 switch ((int) pomocny) {
@@ -595,8 +602,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         }
                                         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                         //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                        mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                        mediaPlayer.setVolume(volume, volume);
+                                        mediaPlayer.start();
                                         mediaPlayer.stop();
                                         break;
                                     case 3:
@@ -605,8 +612,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             mediaPlayer.release();
                                         }
                                         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                        mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                        mediaPlayer.setVolume(volume, volume);
+                                        mediaPlayer.start();
                                         break;
                                     case 2:
                                         if (mediaPlayer != null) {
@@ -614,8 +621,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             mediaPlayer.release();
                                         }
                                         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                        mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                        mediaPlayer.setVolume(volume, volume);
+                                        mediaPlayer.start();
 
                                         break;
                                     case 1:
@@ -624,8 +631,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             mediaPlayer.release();
                                         }
                                         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                        mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                        mediaPlayer.setVolume(volume, volume);
+                                        mediaPlayer.start();
                                         break;
                                     default:
                                         break;
@@ -649,8 +656,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             mediaPlayer.release();
                                         }
                                         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukCelkovyKonec));
-                                        mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                        mediaPlayer.setVolume(volume, volume);
+                                        mediaPlayer.start();
 
                                         stav = 4;
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -669,8 +676,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             mediaPlayer.release();
                                         }
                                         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukCelkovyKonec));
-                                        mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                        mediaPlayer.setVolume(volume, volume);
+                                        mediaPlayer.start();
                                         stav = 5;
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascooldown));//  (R.drawable.background);
@@ -695,7 +702,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStop));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     stav = 3;
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -722,13 +729,13 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     mediaPlayer.release();
                                 }
                                 mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                                mediaPlayer.setVolume(volume, volume);
+                                mediaPlayer.start();
                                 stav = 1;
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                                     //color
-                                    GradientDrawable shape =  new GradientDrawable();
+                                    GradientDrawable shape = new GradientDrawable();
                                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                                     shape.setColor(colorDlazdiceCasCviceni);
                                     dlazdiceOdpocitavace.setBackground(shape);
@@ -745,7 +752,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
                                 velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
                                 textViewCas.setText(R.string.cvic);
-                                if (aktualniCyklus>1)  {
+                                if (aktualniCyklus > 1) {
                                     textViewBeziciCasCisloKola.setText(String.valueOf(aktualniCyklus));
                                 }
                                 preskocVypisCasu = true;
@@ -768,7 +775,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                     //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     mediaPlayer.stop();
                                     break;
@@ -778,7 +785,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 2:
@@ -787,7 +794,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 1:
@@ -797,7 +804,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     }
                                     ;
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 default:
@@ -819,14 +826,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 mediaPlayer.release();
                             }
                             mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                            mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                            mediaPlayer.setVolume(volume, volume);
+                            mediaPlayer.start();
 
                             stav = 1;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                 dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                                 //color
-                                GradientDrawable shape =  new GradientDrawable();
+                                GradientDrawable shape = new GradientDrawable();
                                 shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                                 shape.setColor(colorDlazdiceCasCviceni);
                                 dlazdiceOdpocitavace.setBackground(shape);
@@ -844,7 +851,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                             textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
                             velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
                             textViewCas.setText(R.string.cvic);
-                            if (aktualniCyklus>1)  {
+                            if (aktualniCyklus > 1) {
                                 textViewBeziciCasCisloKola.setText(String.valueOf(aktualniCyklus));
                             }
                             preskocVypisCasu = true;
@@ -865,7 +872,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                     //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     mediaPlayer.stop();
                                     break;
@@ -875,7 +882,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 2:
@@ -884,7 +891,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 1:
@@ -893,7 +900,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 default:
@@ -925,8 +932,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 mediaPlayer.release();
                             }
                             mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukCelkovyKonec));
-                            mediaPlayer.setVolume(volume,volume);
-                                    mediaPlayer.start();
+                            mediaPlayer.setVolume(volume, volume);
+                            mediaPlayer.start();
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                 dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
@@ -950,7 +957,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                     //     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukStartStopPodlePozice(zvukStart));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     mediaPlayer.stop();
                                     break;
@@ -960,7 +967,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 2:
@@ -969,7 +976,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 case 1:
@@ -978,7 +985,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.release();
                                     }
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-                                    mediaPlayer.setVolume(volume,volume);
+                                    mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
                                     break;
                                 default:
@@ -1054,7 +1061,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     }
 
     public void showPauseDialog(View v) {
-        if (pauzaNeniZmacknuta)  {
+        if (pauzaNeniZmacknuta) {
             pauzaNeniZmacknuta = false;
             // textViewPauza.setText(">");
             if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -1185,7 +1192,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavCasCviceni))) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 //color
-                GradientDrawable shape =  new GradientDrawable();
+                GradientDrawable shape = new GradientDrawable();
                 shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                 shape.setColor(colorDlazdiceCasCviceni);
                 dialog.getWindow().setBackgroundDrawable(shape);
@@ -1386,7 +1393,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasPripravy);
                     dlazdiceOdpocitavace.setBackground(shape);
@@ -1400,7 +1407,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasCviceni);
                     dlazdiceOdpocitavace.setBackground(shape);
@@ -1414,7 +1421,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasPauzy);
                     dlazdiceOdpocitavace.setBackground(shape);
@@ -1454,7 +1461,12 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         // reklama Google
         String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-        MobileAds.initialize(getApplicationContext(), idAplikace);
+   //     MobileAds.initialize(getApplicationContext(), idAplikace);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -1478,16 +1490,16 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             dlazdicePodHlavnimCasem2.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
             dlazdicePodHlavnimCasem3.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
 
-            GradientDrawable pozadi1 =  new GradientDrawable();
+            GradientDrawable pozadi1 = new GradientDrawable();
             pozadi1.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
             pozadi1.setColor(colorDlazdicePocetCyklu);
-            GradientDrawable pozadi2 =  new GradientDrawable();
+            GradientDrawable pozadi2 = new GradientDrawable();
             pozadi2.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
             pozadi2.setColor(colorDlazdicePocetCyklu);
-            GradientDrawable pozadi3 =  new GradientDrawable();
+            GradientDrawable pozadi3 = new GradientDrawable();
             pozadi3.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
             pozadi3.setColor(colorDlazdicePocetCyklu);
-            GradientDrawable pozadi4 =  new GradientDrawable();
+            GradientDrawable pozadi4 = new GradientDrawable();
             //   pozadi4.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
             //   pozadi4.setColor(colorDlazdicePocetCyklu);
             //color
@@ -1498,7 +1510,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         }
 
         linearLayoutPauza = findViewById(R.id.linearLayoutPauza);
-      //  textViewPauza = (TextView) findViewById(R.id.textViewPauza);
+        //  textViewPauza = (TextView) findViewById(R.id.textViewPauza);
         textViewCelkovyCas = (TextView) findViewById(R.id.textViewCelkovyCas);
         velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
 
@@ -1510,7 +1522,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //vytvoření dialogu počet cyklů
         dialogPocetCyklu = new Dialog(new ContextThemeWrapper(this, R.style.DialogStyle));
         vytvorDialogOpakovani(dialogPocetCyklu, getResources().getString(R.string.nadpisNastavPocetCyklu));
-
 
 
     }
@@ -1570,7 +1581,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(ClassicActivity.this,R.color.colorReklama));
+            window.setStatusBarColor(ContextCompat.getColor(ClassicActivity.this, R.color.colorReklama));
         }
     }
 
@@ -1586,7 +1597,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     }*/
 
 
-    /** Called when the activity has become visible. */
+    /**
+     * Called when the activity has become visible.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -1596,9 +1609,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     @Override //pridat pro service
     protected void onStart() {
         super.onStart();
-  //      Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
+        //      Toast.makeText(ClassicActivity.this, "onStart", Toast.LENGTH_SHORT).show();
         //níže uvedené musí být tady, protože když se to sem vrací z onRestart, to znamená, že uživatel se vlrátí na aktivitu, tak kdyby to níže uvedené bylo v onCreate, tak by to dělalo neplechu
-        Log.d("ServicaZPozadi","onStart");
+        Log.d("ServicaZPozadi", "onStart");
 
         Intent intent = new Intent(this, ClassicService.class);
         bindService(intent, serviceConnection, BIND_AUTO_CREATE);
@@ -1610,28 +1623,28 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     @Override //pridat pro service
     protected void onRestart() { //tímhle to projde, když se uživatel vrátí do aplikace z pozadí a klikne na aplikaci nebo když klikne na notifikaci
         super.onRestart();
-   //     Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
-        Log.d("ServicaZPozadi","onRestart");
-        if((s.getResult()!=0)) {
-            Log.d("ServicaZPozadi","onRestart2");
+        //     Toast.makeText(ClassicActivity.this, "onRestart", Toast.LENGTH_SHORT).show();
+        Log.d("ServicaZPozadi", "onRestart");
+        if ((s.getResult() != 0)) {
+            Log.d("ServicaZPozadi", "onRestart2");
             //ZDE SE NAČÍTÁ, KDYŽ UŽIVATEL KLIKNE NA APLIKACI Z POZADÍ
-      //      bound = true;
+            //      bound = true;
             spustenoZPozadi = true; //tahle proměnná je tady proto, že když se to neověřovalo, zda se apka spouští z pozadí nebo naopak z notifikace,
             //tak se killservice spustilo dvakrát a dělalo to samozřejmě neplechu
             nactiZeServisy();
             spustOdpocitavac();
-        } else Log.d("ServicaZPozadi","onRestart3");
+        } else Log.d("ServicaZPozadi", "onRestart3");
     }
 
     @Override //pridat pro service
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
 
         super.onStop();
-    //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
-        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy,colorDlazdiceCasPripravy,
+        //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
+        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy, colorDlazdiceCasPripravy,
                 casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
-                colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu);
-        Log.d("ChybaCykly",String.valueOf(pocetCyklu));
+                colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta, pocetCyklu);
+        Log.d("ChybaCykly", String.valueOf(pocetCyklu));
         s.nastavOdpocitavani();
 
         s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
@@ -1658,7 +1671,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         odpocitavac.cancel();
         znicService();
         unregisterReceiver(mMessageReceiver);
-    //    android.os.Process.killProcess(android.os.Process.myPid());
+        //    android.os.Process.killProcess(android.os.Process.myPid());
         super.onDestroy();
     }
 
@@ -1672,68 +1685,74 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         aktualniCyklus = s.getAktualniCyklus();
         puvodniPocetCyklu = s.getPuvodniPocetCyklu();
-        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus)+"/"+String.valueOf(puvodniPocetCyklu));
+        textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus) + "/" + String.valueOf(puvodniPocetCyklu));
         stav = s.getStav();
         switch (stav) {
             case 0:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspripravy));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasPripravy);
                     dlazdiceOdpocitavace.setBackground(shape);
                     //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
                 break;
             case 1:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasCviceni);
                     dlazdiceOdpocitavace.setBackground(shape);
                     //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
                 break;
             case 2:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzy));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasPauzy);
                     dlazdiceOdpocitavace.setBackground(shape);
                     //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
                 break;
             case 3:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);
                     //color
-                    GradientDrawable shape =  new GradientDrawable();
+                    GradientDrawable shape = new GradientDrawable();
                     shape.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
                     shape.setColor(colorDlazdiceCasCviceni);
                     dlazdiceOdpocitavace.setBackground(shape);
                     //color
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
                 break;
             case 4:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
                 break;
             case 5:
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
-                } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
-            break;
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                break;
 
         }
 
-        if (pauzaNeniZmacknuta)  {
+        if (pauzaNeniZmacknuta) {
             if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.pausestojatotabataactivity);
             } else {
@@ -1752,9 +1771,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         zobrazCelkovyCas();
 
-        if(spustenoZPozadi) { //když to sem projde z pozadí a ne jen z notifikace, tak je vlastně tato activita
+        if (spustenoZPozadi) { //když to sem projde z pozadí a ne jen z notifikace, tak je vlastně tato activita
             //načtena a je potřebe jen servisu killnout a ne ji zcela zničit, je potřeba si na ni nechat connection, tak proto je zde tato podmínka
-            Log.d("ServicaZPozadi","spustenoZPozadi=true");
+            Log.d("ServicaZPozadi", "spustenoZPozadi=true");
             s.killService();
             spustenoZPozadi = false;
         } else znicService();
@@ -1762,23 +1781,22 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     private void znicService() { //aby šlo servicu zničit, musí se unbindnout a vlákno v ní, tedy počítadlo, zničit také
         if (bound) {
-            Log.d("Servica1","2");
-      //      Toast.makeText(ClassicActivity.this, "unbind", Toast.LENGTH_SHORT).show();
+            Log.d("Servica1", "2");
+            //      Toast.makeText(ClassicActivity.this, "unbind", Toast.LENGTH_SHORT).show();
             unbindService(serviceConnection);
             getApplicationContext().stopService(service);
             bound = false;
             s.killService();
-            Log.d("Servica1","3");
+            Log.d("Servica1", "3");
 
         }
     }
 
 
-
     private void askPermissionPostNotification() {
         // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
 
-        int permissionCheck = ActivityCompat.checkSelfPermission(ClassicActivity.this,Manifest.permission.POST_NOTIFICATIONS);
+        int permissionCheck = ActivityCompat.checkSelfPermission(ClassicActivity.this, Manifest.permission.POST_NOTIFICATIONS);
 
         if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
             // User may have declined earlier, ask Android if we should show him a reason
@@ -1789,7 +1807,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else {
                     // request the permission.
                     // CALLBACK_NUMBER is a integer constants
-                    ActivityCompat.requestPermissions(ClassicActivity.this,  new String[]{Manifest.permission.POST_NOTIFICATIONS},7);
+                    ActivityCompat.requestPermissions(ClassicActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 7);
                     // The callback method gets the result of the request.
                 }
             }

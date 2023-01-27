@@ -32,6 +32,8 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.SetSoundTabataActivity;
 import com.machy1979ii.intervaltimer.TabataActivity;
@@ -1037,7 +1039,12 @@ public class SecondFragment extends Fragment {
    //     setContentView(R.layout.activity_main3);
 
         String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-        MobileAds.initialize(requireContext(), idAplikace);
+     //   MobileAds.initialize(requireContext(), idAplikace);
+        MobileAds.initialize(getActivity().getApplicationContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
         AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
