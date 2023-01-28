@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // if ..... tak viewPager.setCurrentItem(1);
 
         udelejZpravuGDPR();
-        askPermissionPostNotification();
+    //    askPermissionPostNotification();
 
 
 
@@ -196,7 +196,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i("askpermission", "3");
         if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
             // User may have declined earlier, ask Android if we should show him a reason
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS)) {
                     Log.i("askpermission", "4");
                     // show an explanation to the user
@@ -206,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     // request the permission.
                     // CALLBACK_NUMBER is a integer constants
                     ActivityCompat.requestPermissions(MainActivity.this,  new String[]{Manifest.permission.POST_NOTIFICATIONS},7);
+                 //   requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 8);
                     // The callback method gets the result of the request.
                 }
             }
