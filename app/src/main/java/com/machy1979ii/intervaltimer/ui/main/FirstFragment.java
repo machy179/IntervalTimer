@@ -974,13 +974,15 @@ public class FirstFragment extends Fragment {
         String nactenyColors = "";
         Log.i("asdf:", "12");
         try {
-            Log.i("asdf:", "13");
+            Log.i("nacteniSouboruFirst","111");
             nactenyColors = soubor.readFromInternalFileColor(getActivity().getApplicationContext());
             Log.i("nactenyColors:", nactenyColors);
             prevedNactenyTextDoPromennychColor(nactenyColors);
-            Log.i("asdf:", "15");
+            Log.i("nacteniSouboruFirst","222");
 
         } catch (IOException e) {
+            Log.i("nacteniSouboruFirst","333");
+            Log.i("nacteniSouboruFirst",e.toString());
             e.printStackTrace();
         }
 

@@ -1793,27 +1793,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     }
 
 
-    private void askPermissionPostNotification() {
-        // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
 
-        int permissionCheck = ActivityCompat.checkSelfPermission(ClassicActivity.this, Manifest.permission.POST_NOTIFICATIONS);
-
-        if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
-            // User may have declined earlier, ask Android if we should show him a reason
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(ClassicActivity.this, Manifest.permission.POST_NOTIFICATIONS)) {
-                    // show an explanation to the user
-                    // Good practise: don't block thread after the user sees the explanation, try again to request the permission.
-                } else {
-                    // request the permission.
-                    // CALLBACK_NUMBER is a integer constants
-                    ActivityCompat.requestPermissions(ClassicActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 7);
-                    // The callback method gets the result of the request.
-                }
-            }
-        } else {
-// got permission use it
-        }
-    }
 
 }

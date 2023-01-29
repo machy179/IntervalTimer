@@ -16,9 +16,9 @@ android {
     defaultConfig {
         applicationId "com.machy1979ii.intervaltimer"
         minSdkVersion 19
-        targetSdkVersion 33
-        versionCode 17
-        versionName "2.1"
+        targetSdkVersion 31
+        versionCode 18
+        versionName "2.2"
         multiDexEnabled = true
     //    android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
         ndkVersion "23.1.7779620" // to jsem sem dal, abych se pokusil udělat obfuscation soubor pro ladění chyb v programu na google play - tam je uvedeno že k app bundle souboru je přiložen mapovací soubor ReTrace
@@ -61,11 +61,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.pwiniars:android-five-stars-library:3.6'
- //   implementation 'com.google.android.gms:play-services-ads:19.3.0'
-    implementation 'com.google.android.gms:play-services-ads:21.4.0'
+   implementation 'com.google.android.gms:play-services-ads:19.3.0'
+  //  implementation 'com.google.android.gms:play-services-ads:21.4.0'
     implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
-    implementation 'com.google.code.gson:gson:2.9.0'
+ //   implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.android.ump:user-messaging-platform:2.0.0' //GDPR zprava
     implementation("androidx.multidex:multidex:2.0.1")
 }
