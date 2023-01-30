@@ -1461,12 +1461,12 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         // reklama Google
         String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-   //     MobileAds.initialize(getApplicationContext(), idAplikace);
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+        MobileAds.initialize(getApplicationContext(), idAplikace);
+ /*       MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
-        });
+        });*/
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);

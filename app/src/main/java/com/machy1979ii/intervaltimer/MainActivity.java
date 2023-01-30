@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // if ..... tak viewPager.setCurrentItem(1);
 
         udelejZpravuGDPR();
-        askPermissionPostNotification();
+   //     askPermissionPostNotification();
 
 
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void askPermissionPostNotification() {
+/*    private void askPermissionPostNotification() {
         // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
         Log.i("askpermission", "2");
         if (Build.VERSION.SDK_INT >= 33) {
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 // got permission use it
         }
         }
-    }
+    }*/
 
 //...
 }
