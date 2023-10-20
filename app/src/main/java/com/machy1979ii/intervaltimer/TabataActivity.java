@@ -1574,15 +1574,28 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
                 zvukCountdown, hlasitost, maxHlasitost, volume);
 
-        s.setNotification();
+       // s.setNotification();
 
 
         //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
         //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(service);
+            try {
+                startForegroundService(service);
+            } catch (Exception e) {
+            }
+
         } else
-            this.startService(service);
+            try {
+                this.startService(service);
+            } catch (Exception e) {
+            }
+
+        try {
+            s.setNotification();
+        } catch (Exception e) {
+
+        }
 
         odpocitavac.cancel();
 

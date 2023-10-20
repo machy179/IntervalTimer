@@ -21,9 +21,10 @@
         android:protectionLevel="signature" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"></uses-permission>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
 
@@ -117,18 +118,21 @@
         <service
             android:exported="false"
             android:name=".services.ClassicService"
+            android:foregroundServiceType="mediaPlayback"
             android:label="Classic service" >
         </service>
 
         <service
             android:exported="false"
             android:name=".services.TabataService"
+            android:foregroundServiceType="mediaPlayback"
             android:label="Tabata service" >
         </service>
 
         <service
             android:exported="false"
             android:name=".services.CustomService"
+            android:foregroundServiceType="mediaPlayback"
             android:label="Custom service" >
         </service>
 

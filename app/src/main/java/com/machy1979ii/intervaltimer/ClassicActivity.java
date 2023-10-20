@@ -2,6 +2,7 @@ package com.machy1979ii.intervaltimer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -240,14 +241,29 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             casCelkovy = getIntent().getExtras().getParcelable("cascelkovy");
         }
 
-        puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
+/*        puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
 
         colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
         colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
         colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu"); //color
-        Log.d("FindingError", "colorDlazdicePocetCyklu: " + colorDlazdicePocetCyklu);
 
-        colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
+        colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color*/
+        //nahrazeno níže uvedeným
+
+        if (getIntent().getExtras() != null) {
+            puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
+            colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni", getResources().getColor(R.color.colorCasCviceni));
+            colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy",getResources().getColor(R.color.colorCasPauzy));
+            colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu", getResources().getColor(R.color.colorCerna));
+            colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy", getResources().getColor(R.color.colorCasPripravy));
+        } else {
+            // Bundle je null, takže byste měli provést záložní akce nebo nastavit výchozí hodnoty
+            puvodniPocetCyklu = 8;
+            colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni);;
+            colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy);
+            colorDlazdicePocetCyklu = getResources().getColor(R.color.colorCerna);;
+            colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy);
+        }
 
 
         zvukStart = getIntent().getIntExtra("zvukstart", 1);
@@ -1638,32 +1654,60 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     @Override //pridat pro service
     protected void onStop() {//když uživatel dá aplikaci do pozadí, tak teprve potom se spustí servica a nastaví se v service odpočítávání, sem dám asi všechny proměnné
+      //  if (!isClassicServiceRunning()) {
+            // Služba `ClassicService` nebeží, můžete ji spustit a provést další akce.
 
-        super.onStop();
-        //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
-        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy, colorDlazdiceCasPripravy,
-                casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
-                colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta, pocetCyklu);
-        Log.d("ChybaCykly", String.valueOf(pocetCyklu));
-        s.nastavOdpocitavani();
+            super.onStop();
+            //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
+            s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy, colorDlazdiceCasPripravy,
+                    casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
+                    colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta, pocetCyklu);
+            Log.d("ChybaCykly", String.valueOf(pocetCyklu));
+            s.nastavOdpocitavani();
 
-        s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
-                zvukCountdown, zvukPulkaCviceni, casPulkyKola,
-                casPulkyKolaAktualni, zvukPredkoncemKola, casZvukuPredKoncemKola,
-                hlasitost, maxHlasitost, volume);
+            s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
+                    zvukCountdown, zvukPulkaCviceni, casPulkyKola,
+                    casPulkyKolaAktualni, zvukPredkoncemKola, casZvukuPredKoncemKola,
+                    hlasitost, maxHlasitost, volume);
 
-        s.setNotification();
+           // s.setNotification();
 
-
-        //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
-        //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
+            //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
+            //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(service);
+            try {
+                startForegroundService(service);
+            } catch (Exception e) {
+            }
+
         } else
-            this.startService(service);
+            try {
+                this.startService(service);
+            } catch (Exception e) {
+            }
 
-        odpocitavac.cancel();
+        try {
+            s.setNotification();
+        } catch (Exception e) {
 
+        }
+
+            odpocitavac.cancel();
+      //  }
+
+        Log.d("nofifikace", "3333");
+
+
+    }
+
+    private boolean isClassicServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (ClassicService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override  //pridat pro service

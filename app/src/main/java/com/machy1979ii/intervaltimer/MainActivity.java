@@ -40,6 +40,7 @@ import com.machy1979ii.intervaltimer.databinding.ActivityMainBinding;
 import com.machy1979ii.intervaltimer.ui.main.ThirdFragment;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.machy1979ii.intervaltimer.funkce.Detect_outdated_consentKt.deleteTCStringIfOutdated;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //nebo to můžu zkusit, první getIntent...viz výše, zavolám už tady a podle toho, jaké bude číslo,
         //se to nasměruje na ten konkrétní intent a tam se getIntentama dotáhne zbytek
         // if ..... tak viewPager.setCurrentItem(1);
-
+        deleteTCStringIfOutdated(getApplicationContext());
         udelejZpravuGDPR();
    //     askPermissionPostNotification();
 

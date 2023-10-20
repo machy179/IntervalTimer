@@ -918,6 +918,15 @@ class TabataService : Service() {
 
     fun setNotification() {
 
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel()
+            } else {
+                // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
+                ""
+                //pokud to bude nižší Android než 8 (version code O), tak podle dokumentace by měl channelId být ignorován
+            }
+
         notificationIntent = Intent(this, TabataActivity::class.java)
 
         // aby se přepnulo na existující instanci aktivity a vymazali všechny další aktivity nad ní zdroj: https://www.peachpit.com/articles/article.aspx?p=1874864
@@ -931,14 +940,7 @@ class TabataService : Service() {
             0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
         )
 
-        val channelId =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel()
-            } else {
-                // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
-                ""
-                //pokud to bude nižší Android než 8 (version code O), tak podle dokumentace by měl channelId být ignorován
-            }
+
 
         stopSelf = Intent(this, TabataService::class.java)
         stopSelf!!.action = "ACTION_STOP_SERVICE"
@@ -951,6 +953,7 @@ class TabataService : Service() {
         notificationBuilder = NotificationCompat.Builder(this, channelId)
         notification = notificationBuilder!!
             //  .setOngoing(true) //bylo by heads-up okno pořád otevřené
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setAutoCancel(true) //ABY SE PO KLIKNUTÍ NA NOTIFIKACI SAMA ZNIČILA. K TOMU ALE MUSÍM MÍT V PŘEDEŠLÉ ACTIVITY NASTAVENO, ŽE SE TADY MUSÍ ZNIČIT ODPOČÍTÁVÁNÍ - ZNIČIT VLÁKNO
             .setSmallIcon(R.mipmap.ic_launcher)
             .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.mipmap.ic_launcher))
