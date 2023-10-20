@@ -197,9 +197,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:includeFontPadding="false"
                             android:maxLines="1"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
-                            app:autoSizeMinTextSize="12sp"
+                            app:autoSizeTextType="none"
                             app:autoSizeStepGranularity="2sp"
                             android:id="@+id/textViewHodnotaCasu"
                             android:layout_width="match_parent"
@@ -303,9 +301,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:includeFontPadding="false"
                             android:maxLines="1"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
-                            app:autoSizeMinTextSize="12sp"
+                            app:autoSizeTextType="none"
                             app:autoSizeStepGranularity="2sp"
                             android:id="@+id/textViewPocetCyklu"
                             android:layout_width="match_parent"

@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         // if ..... tak viewPager.setCurrentItem(1);
         deleteTCStringIfOutdated(getApplicationContext());
         udelejZpravuGDPR();
-   //     askPermissionPostNotification();
+        askPermissionPostNotification();
 
 
 
@@ -190,10 +190,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-/*    private void askPermissionPostNotification() {
+    private void askPermissionPostNotification() {
         // called in a standard activity, use  ContextCompat.checkSelfPermission for AppCompActivity
-        Log.i("askpermission", "2");
-        if (Build.VERSION.SDK_INT >= 33) {
         int permissionCheck = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS);
         Log.i("askpermission", "3");
         if (!(permissionCheck == PackageManager.PERMISSION_GRANTED)) {
@@ -216,8 +214,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
 // got permission use it
         }
-        }
-    }*/
+
+    }
 
 //...
 }
