@@ -1039,12 +1039,12 @@ public class SecondFragment extends Fragment {
    //     setContentView(R.layout.activity_main3);
 
         String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-        MobileAds.initialize(requireContext(), idAplikace);
-/*        MobileAds.initialize(getActivity().getApplicationContext(), new OnInitializationCompleteListener() {
+   //     MobileAds.initialize(requireContext(), idAplikace);
+        MobileAds.initialize(getActivity().getApplicationContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
-        });*/
+        });
         AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
