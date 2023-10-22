@@ -277,7 +277,15 @@ public class ThirdFragment extends Fragment {
         VytvoreniDialoguPoctuCyklu = new VytvoreniDialoguPoctuCyklu(getActivity().getApplicationContext(), hodnotaCelkovyCasTextView);
         vytvoreniDialoguZvuku = new VytvoreniDialoguZvuku(getActivity().getApplicationContext());
         praceSeSouborem = new PraceSeSouboremCustom();
-        nactiDataZeSouboru();
+
+        //nactiDataZeSouboru();
+        //načte data ze souboru
+        try {
+            vsechnyPolozkyCasyKol = praceSeSouborem.readFromInternalFile(getActivity().getApplicationContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        vypocetCelkovehoCasuAZobrezni.spoctiCelkovyCasAZobraz(vsechnyPolozkyCasyKol);
 
         //vytvoření přípravy
         showTimePickerDialogNastavPripravuLayout = rootView.findViewById(R.id.showTimePickerDialogNastavPripravu);
@@ -307,12 +315,13 @@ public class ThirdFragment extends Fragment {
 
         dialogPriprava = new Dialog(new ContextThemeWrapper(requireContext(), R.style.DialogStyle));
 
-        if (vsechnyPolozkyCasyKol.size()==0) { //pokud půjde o první spuštění, tak se položka přípravy nově udělá
+        if (vsechnyPolozkyCasyKol.size()==0 || vsechnyPolozkyCasyKol.isEmpty() || vsechnyPolozkyCasyKol == null) { //pokud půjde o první spuštění, tak se položka přípravy nově udělá, dal jsem tam i ošetření proti isEmpty a null, protože po nové aktualizazi mi to zde házelo chybu
             hodnotaPripravyTextView.setText(vratStringCasUpraveny(casPripravy));
             polozkaCasuPriprava = new PolozkaCasuKola(casPripravy, colorDlazdiceCasPripravy, 1, false, getResources().getString(R.string.nadpisCasPripravy));
             SouborPolozekCasuKola souborPolozekCasuKolaPripravy = new SouborPolozekCasuKola();
             souborPolozekCasuKolaPripravy.vlozPolozkuCasKola(polozkaCasuPriprava);
             souborPolozekCasuKolaPripravy.setPocetCyklu(1);
+            if (vsechnyPolozkyCasyKol.isEmpty() || vsechnyPolozkyCasyKol == null) vsechnyPolozkyCasyKol = new ArrayList<SouborPolozekCasuKola>();
             vsechnyPolozkyCasyKol.add(souborPolozekCasuKolaPripravy);
 
             vytvoreniDialoguCasu.vytvorDialogCasu(dialogPriprava, getResources().getString(R.string.nadpisNastavCasPripravy), hodnotaPripravyTextView, casPripravy, polozkaCasuPriprava, vsechnyPolozkyCasyKol);
@@ -483,7 +492,7 @@ public class ThirdFragment extends Fragment {
 
     }
 
-    private void nactiDataZeSouboru() {
+/*    private void nactiDataZeSouboru() {
         try {
             Log.i("nacteniSouboru","111");
             vsechnyPolozkyCasyKol = praceSeSouborem.readFromInternalFile(getActivity().getApplicationContext());
@@ -497,7 +506,7 @@ public class ThirdFragment extends Fragment {
         vypocetCelkovehoCasuAZobrezni.spoctiCelkovyCasAZobraz(vsechnyPolozkyCasyKol);
         Log.i("nacteniSouboru","555");
 
-    }
+    }*/
 
     //bylo zde jen public class
     public class AsyncTaskNahraniLayoutu extends AsyncTask<Void, Void, Void>{
