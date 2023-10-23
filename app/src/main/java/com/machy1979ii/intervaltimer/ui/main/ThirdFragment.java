@@ -284,6 +284,7 @@ public class ThirdFragment extends Fragment {
             vsechnyPolozkyCasyKol = praceSeSouborem.readFromInternalFile(getActivity().getApplicationContext());
         } catch (IOException e) {
             e.printStackTrace();
+            vsechnyPolozkyCasyKol = new ArrayList<SouborPolozekCasuKola>();
         }
         vypocetCelkovehoCasuAZobrezni.spoctiCelkovyCasAZobraz(vsechnyPolozkyCasyKol);
 
@@ -316,6 +317,7 @@ public class ThirdFragment extends Fragment {
         dialogPriprava = new Dialog(new ContextThemeWrapper(requireContext(), R.style.DialogStyle));
 
         if (vsechnyPolozkyCasyKol.size()==0 || vsechnyPolozkyCasyKol.isEmpty() || vsechnyPolozkyCasyKol == null) { //pokud půjde o první spuštění, tak se položka přípravy nově udělá, dal jsem tam i ošetření proti isEmpty a null, protože po nové aktualizazi mi to zde házelo chybu
+            Log.d("AAA AAB:","3");
             hodnotaPripravyTextView.setText(vratStringCasUpraveny(casPripravy));
             polozkaCasuPriprava = new PolozkaCasuKola(casPripravy, colorDlazdiceCasPripravy, 1, false, getResources().getString(R.string.nadpisCasPripravy));
             SouborPolozekCasuKola souborPolozekCasuKolaPripravy = new SouborPolozekCasuKola();
@@ -327,6 +329,7 @@ public class ThirdFragment extends Fragment {
             vytvoreniDialoguCasu.vytvorDialogCasu(dialogPriprava, getResources().getString(R.string.nadpisNastavCasPripravy), hodnotaPripravyTextView, casPripravy, polozkaCasuPriprava, vsechnyPolozkyCasyKol);
 
         } else { //pokud jde o další spuštění a položka přípravy se načte ze souboru, tak se tady jen nastaví
+            Log.d("AAA AAB:","4");
             hodnotaPripravyTextView.setText(vratStringCasUpraveny(vsechnyPolozkyCasyKol.get(0).getPolozkyCasyKol().get(0).getTime()));
             polozkaCasuPriprava = vsechnyPolozkyCasyKol.get(0).getPolozkyCasyKol().get(0);
             vytvoreniDialoguCasu.vytvorDialogCasu(dialogPriprava, getResources().getString(R.string.nadpisNastavCasPripravy), hodnotaPripravyTextView, polozkaCasuPriprava.getTime(),

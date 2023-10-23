@@ -190,7 +190,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        registerReceiver(mMessageReceiver, new IntentFilter("znicClassicActivityAClassicService")); //pridat pro service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mMessageReceiver, new IntentFilter("znicClassicActivityAClassicService"), null, null, RECEIVER_NOT_EXPORTED); //pridat pro service, protože cílím na Android 14, tak jsem musel přidat ještě , null, null, RECEIVER_NOT_EXPORTED, jakože  žůže přijímat pouze vysílání z této aplikace
+            //ještě jsem dal co manifestu <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+        } else  registerReceiver(mMessageReceiver, new IntentFilter("znicClassicActivityAClassicService"));
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

@@ -34,7 +34,7 @@ public class VypocetCelkovehoCasuAZobrezni {
 
 
     public void spoctiCelkovyCasAZobraz(ArrayList<SouborPolozekCasuKola> vsechnyPolozkyCasyKol) {
-        if (!(vsechnyPolozkyCasyKol==null)) {
+        if (!(vsechnyPolozkyCasyKol==null || vsechnyPolozkyCasyKol.size()==0 || vsechnyPolozkyCasyKol.isEmpty())) {
             this.vsechnyPolozkyCasyKol = vsechnyPolozkyCasyKol;
         }
         //this.vsechnyPolozkyCasyKol = vsechnyPolozkyCasyKol;

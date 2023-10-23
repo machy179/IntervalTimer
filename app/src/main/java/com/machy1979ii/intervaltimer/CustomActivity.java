@@ -176,8 +176,9 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerReceiver(mMessageReceiver, new IntentFilter("znicCustomActivityACustomService")); //pridat pro service
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mMessageReceiver, new IntentFilter("znicCustomActivityACustomService"), null, null, RECEIVER_NOT_EXPORTED); //pridat pro service, protože cílím na Android 14, tak jsem musel přidat ještě , null, null, RECEIVER_NOT_EXPORTED, jakože  žůže přijímat pouze vysílání z této aplikace
+        } else  registerReceiver(mMessageReceiver, new IntentFilter("znicCustomActivityACustomService"));
 
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
@@ -187,14 +188,18 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         statusBarcolor();
 
 
-        vsechnyPolozkyCasyKol = getIntent().getExtras().getParcelableArrayList("vsechnyPolozkyCasyKol");
-        polozkyCasyKol = PrevodVsechPolozekCasyKolToArrayListPolozkyCasu.vratArrayPolozekCasyKol(vsechnyPolozkyCasyKol);
-        puvodniPocetCyklu = polozkyCasyKol.size()-1;
+        if (getIntent().getExtras() != null) {
+            vsechnyPolozkyCasyKol = getIntent().getExtras().getParcelableArrayList("vsechnyPolozkyCasyKol");
+            polozkyCasyKol = PrevodVsechPolozekCasyKolToArrayListPolozkyCasu.vratArrayPolozekCasyKol(vsechnyPolozkyCasyKol);
+            puvodniPocetCyklu = polozkyCasyKol.size()-1;
 
-        colorSpodnichDlazdic = getIntent().getExtras().getInt("colorSpodnichDlazdic"); //color
-        casCelkovy = getIntent().getExtras().getParcelable("casCelkovy");
-        zvukCountdown=getIntent().getExtras().getInt("zvukcountdown");
-        zvukCelkovyKonec=getIntent().getExtras().getInt("zvukcelkovykonec");
+            casCelkovy = getIntent().getExtras().getParcelable("casCelkovy");
+        }
+
+
+        colorSpodnichDlazdic = getIntent().getExtras().getInt("colorSpodnichDlazdic", getResources().getColor(R.color.colorSpodnichDLazdicCustomActivity)); //color
+        zvukCountdown=getIntent().getExtras().getInt("zvukcountdown", 1);
+        zvukCelkovyKonec=getIntent().getExtras().getInt("zvukcelkovykonec", 1);
 
         udelejLayout();
 

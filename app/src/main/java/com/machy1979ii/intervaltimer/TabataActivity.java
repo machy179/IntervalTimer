@@ -181,7 +181,9 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerReceiver(mMessageReceiver, new IntentFilter("znicTabataActivityATabataService")); //pridat pro service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(mMessageReceiver, new IntentFilter("znicTabataActivityATabataService"), null, null, RECEIVER_NOT_EXPORTED); //pridat pro service, protože cílím na Android 14, tak jsem musel přidat ještě , null, null, RECEIVER_NOT_EXPORTED, jakože  žůže přijímat pouze vysílání z této aplikace
+        } else  registerReceiver(mMessageReceiver, new IntentFilter("znicTabataActivityATabataService"));
 
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
