@@ -188,22 +188,31 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         statusBarcolor();
 
 
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null) { //play google mi zde házel chybu, tak ještě ověřuji, zda Bundle extras není null
             vsechnyPolozkyCasyKol = getIntent().getExtras().getParcelableArrayList("vsechnyPolozkyCasyKol");
             polozkyCasyKol = PrevodVsechPolozekCasyKolToArrayListPolozkyCasu.vratArrayPolozekCasyKol(vsechnyPolozkyCasyKol);
             puvodniPocetCyklu = polozkyCasyKol.size()-1;
 
             casCelkovy = getIntent().getExtras().getParcelable("casCelkovy");
+
+            colorSpodnichDlazdic = getIntent().getExtras().getInt("colorSpodnichDlazdic", getResources().getColor(R.color.colorSpodnichDLazdicCustomActivity)); //color
+            zvukCountdown=getIntent().getExtras().getInt("zvukcountdown", 1);
+            zvukCelkovyKonec=getIntent().getExtras().getInt("zvukcelkovykonec", 1);
+            hlasitost = getIntent().getIntExtra("hlasitost", 100);
+        } else {
+            vsechnyPolozkyCasyKol = new ArrayList<SouborPolozekCasuKola>();
+            colorSpodnichDlazdic = getResources().getColor(R.color.colorSpodnichDLazdicCustomActivity); //color
+            zvukCountdown=1;
+            zvukCelkovyKonec= 1;
+            hlasitost = 100;
         }
 
 
-        colorSpodnichDlazdic = getIntent().getExtras().getInt("colorSpodnichDlazdic", getResources().getColor(R.color.colorSpodnichDLazdicCustomActivity)); //color
-        zvukCountdown=getIntent().getExtras().getInt("zvukcountdown", 1);
-        zvukCelkovyKonec=getIntent().getExtras().getInt("zvukcelkovykonec", 1);
+
 
         udelejLayout();
 
-        hlasitost = getIntent().getIntExtra("hlasitost", 100);
+
         volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
 
         mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown));

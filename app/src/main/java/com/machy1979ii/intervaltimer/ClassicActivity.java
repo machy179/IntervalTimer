@@ -198,10 +198,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //     fanfareZvuk = MediaPlayer.create(getApplicationContext(), R.raw.ramagochiviolinend);
-        //      startZvuk = MediaPlayer.create(getApplicationContext(), R.raw.boxstart);
-        //   restZvuk = MediaPlayer.create(getApplicationContext(), R.raw.boxstop);
-
 //tady jsem zkoušel, aby se při backgroundu nevypnula aplikace a pokračovala, ale nakonec jsem to do apky nedal, jestli to
         //tam budu chtít dát, tak do AndroidManifestu musím dát tohle:  <uses-permission android:name="android.permission.WAKE_LOCK" />
         //   PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -209,85 +205,79 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //           "MyWakelockTag");
         //   wakeLock.acquire();
 
-
-        //udelejLayout();
-
-        //      Toast.makeText(ClassicActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
-
-
-        //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
-
         statusBarcolor();
 
-        if (getIntent().getExtras().getParcelable("caspripavy") == null) {
-            casPripravy = new MyTime(0, 0, 20);
-        } else {
-            casPripravy = getIntent().getExtras().getParcelable("caspripavy");
-        }
 
-        if (getIntent().getExtras().getParcelable("cascviceni") == null) {
-            casCviceni = new MyTime(0, 2, 0);
-        } else {
-            casCviceni = getIntent().getExtras().getParcelable("cascviceni");
-        }
+        if (getIntent().getExtras() != null) { //play google mi zde házel chybu, tak ještě ověřuji, zda Bundle extras není null
+            if (getIntent().getExtras().getParcelable("caspripavy") == null) {
+                casPripravy = new MyTime(0, 0, 20);
+            } else {
+                casPripravy = getIntent().getExtras().getParcelable("caspripavy");
+            }
+            if (getIntent().getExtras().getParcelable("cascviceni") == null) {
+                casCviceni = new MyTime(0, 2, 0);
+            } else {
+                casCviceni = getIntent().getExtras().getParcelable("cascviceni");
+            }
+            if (getIntent().getExtras().getParcelable("caspauzy") == null) {
+                casPauzy = new MyTime(0, 1, 0);
+            } else {
+                casPauzy = getIntent().getExtras().getParcelable("caspauzy");
+            }
+            if (getIntent().getExtras().getParcelable("cascelkovy") == null) {
+                casCelkovy = new MyTime(0, 23, 20);
+            } else {
+                casCelkovy = getIntent().getExtras().getParcelable("cascelkovy");
+            }
 
-        if (getIntent().getExtras().getParcelable("caspauzy") == null) {
-            casPauzy = new MyTime(0, 1, 0);
-        } else {
-            casPauzy = getIntent().getExtras().getParcelable("caspauzy");
-        }
-
-
-        if (getIntent().getExtras().getParcelable("cascelkovy") == null) {
-            casCelkovy = new MyTime(0, 23, 20);
-        } else {
-            casCelkovy = getIntent().getExtras().getParcelable("cascelkovy");
-        }
-
-/*        puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
-
-        colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
-        colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
-        colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu"); //color
-
-        colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color*/
-        //nahrazeno níže uvedeným
-
-        if (getIntent().getExtras() != null) {
             puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
             colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni", getResources().getColor(R.color.colorCasCviceni));
             colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy",getResources().getColor(R.color.colorCasPauzy));
             colorDlazdicePocetCyklu = getIntent().getExtras().getInt("barvaPocetCyklu", getResources().getColor(R.color.colorCerna));
             colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy", getResources().getColor(R.color.colorCasPripravy));
+
+            zvukStart = getIntent().getIntExtra("zvukstart", 1);
+            zvukStop = getIntent().getIntExtra("zvukstop", 1);
+            zvukCelkovyKonec = getIntent().getIntExtra("zvukcelkovykonec", 1);
+            zvukCountdown = getIntent().getIntExtra("zvukcountdown", 1);
+            zvukPulkaCviceni = getIntent().getIntExtra("zvukpulkakola", 33);
+
+            zvukPredkoncemKola = getIntent().getIntExtra("zvukpredkoncemkola", 33);
+            casZvukuPredKoncemKola = getIntent().getIntExtra("caszvukupupredkoncemkola", 20);
+            hlasitost = getIntent().getIntExtra("hlasitost", 100);
         } else {
             // Bundle je null, takže byste měli provést záložní akce nebo nastavit výchozí hodnoty
+            casPripravy = new MyTime(0, 0, 20);
+            casCviceni = new MyTime(0, 2, 0);
+            casPauzy = new MyTime(0, 1, 0);
+            casCelkovy = new MyTime(0, 23, 20);
+
             puvodniPocetCyklu = 8;
             colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni);;
             colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy);
             colorDlazdicePocetCyklu = getResources().getColor(R.color.colorCerna);;
             colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy);
+
+            zvukStart = 1;
+            zvukStop = 1;
+            zvukCelkovyKonec = 1;
+            zvukCountdown = 1;
+            zvukPulkaCviceni = 33;
+
+            zvukPredkoncemKola = 33;
+            casZvukuPredKoncemKola = 20;
+            hlasitost = 100;
         }
 
 
-        zvukStart = getIntent().getIntExtra("zvukstart", 1);
-        zvukStop = getIntent().getIntExtra("zvukstop", 1);
-        Log.d("zvuk start: ", String.valueOf(zvukStart));
 
-        zvukCelkovyKonec = getIntent().getIntExtra("zvukcelkovykonec", 1);
-        zvukCountdown = getIntent().getIntExtra("zvukcountdown", 1);
-        zvukPulkaCviceni = getIntent().getIntExtra("zvukpulkakola", 33);
-        Log.d("zvuk pulky kola: ", String.valueOf(zvukPulkaCviceni));
         if (zvukPulkaCviceni != PraceSeZvukem.vratPocetZvukuPulkaCviceni()) {
             casPulkyKola = (casCviceni.getHour() * 3600 + casCviceni.getMin() * 60 + casCviceni.getSec()) / 2;
             casPulkyKolaAktualni = casPulkyKola;
             Log.d("Cas pulky kola: ", String.valueOf(casPulkyKola));
 
         }
-        zvukPredkoncemKola = getIntent().getIntExtra("zvukpredkoncemkola", 33);
-        casZvukuPredKoncemKola = getIntent().getIntExtra("caszvukupupredkoncemkola", 20);
-        Log.d("čas před koncem kola: ", String.valueOf(casZvukuPredKoncemKola));
 
-        hlasitost = getIntent().getIntExtra("hlasitost", 100);
         volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
 
 

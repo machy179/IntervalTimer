@@ -824,7 +824,6 @@ class ClassicService : Service() {
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
 
-
                 //zkopírováno z ClassicActivity-konec
 
             }

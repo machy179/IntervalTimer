@@ -203,39 +203,75 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
         statusBarcolor();
 
-        //colors
-        colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni"); //color
-        colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy"); //color
-        colorDlazdiceTabaty = getIntent().getExtras().getInt("barvaTabaty"); //color
-        colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy"); //color
-        colorDlazdiceCasPauzyMeziTabatami = getIntent().getExtras().getInt("barvaPauzyMeziTabatami"); //color
-        colorDlazdiceCasCoolDown = getIntent().getExtras().getInt("barvaCoolDown"); //color
-        Log.i("color dlazdicePripravy:", String.valueOf(colorDlazdiceCasPripravy));
-        Log.i("color dlazdiceMeziTab:", String.valueOf(colorDlazdiceCasPauzyMeziTabatami));
-        Log.i("color dlazdiceCoolDown:", String.valueOf(colorDlazdiceCasCoolDown));
+        if (getIntent().getExtras() != null) { //play google mi zde házel chybu, tak ještě ověřuji, zda Bundle extras není null
+            //colors
+            colorDlazdiceCasCviceni = getIntent().getExtras().getInt("barvaCviceni", getResources().getColor(R.color.colorCasCviceni)); //color
+            colorDlazdiceCasPauzy = getIntent().getExtras().getInt("barvaPauzy",getResources().getColor(R.color.colorCasPauzy)); //color
+            colorDlazdiceTabaty = getIntent().getExtras().getInt("barvaTabaty",getResources().getColor(R.color.colorPocetTabat)); //color
+            colorDlazdiceCasPripravy = getIntent().getExtras().getInt("barvaPripravy",getResources().getColor(R.color.colorCasPripravy)); //color
+            colorDlazdiceCasPauzyMeziTabatami = getIntent().getExtras().getInt("barvaPauzyMeziTabatami",getResources().getColor(R.color.colorCasPauzyMeziTabatami)); //color
+            colorDlazdiceCasCoolDown = getIntent().getExtras().getInt("barvaCoolDown",getResources().getColor(R.color.colorCasCoolDown));
+
+            if (getIntent().getExtras().getParcelable("caspripavy") != null) {
+                casPripravy = getIntent().getExtras().getParcelable("caspripavy");
+                casCviceni = getIntent().getExtras().getParcelable("cascviceni");
+                casPauzy = getIntent().getExtras().getParcelable("caspauzy");
+                casMezitabatami = getIntent().getExtras().getParcelable("caspauzynezitabatami");
+                casCoolDown = getIntent().getExtras().getParcelable("cascooldown");
+                casCelkovy = getIntent().getExtras().getParcelable("casCelkovy");
+            } else {
+                casPripravy = new MyTime(0, 1, 0);
+                casCviceni = new MyTime(0, 0, 20);
+                casPauzy = new MyTime(0, 0, 20);
+                casMezitabatami = new MyTime(0, 1, 0);
+                casCoolDown = new MyTime(0, 1, 0);
+                casCelkovy = new MyTime(0, 60, 0);
+            }
+
+            puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu",8);
+            puvodniPocetTabat = getIntent().getExtras().getInt("pocettabat",4);
+
+            zvukStart = getIntent().getIntExtra("zvukstart",1);
+            zvukStop = getIntent().getIntExtra("zvukstop",1);
+            zvukCelkovyKonec = getIntent().getIntExtra("zvukcelkovykonec",1);
+            zvukCountdown = getIntent().getIntExtra("zvukcountdown",1);
+            zvukPauzeMeziTabatami = getIntent().getIntExtra("zvukstoptabatas",1);
+            hlasitost = getIntent().getIntExtra("hlasitostTabata", 100);
+        } else {
+            colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni);
+            colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy);
+            colorDlazdiceTabaty = getResources().getColor(R.color.colorPocetTabat);
+            colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy);
+            colorDlazdiceCasPauzyMeziTabatami = getResources().getColor(R.color.colorCasPauzyMeziTabatami);
+            colorDlazdiceCasCoolDown = getResources().getColor(R.color.colorCasCoolDown);
+
+            casPripravy = new MyTime(0, 1, 0);
+            casCviceni = new MyTime(0, 0, 20);
+            casPauzy = new MyTime(0, 0, 20);
+            casMezitabatami = new MyTime(0, 1, 0);
+            casCoolDown = new MyTime(0, 1, 0);
+            casCelkovy = new MyTime(0, 60, 0);
+
+            puvodniPocetCyklu = 8;
+            puvodniPocetTabat = 4;
+
+
+            zvukStart = 1;
+            zvukStop = 1;
+            zvukCelkovyKonec = 1;
+            zvukCountdown= 1;
+            zvukPauzeMeziTabatami = 1;
+            hlasitost = 100;
+
+
+        }
+
 
 
 
         udelejLayout();
 
-        casPripravy = getIntent().getExtras().getParcelable("caspripavy");
-        casCviceni = getIntent().getExtras().getParcelable("cascviceni");
-        casPauzy = getIntent().getExtras().getParcelable("caspauzy");
-        casMezitabatami = getIntent().getExtras().getParcelable("caspauzynezitabatami");
-        casCoolDown = getIntent().getExtras().getParcelable("cascooldown");
-        puvodniPocetCyklu = getIntent().getExtras().getInt("pocetcyklu");
-        puvodniPocetTabat = getIntent().getExtras().getInt("pocettabat");
-        casCelkovy = getIntent().getExtras().getParcelable("casCelkovy");
 
-
-        zvukStart = getIntent().getIntExtra("zvukstart",1);
-        zvukStop = getIntent().getIntExtra("zvukstop",1);
-        zvukCelkovyKonec = getIntent().getIntExtra("zvukcelkovykonec",1);
-        zvukCountdown = getIntent().getIntExtra("zvukcountdown",1);
-
-        zvukPauzeMeziTabatami = getIntent().getIntExtra("zvukstoptabatas",1);
-    
-        hlasitost = getIntent().getIntExtra("hlasitostTabata", 100);
         volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
 
       
