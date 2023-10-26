@@ -44,14 +44,13 @@ import angtrim.com.fivestarslibrary.FiveStarsDialog;
 import angtrim.com.fivestarslibrary.NegativeReviewListener;
 import angtrim.com.fivestarslibrary.ReviewListener;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukemTabata;
-import com.machy1979ii.intervaltimer.services.ClassicService;
 import com.machy1979ii.intervaltimer.services.TabataService;
 
 public class TabataActivity extends AppCompatActivity implements NegativeReviewListener, ReviewListener {
 
     //   ReviewManager manager;
     //   ReviewInfo reviewInfo = null;
-    private static final String HOME_ACTIVITY_TAG = TabataActivity.class.getSimpleName();
+ //   private static final String HOME_ACTIVITY_TAG = TabataActivity.class.getSimpleName();
 
     private Dialog dialogPoctuTabat;
     private Dialog dialogPocetCyklu;
@@ -76,13 +75,13 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     private int puvodniPocetCyklu;
     private int aktualniCyklus = 1;
     private int pocetCyklu;
-    private int pauzaMeziTabatami;
+    //private int pauzaMeziTabatami;
 
     private TextView textViewCas;
     private TextView textViewCasNadpis;
     private TextView textViewAktualniPocetCyklu;
     private TextView textViewAktualniPocetTabat;
-    private TextView textViewPauza;
+   // private TextView textViewPauza;
     private LinearLayout linearLayoutPauza;
     private LinearLayout dlazdiceOdpocitavace;
     private TextView textViewCelkovyCas;
@@ -92,7 +91,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     private LinearLayout dlazdicePodHlavnimCasem1;
     private LinearLayout dlazdicePodHlavnimCasem2;
     private LinearLayout dlazdicePodHlavnimCasem3;
-    private AdView mAdView;
+//    private AdView mAdView;
 
 
     private CountDownTimer odpocitavac;
@@ -287,7 +286,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
 
     private void spustCasovac() {
-        pauzaMeziTabatami = casMezitabatami.getSec();
+       // pauzaMeziTabatami = casMezitabatami.getSec();
         pocetCyklu = puvodniPocetCyklu;
         pocetTabat = puvodniPocetTabat;
 
@@ -1603,39 +1602,51 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         super.onStop();
         //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
 
+        if(s!=null) {
+            s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, pocetTabat, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
+                    casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,casMezitabatami,
+                    colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu, casCoolDown);
+            s.nastavOdpocitavani();
 
-        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, pocetTabat, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
-                casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,casMezitabatami,
-                colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu, casCoolDown);
-        s.nastavOdpocitavani();
+            s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
+                    zvukCountdown, hlasitost, maxHlasitost, volume);
 
-        s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
-                zvukCountdown, hlasitost, maxHlasitost, volume);
+            // s.setNotification();
+        }
 
-       // s.setNotification();
 
 
         //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
         //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
-                startForegroundService(service);
-            } catch (Exception e) {
-            }
+        if(service!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try {
+                    startForegroundService(service);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        } else
-            try {
-                this.startService(service);
-            } catch (Exception e) {
-            }
-
-        try {
-            s.setNotification();
-        } catch (Exception e) {
-
+            } else
+                try {
+                    this.startService(service);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
 
-        odpocitavac.cancel();
+        if(s!=null) {
+            try {
+                s.setNotification();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        if(odpocitavac!=null) {
+            odpocitavac.cancel();
+        }
 
     }
 

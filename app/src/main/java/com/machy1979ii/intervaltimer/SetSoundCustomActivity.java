@@ -27,9 +27,7 @@ import com.google.android.gms.ads.MobileAds;
 
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.machy1979ii.intervaltimer.funkce.PraceSeSouboremTabata;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukemTabata;
-import com.machy1979ii.intervaltimer.ui.main.FirstFragment;
 import com.machy1979ii.intervaltimer.ui.main.SecondFragment;
 
 

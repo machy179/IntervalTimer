@@ -28,7 +28,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -39,14 +38,13 @@ import com.machy1979ii.intervaltimer.ClassicActivity;
 import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.SetSoundClassicActivity;
 import com.machy1979ii.intervaltimer.funkce.PraceSeSouborem;
-import com.machy1979ii.intervaltimer.funkce.PraceSeSouboremTabata;
 import com.machy1979ii.intervaltimer.models.MyTime;
 
 import java.io.IOException;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
-import static android.app.Activity.RESULT_OK;
+//import static android.app.Activity.RESULT_OK;
 
 public class FirstFragment extends Fragment {
 
@@ -95,7 +93,7 @@ public class FirstFragment extends Fragment {
     private PraceSeSouborem soubor;
     private String dataSoubor;
     private StringBuilder nactenyTextZeSouboru;
-    private boolean posledniHodnotaNacteni = false;
+    //private boolean posledniHodnotaNacteni = false;
 
     //nastavení zvuků
     private int zvukStart = 1;

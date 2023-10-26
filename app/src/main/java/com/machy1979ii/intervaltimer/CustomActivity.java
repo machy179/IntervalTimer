@@ -1,7 +1,6 @@
 package com.machy1979ii.intervaltimer;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,11 +19,9 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -80,7 +77,7 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
     private LinearLayout dlazdicePodHlavnimCasem1;
     private LinearLayout dlazdicePodHlavnimCasem2;
     private LinearLayout dlazdicePodHlavnimCasem3;
-    private AdView mAdView;
+    // private AdView mAdView;
 
 
     private CountDownTimer odpocitavac;
@@ -532,29 +529,6 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
     }
 
 
-    //metoda, která u numperpickeru udělá ty dvě čárečky jinou barvou, než defaultní - jinak to nešlo
-    private void setDividerColor (NumberPicker picker) {
-
-        java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
-        for (java.lang.reflect.Field pf : pickerFields) {
-            if (pf.getName().equals("mSelectionDivider")) {
-                pf.setAccessible(true);
-                try {
-                    pf.set(picker, getResources().getDrawable(R.color.colorPisma));
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
-                }
-                catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-        }
-        //}
-    }
-
     private void nastavCislice (long hodnotaAktualni) {
         if (hodnotaAktualni < 60) {
             if (velikostCislic != (R.dimen.velikostCasuOdpocitavaniDva)) {
@@ -813,40 +787,51 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         super.onStop();
         //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
 
+        if(s!=null) {
+            s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casCelkovy,
+                    stav,colorSpodnichDlazdic, pomocny, pauzaNeniZmacknuta,
+                    pocetCyklu, polozkyCasyKol, aktualniPolozkaCasu, pocitadloPolozekCasu,
+                    jeKonecOdpocitavani);
+            s.nastavOdpocitavani();
 
-        s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casCelkovy,
-                stav,colorSpodnichDlazdic, pomocny, pauzaNeniZmacknuta,
-                pocetCyklu, polozkyCasyKol, aktualniPolozkaCasu, pocitadloPolozekCasu,
-                jeKonecOdpocitavani);
-        s.nastavOdpocitavani();
+            s.nastavZvuky(zvukCelkovyKonec,
+                    zvukCountdown, hlasitost, maxHlasitost, volume);
 
-        s.nastavZvuky(zvukCelkovyKonec,
-                zvukCountdown, hlasitost, maxHlasitost, volume);
+            //  s.setNotification();
+        }
 
-      //  s.setNotification();
 
 
         //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
         //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
-                startForegroundService(service);
-            } catch (Exception e) {
-            }
+        if(service!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try {
+                    startForegroundService(service);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        } else
-            try {
-                this.startService(service);
-            } catch (Exception e) {
-            }
-
-        try {
-            s.setNotification();
-        } catch (Exception e) {
-
+            } else
+                try {
+                    this.startService(service);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
 
-        odpocitavac.cancel();
+
+        if(s!=null) {
+            try {
+                s.setNotification();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(odpocitavac!=null) {
+            odpocitavac.cancel();
+        }
 
     }
 

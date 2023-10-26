@@ -1,8 +1,6 @@
 package com.machy1979ii.intervaltimer;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -34,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
@@ -55,7 +51,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     //   ReviewManager manager;
     //   ReviewInfo reviewInfo = null;
-    private static final String HOME_ACTIVITY_TAG = ClassicActivity.class.getSimpleName();
+    //private static final String HOME_ACTIVITY_TAG = ClassicActivity.class.getSimpleName();
 
     private Dialog dialogNastaveniCasuKola;
     private Dialog dialogPocetCyklu;
@@ -78,7 +74,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private int puvodniPocetCyklu = 8;
     private int aktualniCyklus = 1;
     private int pocetCyklu;
-    private int pauzaMeziTabatami;
+    //private int pauzaMeziTabatami;
 
     private TextView textViewCas;
     private TextView textViewCasNadpis;
@@ -293,7 +289,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     }
 
     private void spustCasovac() {
-        pauzaMeziTabatami = casMezitabatami.getSec();
+        //pauzaMeziTabatami = casMezitabatami.getSec();
         pocetCyklu = puvodniPocetCyklu;
         pocetTabat = puvodniPocetTabat;
 
@@ -1539,26 +1535,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    private String vratStringCasUpraveny(MyTime casClass) {
-        return vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
-    }
 
     private void zavlojejReviewNejake() {
 
         //  zavolejDruhyZpusobReview(); //tohle by mělo fungovat
         zavolejTretiZpusob();
-    }
-
-    private void zavolejDruhyZpusobReview() {
-
-        //       FiveStarMe.with(this)
-        //               .setInstallDays(0) // default 10, 0 means install day.
-        //               .setLaunchTimes(2) // default 10
-        //               .setDebug(false) // default false
-        //               .monitor();
-
-        //       FiveStarMe.showRateDialogIfMeetsConditions(this);
-
     }
 
     private void zavolejTretiZpusob() {
@@ -1651,41 +1632,54 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             // Služba `ClassicService` nebeží, můžete ji spustit a provést další akce.
 
             super.onStop();
-            //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
-            s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy, colorDlazdiceCasPripravy,
-                    casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
-                    colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta, pocetCyklu);
-            Log.d("ChybaCykly", String.valueOf(pocetCyklu));
-            s.nastavOdpocitavani();
+            if(s!=null) {
+                //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
+                s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy, colorDlazdiceCasPripravy,
+                        casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
+                        colorDlazdicePocetCyklu, stav, pomocny, pauzaNeniZmacknuta, pocetCyklu);
+                Log.d("ChybaCykly", String.valueOf(pocetCyklu));
+                s.nastavOdpocitavani();
 
-            s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
-                    zvukCountdown, zvukPulkaCviceni, casPulkyKola,
-                    casPulkyKolaAktualni, zvukPredkoncemKola, casZvukuPredKoncemKola,
-                    hlasitost, maxHlasitost, volume);
+                s.nastavZvuky(zvukStart, zvukStop, zvukCelkovyKonec,
+                        zvukCountdown, zvukPulkaCviceni, casPulkyKola,
+                        casPulkyKolaAktualni, zvukPredkoncemKola, casZvukuPredKoncemKola,
+                        hlasitost, maxHlasitost, volume);
 
-           // s.setNotification();
+                // s.setNotification();
+            }
+
 
             //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
             //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
-                startForegroundService(service);
-            } catch (Exception e) {
-            }
+        if(service!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try {
+                    startForegroundService(service);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        } else
-            try {
-                this.startService(service);
-            } catch (Exception e) {
-            }
-
-        try {
-            s.setNotification();
-        } catch (Exception e) {
-
+            } else
+                try {
+                    this.startService(service);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
 
+
+        if(s!=null) {
+            try {
+                s.setNotification();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(odpocitavac!=null) {
             odpocitavac.cancel();
+        }
+
       //  }
 
         Log.d("nofifikace", "3333");
@@ -1693,15 +1687,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     }
 
-    private boolean isClassicServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ClassicService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override  //pridat pro service
     protected void onDestroy() {

@@ -1,45 +1,26 @@
 package com.machy1979ii.intervaltimer;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.PowerManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.ump.ConsentForm;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.FormError;
 import com.google.android.ump.UserMessagingPlatform;
-import com.machy1979ii.intervaltimer.ui.main.FirstFragment;
-import com.machy1979ii.intervaltimer.ui.main.SecondFragment;
 import com.machy1979ii.intervaltimer.ui.main.SectionsPagerAdapter;
 import com.machy1979ii.intervaltimer.databinding.ActivityMainBinding;
-import com.machy1979ii.intervaltimer.ui.main.ThirdFragment;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.machy1979ii.intervaltimer.funkce.Detect_outdated_consentKt.deleteTCStringIfOutdated;
 
 public class MainActivity extends AppCompatActivity {
