@@ -236,52 +236,28 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
             zvukCountdown = getIntent().getIntExtra("zvukcountdown",1);
             zvukPauzeMeziTabatami = getIntent().getIntExtra("zvukstoptabatas",1);
             hlasitost = getIntent().getIntExtra("hlasitostTabata", 100);
+
+            udelejLayout();
+
+
+            volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
+
+
+            //countdown zvuk řeším jinak, než ostatní zvuky, předělával jsem to, tak abych se moc nevrtal v kodu, tak to nechám takhle jinak
+            //       tikZvuk3 = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabataTabata.vratZvukCountdownPodlePozice(zvukCountdown));
+            //       tikZvuk2 = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabataTabata.vratZvukCountdownPodlePozice(zvukCountdown));
+            //       tikZvuk1 = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabataTabata.vratZvukCountdownPodlePozice(zvukCountdown));
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown));
+
+            spustCasovac();
         } else {
-            colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni);
-            colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy);
-            colorDlazdiceTabaty = getResources().getColor(R.color.colorPocetTabat);
-            colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy);
-            colorDlazdiceCasPauzyMeziTabatami = getResources().getColor(R.color.colorCasPauzyMeziTabatami);
-            colorDlazdiceCasCoolDown = getResources().getColor(R.color.colorCasCoolDown);
-
-            casPripravy = new MyTime(0, 1, 0);
-            casCviceni = new MyTime(0, 0, 20);
-            casPauzy = new MyTime(0, 0, 20);
-            casMezitabatami = new MyTime(0, 1, 0);
-            casCoolDown = new MyTime(0, 1, 0);
-            casCelkovy = new MyTime(0, 60, 0);
-
-            puvodniPocetCyklu = 8;
-            puvodniPocetTabat = 4;
-
-
-            zvukStart = 1;
-            zvukStop = 1;
-            zvukCelkovyKonec = 1;
-            zvukCountdown= 1;
-            zvukPauzeMeziTabatami = 1;
-            hlasitost = 100;
-
-
+            // Bundle je null, takže uživatel nejdříve killnul tuto aktivitu, zobrazila se mu ale notifikace, na tuto kliknul, ale ta
+            //už ho neměla kam nasměrovat zpět, tak se tato aktivita otevřela znovu, ale bez dat, tak automaticky skočím do mainActivity
+            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(mainActivity);
+            finish();
         }
-
-
-
-
-        udelejLayout();
-
-
-        volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
-
-      
-        //countdown zvuk řeším jinak, než ostatní zvuky, předělával jsem to, tak abych se moc nevrtal v kodu, tak to nechám takhle jinak
-        //       tikZvuk3 = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabataTabata.vratZvukCountdownPodlePozice(zvukCountdown));
-        //       tikZvuk2 = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabataTabata.vratZvukCountdownPodlePozice(zvukCountdown));
-        //       tikZvuk1 = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabataTabata.vratZvukCountdownPodlePozice(zvukCountdown));
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukemTabata.vratZvukCountdownPodlePozice(zvukCountdown));
-
-        spustCasovac();
-    }
+   }
 
 
 
@@ -1653,7 +1629,10 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
     @Override //pridat pro service
     protected void onDestroy() {
-        odpocitavac.cancel();
+        if (odpocitavac != null) {
+            odpocitavac.cancel();
+        }
+    //    odpocitavac.cancel();
         znicService();
         unregisterReceiver(mMessageReceiver);
 

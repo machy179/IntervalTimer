@@ -89,6 +89,8 @@ class CustomService : Service() {
     var maxHlasitost = 100
     var volume = 0f
 
+    var isActivityDestroyed = false
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //nejdříve zjistí, jestli to sem neskočilo z broadcastu
         if ("ACTION_STOP_SERVICE".equals(intent?.getAction())) {
@@ -305,6 +307,9 @@ class CustomService : Service() {
                 //pokud to bude nižší Android než 8 (version code O), tak podle dokumentace by měl channelId být ignorován
             }
 
+
+
+
         notificationIntent = Intent(this, CustomActivity::class.java)
 
         // aby se přepnulo na existující instanci aktivity a vymazali všechny další aktivity nad ní zdroj: https://www.peachpit.com/articles/article.aspx?p=1874864
@@ -317,6 +322,8 @@ class CustomService : Service() {
             this,
             0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
         )
+
+
 
 
 

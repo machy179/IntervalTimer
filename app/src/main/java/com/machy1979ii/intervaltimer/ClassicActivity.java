@@ -204,7 +204,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         statusBarcolor();
 
 
-        if (getIntent().getExtras() != null) { //play google mi zde házel chybu, tak ještě ověřuji, zda Bundle extras není null
+        if (getIntent().getExtras() != null) {
+            //play google mi zde házel chybu, tak ještě ověřuji, zda Bundle extras není null
+            //pravděpodobně je to ve chvíli, kdy uživatel killne tuto aktivitu, skočí mu notifikace a on na ni klikne, potom se znovu otevře
+            //nová tato aktivita, ale getIntent().getExtras() je null
             if (getIntent().getExtras().getParcelable("caspripavy") == null) {
                 casPripravy = new MyTime(0, 0, 20);
             } else {
@@ -241,51 +244,37 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             zvukPredkoncemKola = getIntent().getIntExtra("zvukpredkoncemkola", 33);
             casZvukuPredKoncemKola = getIntent().getIntExtra("caszvukupupredkoncemkola", 20);
             hlasitost = getIntent().getIntExtra("hlasitost", 100);
+
+            if (zvukPulkaCviceni != PraceSeZvukem.vratPocetZvukuPulkaCviceni()) {
+                casPulkyKola = (casCviceni.getHour() * 3600 + casCviceni.getMin() * 60 + casCviceni.getSec()) / 2;
+                casPulkyKolaAktualni = casPulkyKola;
+                Log.d("Cas pulky kola: ", String.valueOf(casPulkyKola));
+
+            }
+
+            volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
+
+
+            //countdown zvuk řeším jinak, než ostatní zvuky, předělával jsem to, tak abych se moc nevrtal v kodu, tak to nechám takhle jinak
+            //       tikZvuk3 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
+            //       tikZvuk2 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
+            //       tikZvuk1 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
+
+            udelejLayout();
+
+            spustCasovac();
         } else {
-            // Bundle je null, takže byste měli provést záložní akce nebo nastavit výchozí hodnoty
-            casPripravy = new MyTime(0, 0, 20);
-            casCviceni = new MyTime(0, 2, 0);
-            casPauzy = new MyTime(0, 1, 0);
-            casCelkovy = new MyTime(0, 23, 20);
-
-            puvodniPocetCyklu = 8;
-            colorDlazdiceCasCviceni = getResources().getColor(R.color.colorCasCviceni);;
-            colorDlazdiceCasPauzy = getResources().getColor(R.color.colorCasPauzy);
-            colorDlazdicePocetCyklu = getResources().getColor(R.color.colorCerna);;
-            colorDlazdiceCasPripravy = getResources().getColor(R.color.colorCasPripravy);
-
-            zvukStart = 1;
-            zvukStop = 1;
-            zvukCelkovyKonec = 1;
-            zvukCountdown = 1;
-            zvukPulkaCviceni = 33;
-
-            zvukPredkoncemKola = 33;
-            casZvukuPredKoncemKola = 20;
-            hlasitost = 100;
+            // Bundle je null, takže uživatel nejdříve killnul tuto aktivitu, zobrazila se mu ale notifikace, na tuto kliknul, ale ta
+            //už ho neměla kam nasměrovat zpět, tak se tato aktivita otevřela znovu, ale bez dat, tak automaticky skočím do mainActivity
+            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(mainActivity);
+            finish();
         }
 
 
 
-        if (zvukPulkaCviceni != PraceSeZvukem.vratPocetZvukuPulkaCviceni()) {
-            casPulkyKola = (casCviceni.getHour() * 3600 + casCviceni.getMin() * 60 + casCviceni.getSec()) / 2;
-            casPulkyKolaAktualni = casPulkyKola;
-            Log.d("Cas pulky kola: ", String.valueOf(casPulkyKola));
 
-        }
-
-        volume = (float) (1 - (Math.log(maxHlasitost - hlasitost) / Math.log(maxHlasitost)));
-
-
-        //countdown zvuk řeším jinak, než ostatní zvuky, předělával jsem to, tak abych se moc nevrtal v kodu, tak to nechám takhle jinak
-        //       tikZvuk3 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-        //       tikZvuk2 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-        //       tikZvuk1 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
-
-        udelejLayout();
-
-        spustCasovac();
     }
 
     private void spustCasovac() {
@@ -807,7 +796,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         mediaPlayer.reset();
                                         mediaPlayer.release();
                                     }
-                                    ;
+
                                     mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
                                     mediaPlayer.setVolume(volume, volume);
                                     mediaPlayer.start();
@@ -1690,7 +1679,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
     @Override  //pridat pro service
     protected void onDestroy() {
-        odpocitavac.cancel();
+        if (odpocitavac != null) {
+            odpocitavac.cancel();
+        }
         znicService();
         unregisterReceiver(mMessageReceiver);
         //    android.os.Process.killProcess(android.os.Process.myPid());
