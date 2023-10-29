@@ -6,7 +6,10 @@
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorPocetTabat">#012E63</color>
     <color name="colorCasPripravy">#787878</color>
-    <color name="colorReklama">#A6A6A5</color>
+    <color name="colorReklama">#A6A6A5</color>  <!--  #A6A6A5 -->
+    <color name="colorStatusBarColor">#A6A6A5</color>  <!--  #A6A6A5 -->
+    <color name="colorNavigationBar">#A6A6A5</color>
+    <color name="colorTabLayout">#A6A6A5</color>  <!--  #A6A6A5 -->
     <color name="colorCasCviceni">#3A6747</color>
     <color name="colorCasPauzy">#7C030A</color>
     <color name="colorNastaveniZvuku">#350c0c</color>
@@ -71,8 +74,6 @@
 
     <color name="colorZvukPulkyKola">#D8562D</color>
 
-
-    <color name="colorTabLayout">#E1B225</color>  <!--  #9E9E9E -->
 
     <color name="colorThumbSwitchNezaskrtnuto">#CDDFDFDF</color>
     <color name="colorTrackSwitchNezaskrtnuto">#74D1D1D1</color>

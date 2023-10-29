@@ -488,7 +488,7 @@ public class SetSoundTabataActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(SetSoundTabataActivity.this,R.color.colorReklama));
+            window.setStatusBarColor(ContextCompat.getColor(SetSoundTabataActivity.this,R.color.colorStatusBarColor));
         }
     }
 

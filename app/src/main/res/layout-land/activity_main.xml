@@ -28,7 +28,7 @@
             app:tabSelectedTextColor="@color/white"
             app:tabIndicatorColor="@android:color/white"
 
-            android:background="@drawable/backgroundreklama"/>
+            android:background="@drawable/backgroundtablayout"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

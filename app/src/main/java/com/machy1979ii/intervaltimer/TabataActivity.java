@@ -30,6 +30,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -120,6 +121,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     private int maxHlasitost = 100;
     float volume;
 
+    private boolean buttonBackIsNotPressed = true;
+
     //proměnné pro servicu
     private Boolean bound = false;
     private Boolean spustenoZPozadi = false; //příznak, že aplikace byla spuštěna z pozadí a ne z notifikace
@@ -187,6 +190,19 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            //v androidu 11 když uživatel dal zpět, tak se zobrazila notifikace, tak tato metoda bude checkovat, jestli uživatel dal v aktivitě
+            //zpět a pokud ano, notifikace se v onStop nezavolá, protože ale zpět může dát i v otevřeném
+            @Override
+            public void handleOnBackPressed() {
+                if(buttonBackIsNotPressed) {
+                    buttonBackIsNotPressed = false;
+                    finish();
+                }
+
+            }
+        });
 
         //     fanfareZvuk = MediaPlayer.create(getApplicationContext(), R.raw.ramagochiviolinend);
         //      startZvuk = MediaPlayer.create(getApplicationContext(), R.raw.boxstart);
@@ -1578,7 +1594,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         super.onStop();
         //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
 
-        if(s!=null) {
+        if(s!=null && buttonBackIsNotPressed) {
             s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, aktualniTabata, pocetTabat, puvodniPocetTabat, casPripravy,colorDlazdiceCasPripravy,
                     casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,casMezitabatami,
                     colorDlazdiceCasPauzyMeziTabatami, stav, pomocny, pauzaNeniZmacknuta,pocetCyklu, casCoolDown);
@@ -1594,7 +1610,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
         //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
         //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        if(service!=null) {
+        if(service!=null && buttonBackIsNotPressed) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 try {
                     startForegroundService(service);
@@ -1610,7 +1626,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                 }
         }
 
-        if(s!=null) {
+        if(s!=null && buttonBackIsNotPressed) {
             try {
                 s.setNotification();
             } catch (Exception e) {

@@ -30,6 +30,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -124,6 +125,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private int maxHlasitost = 100;
     float volume;
 
+    private boolean buttonBackIsNotPressed = true;
+
     //proměnné pro servicu
     private Boolean bound = false;
     private Boolean spustenoZPozadi = false; //příznak, že aplikace byla spuštěna z pozadí a ne z notifikace
@@ -193,6 +196,19 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //zamezí vypnutí obrazovky do úsporného režimu po nečinnosti, šlo to udělat
         //v XML -  android:keepScreenOn="true", ale to bych to musel dát do všech XML (land...)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            //v androidu 11 když uživatel dal zpět, tak se zobrazila notifikace, tak tato metoda bude checkovat, jestli uživatel dal v aktivitě
+            //zpět a pokud ano, notifikace se v onStop nezavolá, protože ale zpět může dát i v otevřeném
+            @Override
+            public void handleOnBackPressed() {
+                if(buttonBackIsNotPressed) {
+                    buttonBackIsNotPressed = false;
+                    finish();
+                }
+
+            }
+        });
 
 //tady jsem zkoušel, aby se při backgroundu nevypnula aplikace a pokračovala, ale nakonec jsem to do apky nedal, jestli to
         //tam budu chtít dát, tak do AndroidManifestu musím dát tohle:  <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -271,11 +287,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             startActivity(mainActivity);
             finish();
         }
-
-
-
-
-    }
+   }
 
     private void spustCasovac() {
         //pauzaMeziTabatami = casMezitabatami.getSec();
@@ -1560,7 +1572,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(ClassicActivity.this, R.color.colorReklama));
+            window.setStatusBarColor(ContextCompat.getColor(ClassicActivity.this, R.color.colorStatusBarColor));
         }
     }
 
@@ -1621,7 +1633,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             // Služba `ClassicService` nebeží, můžete ji spustit a provést další akce.
 
             super.onStop();
-            if(s!=null) {
+            if(s!=null && buttonBackIsNotPressed) {
                 //když máme service connection, tak se nemusí startovat servica, ta už je inicializovaná, stačí v ní jen vyvolat metody
                 s.nastavHodnoty(aktualniCyklus, puvodniPocetCyklu, casPripravy, colorDlazdiceCasPripravy,
                         casCviceni, colorDlazdiceCasCviceni, casPauzy, colorDlazdiceCasPauzy, casCelkovy,
@@ -1640,7 +1652,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
             //nakonec musím spustit startForegroundService, aby se v service mohla spustit metoda onStartCommand, ve které je return START_NOT_STICKY - to tady je proto,
             //aby se po uvedení telefonu po vypnutí tato servica po cca 1 minutě nekillnula
-        if(service!=null) {
+        if(service!=null && buttonBackIsNotPressed) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 try {
                     startForegroundService(service);
@@ -1657,7 +1669,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         }
 
 
-        if(s!=null) {
+        if(s!=null && buttonBackIsNotPressed) {
+
             try {
                 s.setNotification();
             } catch (Exception e) {
@@ -1675,7 +1688,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
 
     }
-
 
     @Override  //pridat pro service
     protected void onDestroy() {
