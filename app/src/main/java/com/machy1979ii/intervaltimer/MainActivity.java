@@ -2,8 +2,14 @@ package com.machy1979ii.intervaltimer;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
@@ -12,12 +18,17 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import com.google.android.ump.ConsentForm;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.FormError;
 import com.google.android.ump.UserMessagingPlatform;
+import com.machy1979ii.intervaltimer.funkce.AdUtils;
 import com.machy1979ii.intervaltimer.ui.main.SectionsPagerAdapter;
 import com.machy1979ii.intervaltimer.databinding.ActivityMainBinding;
 
@@ -31,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
     private ConsentInformation consentInformation;
     private ConsentForm consentForm;
 
+    //adaptivní banner
+    private static final String AD_UNIT_ID = "ca-app-pub-6701702247641250/5801491018";
+    private AdView adView;
+    private FrameLayout adContainerView;
+    private boolean initialLayoutComplete = false;
+
 
 
 
@@ -38,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //pro zajištění, aby to bylo full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //pro zajištění, aby to bylo full screen
+
+        Window window = getWindow(); //spodní navigační lišta pořád tmavá
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.setNavigationBarColor(getResources().getColor(R.color.colorCerna, null));
+        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -59,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         deleteTCStringIfOutdated(getApplicationContext());
         udelejZpravuGDPR();
         askPermissionPostNotification();
+        ulelejReklamu();
+
 
 
 
@@ -94,6 +121,35 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
 
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ulelejReklamu();
+    }
+
+
+    private void ulelejReklamu() {
+        // Reklama Goole nová - adaptivní banner
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) { }
+        });
+        initialLayoutComplete = false;
+        adContainerView = findViewById(R.id.ad_view_container);
+        adView = new AdView(this);
+        adContainerView.addView(adView);
+        adContainerView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (!initialLayoutComplete) {
+                            initialLayoutComplete = true;
+                            AdUtils.loadBanner(adView, AD_UNIT_ID,MainActivity.this,adContainerView); //volám mnou vytvořenou statickou třídu/metodu
+                            //    loadBanner();
+                        }
+                    }
+                });
     }
 
     private void udelejZpravuGDPR() {

@@ -8,7 +8,19 @@
     android:orientation="vertical">
 
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+    <FrameLayout
+        android:id="@+id/ad_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="@dimen/velikostStinu"
+        />
+
+<!--    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +32,7 @@
         android:elevation="@dimen/velikostStinu"
         android:background="@drawable/backgroundreklama"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />
+        ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
 
     <LinearLayout
 

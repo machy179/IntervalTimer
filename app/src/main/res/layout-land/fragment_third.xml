@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+<!--        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:elevation="@dimen/velikostStinu"
             android:background="@drawable/backgroundreklama"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />
+            ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
 
 
         <LinearLayout

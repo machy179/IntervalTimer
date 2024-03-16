@@ -12,17 +12,18 @@
         android:clipToPadding="false"
         android:orientation="vertical">
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/backgroundreklama"
-            android:elevation="@dimen/velikostStinu"
+        <!--        <com.google.android.gms.ads.AdView
+                    xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/backgroundreklama"
+                    android:elevation="@dimen/velikostStinu"
 
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6701702247641250/8834302671" />
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
 
 
 
@@ -194,14 +195,19 @@
 
 
 
-                <FrameLayout
+                <RelativeLayout  android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    <ImageView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitEnd"
+                        android:layout_alignParentRight="true"
+                        app:srcCompat="@mipmap/cviceniobrazekctverec" />
 
                     <LinearLayout
-                        android:background="@mipmap/cviceniobrazek2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -275,7 +281,7 @@
 
                     </LinearLayout>
 
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -293,12 +299,19 @@
 
                 android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                <RelativeLayout  android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitEnd"
+                        android:layout_alignParentRight="true"
+                        app:srcCompat="@mipmap/pauzaobrazekctverec" />
+
                     <LinearLayout
-                        android:background="@mipmap/pauzaobrazek2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -362,7 +375,7 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -379,10 +392,16 @@
                 android:background="@drawable/backgroundcolorpocetkol"
                 android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@mipmap/cyklyobrazek2">
+                <RelativeLayout  android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitEnd"
+                        android:layout_alignParentRight="true"
+                        app:srcCompat="@mipmap/cyklyobrazekctverec" />
 
                     <LinearLayout
 
@@ -417,7 +436,7 @@
                             android:textStyle="bold" />
 
                     </LinearLayout>
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 

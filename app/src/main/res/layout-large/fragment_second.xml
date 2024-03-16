@@ -3,27 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.SecondFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:clipToPadding="false"
         android:orientation="vertical">
 
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+        <!--        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
 
-            android:elevation="@dimen/velikostStinu"
-            android:background="@drawable/backgroundreklama"
+                    android:elevation="@dimen/velikostStinu"
+                    android:background="@drawable/backgroundreklama"
 
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
 
 
         <LinearLayout
@@ -156,7 +158,13 @@
                                     android:textSize="@dimen/velikostTextuNadpis"
                                     android:textStyle="bold" />
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:includeFontPadding="false"
+                                    android:maxLines="1"
+                                    app:autoSizeTextType="uniform"
+                                    app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                    app:autoSizeMinTextSize="12sp"
+                                    app:autoSizeStepGranularity="2sp"
                                     android:id="@+id/textViewHodnotaPriprava"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -189,14 +197,19 @@
 
 
 
-                <FrameLayout
+                <RelativeLayout  android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    <ImageView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitEnd"
+                        android:layout_alignParentRight="true"
+                        app:srcCompat="@mipmap/cviceniobrazekctverec" />
 
                     <LinearLayout
-                        android:background="@mipmap/cviceniobrazek2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -246,7 +259,13 @@
                                 android:textSize="@dimen/velikostTextuNadpis"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeStepGranularity="2sp"
                                 android:id="@+id/textViewHodnotaCviceni"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -264,7 +283,7 @@
 
                     </LinearLayout>
 
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -282,12 +301,19 @@
 
                 android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                <RelativeLayout  android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitEnd"
+                        android:layout_alignParentRight="true"
+                        app:srcCompat="@mipmap/pauzaobrazekctverec" />
+
                     <LinearLayout
-                        android:background="@mipmap/pauzaobrazek2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -334,7 +360,13 @@
                                 android:textSize="@dimen/velikostTextuNadpis"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeStepGranularity="2sp"
                                 android:id="@+id/textViewHodnotaPauza"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -345,7 +377,7 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
-                </FrameLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -372,10 +404,17 @@
                     android:background="@drawable/backgroundcolorpocetkol"
                     android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@mipmap/cyklyobrazek2">
+                    <RelativeLayout  android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitEnd"
+                            android:layout_alignParentRight="true"
+                            app:srcCompat="@mipmap/cyklyobrazekctverec" />
 
                         <LinearLayout
 
@@ -393,7 +432,13 @@
                                 android:textSize="@dimen/velikostTextuNadpis"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeStepGranularity="2sp"
                                 android:id="@+id/textViewPocetCyklu"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -404,7 +449,7 @@
                                 android:textStyle="bold" />
 
                         </LinearLayout>
-                    </FrameLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -469,7 +514,13 @@
                                     android:textSize="@dimen/velikostTextuNadpis"
                                     android:textStyle="bold" />
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:includeFontPadding="false"
+                                    android:maxLines="1"
+                                    app:autoSizeTextType="uniform"
+                                    app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                    app:autoSizeMinTextSize="12sp"
+                                    app:autoSizeStepGranularity="2sp"
                                     android:id="@+id/textViewHodnotaPocetTabat"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -553,7 +604,13 @@
                                 android:textSize="@dimen/velikostTextuNadpis"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeStepGranularity="2sp"
                                 android:id="@+id/textViewHodnotaCasuMeziTabatami"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -634,8 +691,13 @@
                                 android:textSize="@dimen/velikostTextuNadpis"
                                 android:textStyle="bold" />
 
-                            <TextView
-
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeStepGranularity="2sp"
                                 android:id="@+id/textViewHodnotaCoolDown"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -684,7 +746,13 @@
                             android:textStyle="bold" />
 
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:includeFontPadding="false"
+                            android:maxLines="1"
+                            app:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="@dimen/velikostTextuHodnoty"
+                            app:autoSizeMinTextSize="12sp"
+                            app:autoSizeStepGranularity="2sp"
                             android:id="@+id/textViewsStart"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
