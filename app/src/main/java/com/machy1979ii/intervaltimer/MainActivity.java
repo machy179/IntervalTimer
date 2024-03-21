@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         deleteTCStringIfOutdated(getApplicationContext());
         udelejZpravuGDPR();
         askPermissionPostNotification();
-        ulelejReklamu();
+        udelejReklamu();
 
 
 
@@ -125,11 +125,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        ulelejReklamu();
+        zrusReklamu();//přidána tato funkce, protože při otočení tam chvíli visela původní reklama s původními rozměry
+        udelejReklamu();
     }
 
 
-    private void ulelejReklamu() {
+    private void udelejReklamu() {
         // Reklama Goole nová - adaptivní banner
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -151,6 +152,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void zrusReklamu() {
+        if (adView != null) {
+            adContainerView.removeView(adView); // Odstranění reklamy z rodičovského kontejneru
+            adView.destroy(); // Zničení instance reklamy
+            adView = null; // Nulování reference na instanci reklamy
+        }
+    }
+
 
     private void udelejZpravuGDPR() {
         // Set tag for underage of consent. false means users are not underage.

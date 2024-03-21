@@ -44,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
+            android:layout_marginTop="@dimen/velikostMezery"
             android:layout_marginLeft="@dimen/velikostMezery"
             android:layout_marginRight="@dimen/velikostMezery"
             android:layout_marginBottom="@dimen/velikostMezery"

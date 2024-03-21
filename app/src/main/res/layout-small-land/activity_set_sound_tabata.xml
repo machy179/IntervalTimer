@@ -35,6 +35,7 @@
             ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
 
     <LinearLayout
+        android:layout_marginTop="@dimen/velikostMezeryLandTabataClassic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"

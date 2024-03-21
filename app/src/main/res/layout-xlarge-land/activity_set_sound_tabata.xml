@@ -41,6 +41,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/velikostMezeryLandTabataClassic"
             android:clipChildren="false"
             android:orientation="horizontal"
             android:weightSum="4">
