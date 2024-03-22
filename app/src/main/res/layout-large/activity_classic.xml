@@ -68,7 +68,7 @@
                     android:maxLines="1"
                     app:autoSizeTextType="uniform"
                     app:autoSizeMaxTextSize="@dimen/velikostCasuOdpocitavaniDva"
-                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeMinTextSize="6dp"
                     app:autoSizeStepGranularity="2sp"
                     />
 
@@ -86,7 +86,7 @@
                     android:maxLines="1"
                     app:autoSizeTextType="uniform"
                     app:autoSizeMaxTextSize="@dimen/velikostCasuOdpocitavaniDva"
-                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeMinTextSize="6dp"
                     app:autoSizeStepGranularity="2sp"
                     />
 
