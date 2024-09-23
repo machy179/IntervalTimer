@@ -54,7 +54,7 @@
     <string name="nadpisNastavCasPauzyMeziTabatmi">Set rest time between tabatas</string>
     <string name="nadpisNastavPocetTabat">Set number of tabatas</string>
     <string name="nadpisNastavPocetCyklu">Set number of rounds</string><!-- ??? -->
-    <string name="title_activity_classic">ClassicActivity</string>
+    <string name="title_activity_classic" translatable="false">ClassicActivity</string>
     <string name="title_activity_tabata">TabataActivity</string>
 
 
@@ -83,5 +83,7 @@
     <string name="nadpisNastavBarvu">Set the color:</string>
     <string name="nadpisNastaveniHlasitosti">Volume setting</string>
     <string name="nadpisNastavCas">Set time</string>
+
+    <string name="remove_ads">Remove ADS</string>
 
 </resources>

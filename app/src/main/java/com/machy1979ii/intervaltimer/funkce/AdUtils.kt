@@ -2,6 +2,7 @@ package com.machy1979ii.intervaltimer.funkce
 
 import android.graphics.Rect
 import android.os.Build
+import android.view.ViewTreeObserver
 import android.view.WindowMetrics
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +17,20 @@ class AdUtils {
             adView: AdView,
             AD_UNIT_ID: String?,
             activity: AppCompatActivity?,
-            adContainerView: FrameLayout?
+            adContainerView: FrameLayout?,
         ) {
             val adUtils = AdUtils() // Creating an instance of AdUtils
             adUtils.internalLoadBanner(adView, AD_UNIT_ID, activity, adContainerView)
+        }
+
+        //Google Billing
+        @JvmStatic
+        fun removeAds(adView: AdView?, adContainerView: FrameLayout) {
+            adView?.let {
+                it.destroy() // Zničit AdView
+                adContainerView.removeView(it) // Odstranit AdView z kontejneru
+                adContainerView.viewTreeObserver.removeOnGlobalLayoutListener { } // Odebrat posluchače globálního rozvržení
+            }
         }
     }
 
@@ -27,7 +38,7 @@ class AdUtils {
         adView: AdView,
         AD_UNIT_ID: String?,
         activity: AppCompatActivity?,
-        adContainerView: FrameLayout?
+        adContainerView: FrameLayout?,
     ) {
         adView.adUnitId = AD_UNIT_ID!!
         val adRequest = AdRequest.Builder().build()
@@ -55,4 +66,6 @@ class AdUtils {
         val adWidth = (adWidthPixels / density).toInt()
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth)
     }
+
+
 }

@@ -1,5 +1,7 @@
 package com.machy1979ii.intervaltimer;
 
+import static android.view.View.GONE;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -31,6 +33,8 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.machy1979ii.intervaltimer.funkce.AdUtils;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
+import com.machy1979ii.intervaltimer.services.TimerAnalytics;
+import com.machy1979ii.intervaltimer.services.TimerBillingManager;
 import com.machy1979ii.intervaltimer.ui.main.FirstFragment;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -98,6 +102,11 @@ public class SetSoundClassicActivity extends AppCompatActivity {
     private FrameLayout adContainerView;
     private boolean initialLayoutComplete = false;
 
+    //Google Billing
+
+    private Boolean adsDisabled = false; //když si uživatel koupil aplikaci a reklamy jsou zakázány
+    private View viewNoAds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,29 +143,67 @@ public class SetSoundClassicActivity extends AppCompatActivity {
 
     }
 
+    //Google Billing
+    private void removeAds() {
+        if (viewNoAds != null) {
+            viewNoAds.setVisibility(GONE);
+        }
+        adsDisabled = true;
+        AdUtils.removeAds(adView = adView, adContainerView = adContainerView);
+    }
+
+    //Google Billing
+    public void showNoAds(View v) {
+        //     removeAds();
+        Log.d("Boxing no Ads:", "CLICK showNoAds");
+        TimerBillingManager.Companion.startPurchase(this);
+        Log.d("Boxing no Ads:", "CLICK showNoAds-end");
+    }
+
     private void udelejLayout() {
 
         setContentView(R.layout.activity_set_sound_classic);
 
-        // reklama Google
-/*        String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-     //   MobileAds.initialize(getApplicationContext(), idAplikace);
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+        //Google Billing
+        TimerBillingManager.Companion.initialize(this.getApplication(), null, new TimerBillingManager.Companion.OnPurchaseCompletedListenerSetSoundActivity() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            public void onPurchaseCompletedSetSound() { //tady nastavuju listener, co se má stát, když v TimerBillingManager bude spuštěna metoda onPurchaseCompletedSetSound
+                Log.d("Boxing listener SetS:", "onPurchaseCompleted()");
+                if (TimerBillingManager.Companion.getAdsDisabled().getValue()) {
+
+                    // Zajistíme, že removeAds bude voláno na hlavním vlákně, protože tohle je listener a ten jede v jiném vlákně, pokdu jsem removeAds() volal tady normálně, tak
+                    //viewNoAds.setVisibility(GONE); dělal neplechu, protože tohle musí být voláno v hlavním vlákně viz níže
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("Boxing no Ads2:", "remove ads listener");
+                            adsDisabled = TimerBillingManager.Companion.getAdsDisabled().getValue();
+                            removeAds();
+                        }
+                    });
+                } else Log.d("Boxing no Ads2:", "NOT remove ads listener");
             }
         });
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
+        adsDisabled = TimerBillingManager.Companion.getAdsDisabled().getValue();
+        Log.d("Boxing no Ads2:", adsDisabled.toString());
 
+        //Firebase Analytics
+        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("SetSoundActivity");
+
+
+        //Google Billing
+        viewNoAds = findViewById(R.id.viewNoAds);
+        adContainerView = findViewById(R.id.ad_view_container);
+
+        if(!adsDisabled){
+            viewNoAds.setVisibility(View.VISIBLE);
         // Reklama Goole nová - adaptivní banner
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) { }
         });
         initialLayoutComplete = false;
-        adContainerView = findViewById(R.id.ad_view_container);
+     //   adContainerView = findViewById(R.id.ad_view_container);
         adView = new AdView(this);
         adContainerView.addView(adView);
         adContainerView.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -170,6 +217,10 @@ public class SetSoundClassicActivity extends AppCompatActivity {
                         }
                     }
                 });
+    } else {
+        removeAds();
+    }
+
 
         //načte to název zvuku podle jazykové mutace zařízení
         nazevZvukuPolozka = getResources().getString(R.string.napisZvuk);
@@ -643,6 +694,14 @@ public class SetSoundClassicActivity extends AppCompatActivity {
         finish();
         //Toast.makeText(this, "zmáčknutý back", Toast.LENGTH_SHORT).show();
     //    finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Boxing no Ads2:", "onDestroySetSound");
+        //Google Billing
+        TimerBillingManager.Companion.endConnection();
     }
 
 }

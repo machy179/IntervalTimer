@@ -29,6 +29,8 @@ import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.FormError;
 import com.google.android.ump.UserMessagingPlatform;
 import com.machy1979ii.intervaltimer.funkce.AdUtils;
+import com.machy1979ii.intervaltimer.services.TimerAnalytics;
+import com.machy1979ii.intervaltimer.services.TimerBillingManager;
 import com.machy1979ii.intervaltimer.ui.main.SectionsPagerAdapter;
 import com.machy1979ii.intervaltimer.databinding.ActivityMainBinding;
 
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout adContainerView;
     private boolean initialLayoutComplete = false;
 
+    //Google Billing
+    private Boolean adsDisabled = false; //když si uživatel koupil aplikaci a reklamy jsou zakázány
+
 
 
 
@@ -63,6 +68,33 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             window.setNavigationBarColor(getResources().getColor(R.color.colorCerna, null));
         }
+
+        //Google Billing
+        TimerBillingManager.Companion.initialize(this.getApplication(), new TimerBillingManager.Companion.OnPurchaseCompletedListenerMainActivity() {
+
+            @Override
+            public void onPurchaseCompletedMainActivity() { //tady nastavuju listener, co se má stát, když v TimerBillingManager bude spuštěna metoda onPurchaseCompletedMainActivity
+                Log.d("Boxing listener MainA:", "onPurchaseCompleted()");
+                if (TimerBillingManager.Companion.getAdsDisabled().getValue()) {
+
+                    // Zajistíme, že removeAds bude voláno na hlavním vlákně, protože tohle je listener a ten jede v jiném vlákně, pokdu jsem removeAds() volal tady normálně, tak
+                    //viewNoAds.setVisibility(GONE); dělal neplechu, protože tohle musí být voláno v hlavním vlákně viz níže
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("Boxing no Ads2:", "remove ads listener");
+                            adsDisabled = TimerBillingManager.Companion.getAdsDisabled().getValue();
+                            removeAds();
+                        }
+                    });
+                } else Log.d("Boxing no Ads2:", "NOT remove ads listener");
+            }
+        }, null);
+        adsDisabled = TimerBillingManager.Companion.getAdsDisabled().getValue();
+        Log.d("Boxing no Ads2:", adsDisabled.toString());
+
+        //Firebase Analytics
+        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("MainActivity");
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -85,23 +117,6 @@ public class MainActivity extends AppCompatActivity {
         udelejZpravuGDPR();
         askPermissionPostNotification();
         udelejReklamu();
-
-
-
-
-
-
-/*             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                 String packageName = getApplicationContext().getPackageName();
-                 PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                     Intent intent = new Intent();
-                     intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                     intent.setData(Uri.parse("package:" + packageName));
-                     getApplicationContext().startActivity(intent);
-                 }
-             }*/
 
         int zobrazIntent = getIntent().getIntExtra("zobrazIntent", 0);
 
@@ -132,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void udelejReklamu() {
         // Reklama Goole nová - adaptivní banner
+
+        if (!adsDisabled) {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) { }
@@ -152,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+    }
 
     private void zrusReklamu() {
         if (adView != null) {
@@ -159,6 +177,13 @@ public class MainActivity extends AppCompatActivity {
             adView.destroy(); // Zničení instance reklamy
             adView = null; // Nulování reference na instanci reklamy
         }
+    }
+
+    //Google Billing
+    private void removeAds() {
+        adsDisabled = true;
+        AdUtils.removeAds(adView = adView, adContainerView = adContainerView);
+        Log.d("Boxing no Ads2:", "removeAds()");
     }
 
 

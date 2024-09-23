@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -46,6 +47,7 @@ import com.machy1979ii.intervaltimer.funkce.AdUtils;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
 import com.machy1979ii.intervaltimer.models.MyTime;
 import com.machy1979ii.intervaltimer.services.ClassicService;
+import com.machy1979ii.intervaltimer.services.TimerAnalytics;
 
 import angtrim.com.fivestarslibrary.FiveStarsDialog;
 import angtrim.com.fivestarslibrary.NegativeReviewListener;
@@ -194,6 +196,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private FrameLayout adContainerView;
     private boolean initialLayoutComplete = false;
 
+    private Boolean adsDisabled = false; //když si uživatel koupil aplikaci a reklamy jsou zakázány
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -226,6 +230,15 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
             }
         });
+
+        //Google Billing
+        SharedPreferences sharedPreferences =
+                getApplicationContext().getSharedPreferences("boxing_timer_prefers", Context.MODE_PRIVATE);
+        adsDisabled = sharedPreferences.getBoolean("ads_disabled", false);
+
+
+        //Firebase Analytics
+        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerClassicActivity");
 
 //tady jsem zkoušel, aby se při backgroundu nevypnula aplikace a pokračovala, ale nakonec jsem to do apky nedal, jestli to
         //tam budu chtít dát, tak do AndroidManifestu musím dát tohle:  <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -304,6 +317,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             startActivity(mainActivity);
             finish();
         }
+
+
    }
 
     private void spustCasovac() {
@@ -1482,18 +1497,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         setContentView(R.layout.activity_classic);
 
 
-        // reklama Google
-/*        String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-      //  MobileAds.initialize(getApplicationContext(), idAplikace);
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
-
+        if (!adsDisabled) {
         // Reklama Goole nová - adaptivní banner
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -1514,6 +1518,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                         }
                     }
                 });
+        }
 
         //   zavolejReview();
 

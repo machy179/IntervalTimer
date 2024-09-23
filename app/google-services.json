@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "568702114563",
+    "project_id": "interval-timer-e6de5",
+    "storage_bucket": "interval-timer-e6de5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568702114563:android:c7adfcbbaa88cd0399a736",
+        "android_client_info": {
+          "package_name": "com.machy1979ii.intervaltimer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWCG_orR-cyt0S3HyPcPLIg3rcqy3UNyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
