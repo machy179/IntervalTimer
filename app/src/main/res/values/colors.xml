@@ -79,8 +79,10 @@
     <color name="colorTrackSwitchNezaskrtnuto">#74D1D1D1</color>
     <color name="colorTrackSwitchZaskrtnuto">#DFFFFFFF</color>
 
+    <color name="newColorCastecnePrusvitne">#56000000</color> <!--  #56000000 -->
 
-
-
+    <color name="colorNastaveniLayoutu">#8F8F8F</color>
+    <color name="colorTransparentToastLayoutPozadi">#81616161</color>
+    <color name="colorTransparent">#00AAAAAA</color>
 
 </resources>

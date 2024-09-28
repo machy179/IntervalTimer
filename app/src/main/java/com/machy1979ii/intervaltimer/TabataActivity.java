@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import angtrim.com.fivestarslibrary.NegativeReviewListener;
 import angtrim.com.fivestarslibrary.ReviewListener;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukemTabata;
 import com.machy1979ii.intervaltimer.services.TabataService;
+import com.machy1979ii.intervaltimer.services.TimerAnalytics;
 
 public class TabataActivity extends AppCompatActivity implements NegativeReviewListener, ReviewListener {
 
@@ -188,7 +190,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
     private FrameLayout adContainerView;
     private boolean initialLayoutComplete = false;
 
-
+    //Google Billing
+    private Boolean adsDisabled = false; //když si uživatel koupil aplikaci a reklamy jsou zakázány
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,6 +224,15 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
             }
         });
+
+        //Google Billing
+        SharedPreferences sharedPreferences =
+                getApplicationContext().getSharedPreferences("boxing_timer_prefers", Context.MODE_PRIVATE);
+        adsDisabled = sharedPreferences.getBoolean("ads_disabled", false);
+
+
+        //Firebase Analytics
+        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerTabataActivity");
 
         //     fanfareZvuk = MediaPlayer.create(getApplicationContext(), R.raw.ramagochiviolinend);
         //      startZvuk = MediaPlayer.create(getApplicationContext(), R.raw.boxstart);
@@ -1410,18 +1422,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
         setContentView(R.layout.activity_tabata);
 
-        // reklama Google stará
-/*        String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-    //    MobileAds.initialize(getApplicationContext(), idAplikace);
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
-
+        if (!adsDisabled) {
         // Reklama Goole nová - adaptivní banner
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -1442,8 +1443,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                         }
                     }
                 });
-
-        //   zavolejReview();
+        }
 
         textViewCas  = (TextView) findViewById(R.id.textViewBeziciCas);
         textViewCasNadpis = (TextView) findViewById(R.id.textViewBeziciCasNadpis);

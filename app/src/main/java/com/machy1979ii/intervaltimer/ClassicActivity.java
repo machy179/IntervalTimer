@@ -196,6 +196,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private FrameLayout adContainerView;
     private boolean initialLayoutComplete = false;
 
+    //Google Billing
     private Boolean adsDisabled = false; //když si uživatel koupil aplikaci a reklamy jsou zakázány
 
     @Override
@@ -239,13 +240,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
         //Firebase Analytics
         TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerClassicActivity");
-
-//tady jsem zkoušel, aby se při backgroundu nevypnula aplikace a pokračovala, ale nakonec jsem to do apky nedal, jestli to
-        //tam budu chtít dát, tak do AndroidManifestu musím dát tohle:  <uses-permission android:name="android.permission.WAKE_LOCK" />
-        //   PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        //    @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-        //           "MyWakelockTag");
-        //   wakeLock.acquire();
 
         statusBarcolor();
 

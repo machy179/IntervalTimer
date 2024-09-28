@@ -5,6 +5,8 @@
     <dimen name="sirkaposuvnikunastavenihlasitosti">3dp</dimen>
     <dimen name="sirkacudlikunastavenihlasitosti">16dp</dimen>
 
+    <dimen name="tloustka_progressbar">15dp</dimen>
+
 
 
 

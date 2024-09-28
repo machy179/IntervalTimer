@@ -1,5 +1,8 @@
 package com.machy1979ii.intervaltimer.ui.main;
 
+import static com.machy1979ii.intervaltimer.funkce.Design_preferencesKt.getDesignPreferences;
+import static com.machy1979ii.intervaltimer.funkce.Design_preferencesKt.setDesignPreferences;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,10 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -141,6 +147,14 @@ public class FirstFragment extends Fragment {
 
     private ActivityResultLauncher<Intent> activityResultLaunch;
 
+    //radio buttony
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
+    private boolean prvniNacteniRadioButtonu = true; //když se načetla aplikace, nebo při change land/port, tak se automaticky zobrazil toas vybraného layoutu, tak je zde potřeba podchitit první načtení
+
+    private int vybranyDesign = 3;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -174,6 +188,7 @@ public class FirstFragment extends Fragment {
 
         vytvorView();
         udelejLayout(rootView);
+        nactiHodnotuVybranehoDesignu();
         nactiColors();
         vytvorClickaciLayouty();
 
@@ -765,6 +780,7 @@ public class FirstFragment extends Fragment {
         //          Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
         vytvorView();
         udelejLayout(rootView);
+        nactiHodnotuVybranehoDesignu();
         nactiColors();
         vytvorClickaciLayouty();
 
@@ -840,6 +856,84 @@ public class FirstFragment extends Fragment {
         spoctiCelkovyCasAZobraz();
         //      hodnotaCelkovyCasTextView.setText(vratStringCasUpravenySHodinama(casCelkovy));
         nastavColorDlazdiceKola();
+
+        //radio buttony
+        radioButton1 = (RadioButton) rootView.findViewById(R.id.radioButton1);
+        // radioButton1.setChecked(true); //tady chyba
+        radioButton1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    radioButton2.setChecked(false);
+                    radioButton3.setChecked(false);
+                    vybranyDesign = 1;
+                    //používání design_preferences
+                    //Log.i("vybranyDesign: ", String.valueOf(getDesignPreferences(getApplicationContext())));
+                    setDesignPreferences(getActivity().getApplicationContext(), 1);
+
+                    //toast
+                    LayoutInflater inflater = getLayoutInflater();
+                    View view = inflater.inflate(R.layout.toast_layout_pozadi1,
+                            (ViewGroup) rootView.findViewById(R.id.relativeLayout1));
+
+                    Toast toast = new Toast(getActivity().getApplicationContext());
+                    toast.setView(view);
+                    if (!prvniNacteniRadioButtonu) toast.show();
+                    prvniNacteniRadioButtonu = false;
+
+                }
+            }
+        });
+        radioButton2 = (RadioButton) rootView.findViewById(R.id.radioButton2);
+        radioButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    radioButton1.setChecked(false);
+                    radioButton3.setChecked(false);
+                    vybranyDesign = 2;
+                    //používání design_preferences
+                    //Log.i("vybranyDesign: ", String.valueOf(getDesignPreferences(getApplicationContext())));
+                    setDesignPreferences(getActivity().getApplicationContext(), 2);
+                    //toast
+                    LayoutInflater inflater = getLayoutInflater();
+                    View view = inflater.inflate(R.layout.toast_layout_pozadi2,
+                            (ViewGroup) rootView.findViewById(R.id.relativeLayout1));
+
+                    Toast toast = new Toast(getActivity().getApplicationContext());
+                    toast.setView(view);
+                    if (!prvniNacteniRadioButtonu) toast.show();
+                    prvniNacteniRadioButtonu = false;
+
+
+                }
+            }
+        });
+        radioButton3 = (RadioButton) rootView.findViewById(R.id.radioButton3);
+        radioButton3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i("vybranyDesign: ", "click of 3 radio button");
+                if (isChecked) {
+                    radioButton2.setChecked(false);
+                    radioButton1.setChecked(false);
+                    vybranyDesign = 3;
+                    //používání design_preferences
+                    //Log.i("vybranyDesign: ", String.valueOf(getDesignPreferences(getApplicationContext())));
+                    setDesignPreferences(getActivity().getApplicationContext(), 3);
+
+                    //toast
+                    LayoutInflater inflater = getLayoutInflater();
+                    View view = inflater.inflate(R.layout.toast_layout_pozadi3,
+                            (ViewGroup) rootView.findViewById(R.id.relativeLayout1));
+
+                    Toast toast = new Toast(getActivity().getApplicationContext());
+                    toast.setView(view);
+                    if (!prvniNacteniRadioButtonu) toast.show();
+                    prvniNacteniRadioButtonu = false;
+                }
+            }
+        });
     }
 
     private void nastavColorDlazdiceKola() {
@@ -1109,6 +1203,23 @@ public class FirstFragment extends Fragment {
         colorPicker.show();
     }
 
-
+    private void nactiHodnotuVybranehoDesignu() {
+        //načte vybraný design
+        prvniNacteniRadioButtonu = true;
+        vybranyDesign = getDesignPreferences(getActivity().getApplicationContext());
+        switch (vybranyDesign) {
+            case 1:
+                radioButton1.setChecked(true);
+                break;
+            case 2:
+                radioButton2.setChecked(true);
+                break;
+            case 3:
+                radioButton3.setChecked(true);
+                break;
+            default:
+                radioButton1.setChecked(true);
+        }
+    }
 
 }

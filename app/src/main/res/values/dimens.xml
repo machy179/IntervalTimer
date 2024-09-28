@@ -29,6 +29,8 @@
     <dimen name="velikostMezeryVodorovneLandZakladniLayout">12dp</dimen>
     <dimen name="vyskaDlazcie">60dp</dimen>
     <dimen name="vyskaMenuDlazcie">30dp</dimen>
+    <dimen name="odsazeniButtonuPause">30dp</dimen>
+    <dimen name="velikostMezeryButtonuPause">17dp</dimen>
 
 
 

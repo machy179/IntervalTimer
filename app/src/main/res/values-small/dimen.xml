@@ -15,5 +15,9 @@
     <dimen name="velikostMezeryPismaOdpocitavace">6dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">2dp</dimen>
     <dimen name="kulate_rohy">5dp</dimen>
+    <dimen name="tloustka_progressbar">4dp</dimen>
+    <dimen name="odsazeniButtonuPause">9dp</dimen>
+    <dimen name="velikostMezeryButtonuPause">4dp</dimen>
+
 
 </resources>

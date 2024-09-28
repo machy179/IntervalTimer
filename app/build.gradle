@@ -88,5 +88,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.2.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    //progressbar
+    implementation 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.4' //https://stackoverflow.com/questions/36639660/android-circular-progress-bar-with-rounded-corners
 }
 

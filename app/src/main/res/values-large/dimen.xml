@@ -12,7 +12,12 @@
     <dimen name="velikostTextuCelkovyCas">35dp</dimen>
 
     <dimen name="kulate_rohy">10dp</dimen>
-    <dimen name="velikostMezery">10dp</dimen>
+    <dimen name="velikostMezery">15dp</dimen>
     <dimen name="velikostMezeryPismaOdpocitavace">30dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">10dp</dimen>
+
+    <dimen name="tloustka_progressbar">21dp</dimen>
+    <dimen name="odsazeniButtonuPause">48dp</dimen>
+    <dimen name="velikostMezeryButtonuPause">25dp</dimen>
+
 </resources>
