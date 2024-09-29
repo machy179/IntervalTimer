@@ -12,8 +12,23 @@ public fun getDesignPreferences(context: Context): Int {
     var vybranyDesign = 1
     val sharedPrefs = context.getSharedPreferences(
         context.getPackageName() + "_hodnoty_aplikace", Context.MODE_PRIVATE)
-    try {
+    try {//nejdříve zjistí, zda už tam aplikace byla nainstalovaná, v tom případě by se lišily údaje first a last...
+        val firstInstallTime =
+            context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+        val lastUpdateTime =
+            context.packageManager.getPackageInfo(context.packageName, 0).lastUpdateTime
+        if(firstInstallTime == lastUpdateTime) {
+            //jde o první instalaci, tak se nastaví design na 3, pokud při dalším spuštění si to uživatel nepřenastavil
+            vybranyDesign = sharedPrefs.getInt( "vybrany_design" , 3 )
+            Log.d("vybranyDesign setting: ", "vybrany design 3 - prvni instalace")
+        }
+        else {
+            //nejde o první instalalaci, tak se design načte, pokud se jedná o v. 4.3 a nižší, kdy tam tato funkce ještě nebyla a nebyla tak možnost výběru designu,
+            //automaticky se nastaví vybranyDesign na 1, v opačném případě se načte vybraný design, který tam je
             vybranyDesign = sharedPrefs.getInt( "vybrany_design" , 1 )
+            Log.d("vybranyDesign setting: ", "vybrany design 1 - je to update")
+        }
+
 
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()

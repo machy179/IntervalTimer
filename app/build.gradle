@@ -19,8 +19,8 @@ android {
         applicationId "com.machy1979ii.intervaltimer"
         minSdkVersion 21 //19
         targetSdkVersion 35
-        versionCode 32 //31
-        versionName "4.3" //4.2
+        versionCode 32 //32
+        versionName "4.3" //4.3
         multiDexEnabled = true
     //    android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
         ndkVersion "23.1.7779620" // to jsem sem dal, abych se pokusil udělat obfuscation soubor pro ladění chyb v programu na google play - tam je uvedeno že k app bundle souboru je přiložen mapovací soubor ReTrace
