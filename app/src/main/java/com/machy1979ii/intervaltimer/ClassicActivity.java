@@ -1,5 +1,7 @@
 package com.machy1979ii.intervaltimer;
 
+import static com.machy1979ii.intervaltimer.funkce.Design_preferencesKt.getDesignPreferences;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -52,6 +54,7 @@ import com.machy1979ii.intervaltimer.services.TimerAnalytics;
 import angtrim.com.fivestarslibrary.FiveStarsDialog;
 import angtrim.com.fivestarslibrary.NegativeReviewListener;
 import angtrim.com.fivestarslibrary.ReviewListener;
+import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class ClassicActivity extends AppCompatActivity implements NegativeReviewListener, ReviewListener {
 
@@ -104,13 +107,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private boolean preskocVypisCasu = false;
 
     private byte stav = 0; //0-priprava, 1-cviceni, 2-pauza, 3-pauza mezi tabatami
-
-//    private MediaPlayer tikZvuk3;
-//    private MediaPlayer tikZvuk2;
-//    private MediaPlayer tikZvuk1;
-//    private MediaPlayer restZvuk;
-    //   private MediaPlayer startZvuk;
-//    private MediaPlayer fanfareZvuk;
 
     //nastavení zvuků
     private int zvukStart = 1;
@@ -189,6 +185,17 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         }
 
     };
+
+    //new design
+    private boolean newLayout = true;
+    private int vybranyDesign = 3;
+    private CustomGauge progressBar;
+    private int maxHodnotaProgressBar = 0;
+    private boolean nastavProgressBar = false;
+    private boolean konecOdpocitavani = false;
+
+    private boolean jeKonecOdpocitavani = false;
+
 
     //adaptivní banner
     private static final String AD_UNIT_ID = "ca-app-pub-6701702247641250/5801491018";
@@ -301,6 +308,23 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             //       tikZvuk1 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
             mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
 
+            vybranyDesign = getDesignPreferences(getApplicationContext());
+            Log.d("vybranyDesign", String.valueOf(vybranyDesign));
+            //       vybranyDesign = 3; //tady to předělat, aby si to tahalo ze shared preferences
+            switch (vybranyDesign) {
+                case 1:
+                    newLayout = false;
+                    break;
+                case 2:
+                    newLayout = true;
+                    break;
+                case 3:
+                    newLayout = true;
+                    nastavProgressBar = true;
+                    break;
+                default:
+                    newLayout = false;
+            }
             udelejLayout();
 
             spustCasovac();
@@ -335,6 +359,12 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         } else
             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
 
+        if (newLayout) {
+            dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+            zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+
+        }
+
         textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus) + "/" + String.valueOf(puvodniPocetCyklu));
         //zapíše čas cvičení
         if (casCviceni.getSec() < 10) {
@@ -344,6 +374,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         }
 
         pomocny = casPripravy.getSec() + 1 + casPripravy.getMin() * 60 + casPripravy.getHour() * 3600;
+        maxHodnotaProgressBar = (int) pomocny;
         if (pomocny < 60) {
             textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
             velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
@@ -411,9 +442,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                             } else
                                 dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
 
+                            if (newLayout) {
+                                dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                                zmenNavigationBarColor(colorDlazdiceCasCviceni);
+                            }
 
                             textViewCasNadpis.setText(R.string.nadpisCasCviceni);
                             pomocny = casCviceni.getSec() + casCviceni.getMin() * 60 + casCviceni.getHour() * 3600 + 1;
+                            maxHodnotaProgressBar = (int) pomocny;
                             pomocny = pomocny - 1; //protože při GO už to je jedna sekunda a pak mi to při celkovém času nehrálo
 
                             textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
@@ -505,23 +541,34 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
                                         } else
                                             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                                        if (newLayout) {
+                                            dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                                            zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                                        }
 
                                         textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
                                         velikostCislic = R.dimen.velikostCasuOdpocitavaniFull;
                                         textViewCas.setText(R.string.konec);
+                                        konecOdpocitavani = true;
                                         textViewBeziciCasCisloKola.setText("");
                                         stav = 4;
                                         preskocVypisCasu = true;
                                         Log.d("Jsem na konci: ", "1");
+
+
                                     } else {
                                         stav = 5;
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascooldown));//  (R.drawable.background);
                                         } else
                                             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
-
+                                        if (newLayout) {
+                                            dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasCoolDown));
+                                            zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasCoolDown));
+                                        }
                                         textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
                                         pomocny = casCoolDown.getSec() + casCoolDown.getMin() * 60 + casCoolDown.getHour() * 3600 + 1;
+                                        maxHodnotaProgressBar = (int) pomocny;
 
                                         textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniCoolDown));
                                         velikostCislic = R.dimen.velikostCasuOdpocitavaniFull;
@@ -529,6 +576,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         textViewBeziciCasCisloKola.setText("");
                                         preskocVypisCasu = true;
                                         Log.d("Jsem na konci: ", "2");
+
+
                                     }
 
 
@@ -549,9 +598,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzymezitabatami));//  (R.drawable.background);
                                     } else
                                         dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
-
+                                    if (newLayout) {
+                                        dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasPauzyMeziTabatami));
+                                        zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasPauzyMeziTabatami));
+                                    }
                                     textViewCasNadpis.setText(R.string.nadpisOdpocinekMeziTabatami);
                                     pomocny = casMezitabatami.getSec() + casMezitabatami.getMin() * 60 + casMezitabatami.getHour() * 3600 + 1;
+                                    maxHodnotaProgressBar = (int) pomocny;
+
                                     pomocny = pomocny - 1; //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
 
                                     textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
@@ -584,9 +638,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     //color
                                 } else
                                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
-
+                                if (newLayout) {
+                                    dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasPauzy));
+                                    zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasPauzy));
+                                }
                                 textViewCasNadpis.setText(R.string.nadpisCasPauzy);
                                 pomocny = casPauzy.getSec() + casPauzy.getMin() * 60 + casPauzy.getHour() * 3600 + 1;
+                                maxHodnotaProgressBar = (int) pomocny;
+
                                 pomocny = pomocny - 1; //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
 
                                 textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
@@ -696,6 +755,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
                                         } else
                                             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                                        if (newLayout) {
+                                            dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorKonecTabaty));
+                                            zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorKonecTabaty));
+                                        }
                                         textViewCas.setText("");
                                         textViewBeziciCasCisloKola.setText("");
                                         preskocVypisCasu = true;
@@ -715,8 +778,13 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                             dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcascooldown));//  (R.drawable.background);
                                         } else
                                             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
+                                        if (newLayout) {
+                                            dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasCoolDown));
+                                            zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasCoolDown));
+                                        }
                                         textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
                                         pomocny = casCoolDown.getSec() + casCoolDown.getMin() * 60 + casCoolDown.getHour() * 3600 + 1;
+                                        maxHodnotaProgressBar = (int) pomocny;
 
                                         textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniCoolDown));
                                         velikostCislic = R.dimen.velikostCasuOdpocitavaniFull;
@@ -741,8 +809,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                         dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzymezitabatami));//  (R.drawable.background);
                                     } else
                                         dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
+                                    if (newLayout) {
+                                        dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasPauzyMeziTabatami));
+                                        zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasPauzyMeziTabatami));
+                                    }
                                     textViewCasNadpis.setText(R.string.nadpisCasPauzy);
                                     pomocny = casMezitabatami.getSec() + casMezitabatami.getMin() * 60 + casMezitabatami.getHour() * 3600 + 1;
+                                    maxHodnotaProgressBar = (int) pomocny;
+
                                     pomocny = pomocny - 1; //protože při REST už to je jedna sekunda a pak mi to při celkovém času nehrálo
 
                                     textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
@@ -774,10 +848,16 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                     //color
                                 } else
                                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                                if (newLayout) {
+                                    dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
+                                    zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
+                                }
                                 textViewCasNadpis.setText(R.string.nadpisCasCviceni);
                                 aktualniCyklus = aktualniCyklus + 1;
                                 textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus) + "/" + String.valueOf(puvodniPocetCyklu));
                                 pomocny = casCviceni.getSec() + casCviceni.getMin() * 60 + casCviceni.getHour() * 3600 + 1;
+                                maxHodnotaProgressBar = (int) pomocny;
+
                                 pomocny = pomocny - 1; //protože při GO už to je jedna sekunda a pak mi to při celkovém času nehrálo
 
 
@@ -872,12 +952,17 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 //color
                             } else
                                 dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                            if (newLayout) {
+                                dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
+                                zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
+                            }
                             textViewCasNadpis.setText(R.string.nadpisCasCviceni);
                             aktualniCyklus = 1;
                             textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus) + "/" + String.valueOf(puvodniPocetCyklu));
                             aktualniTabata = aktualniTabata + 1;
                             //       textViewAktualniPocetTabat.setText(String.valueOf(aktualniTabata)+"/"+String.valueOf(puvodniPocetTabat));
                             pomocny = casCviceni.getSec() + casCviceni.getMin() * 60 + casCviceni.getHour() * 3600 + 1;
+                            maxHodnotaProgressBar = (int) pomocny;
                             pomocny = pomocny - 1; //protože při GO už to je jedna sekunda a pak mi to při celkovém času nehrálo
 
                             textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniDva));
@@ -946,6 +1031,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                         textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
                         textViewCas.setText(R.string.konec);
                         textViewBeziciCasCisloKola.setText("");
+                        konecOdpocitavani = true;
                         zavlojejReviewNejake(); //aaa
                         odpocitavac.cancel();
                         Log.d("Jsem na konci: ", "3");
@@ -971,9 +1057,18 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
                             } else
                                 dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                            if (newLayout) {
+                                dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorKonecTabaty));
+                                zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorKonecTabaty));
+                            }
                             textViewCasNadpis.setText("");
                             stav = 4;
-                            preskocVypisCasu = false;
+                            //tady velká změna bylo jen preskocVypisCasu = false;
+                            preskocVypisCasu = true;
+                            textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
+                            textViewCas.setText(R.string.konec);
+                            konecOdpocitavani = true; //progress bar
+                            //konec velké změny
 
                         }
 
@@ -1030,6 +1125,19 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     default:
                         break;
 
+                }
+
+                if (nastavProgressBar && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    Log.d("progress-bar", String.valueOf(maxHodnotaProgressBar - 1));
+                    Log.d("progress-bar", String.valueOf(pomocny));
+                    if (((maxHodnotaProgressBar - 1 - (int) pomocny) == 0) || konecOdpocitavani) {
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+
+                        progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setEndValue(maxHodnotaProgressBar - 1);
+                        progressBar.setValue(maxHodnotaProgressBar - 1 - (int) pomocny);
+                    }
                 }
             }
         }
@@ -1096,7 +1204,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (pauzaNeniZmacknuta) {
             pauzaNeniZmacknuta = false;
             // textViewPauza.setText(">");
-            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE&& !newLayout) {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
             } else {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
@@ -1107,7 +1215,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         } else {
             pauzaNeniZmacknuta = true;
             //    textViewPauza.setText("||");
-            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT || newLayout) {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.pausestojatotabataactivity);
             } else {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.pauselezatotabataactivity);
@@ -1433,6 +1541,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
 
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                }
+
                 textViewCasNadpis.setText(R.string.nadpisCasPripravy);
                 break;
             case 1:
@@ -1446,6 +1559,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     //color
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                }
 
                 textViewCasNadpis.setText(R.string.nadpisCasCviceni);
                 break;
@@ -1461,6 +1579,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
 
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                }
+
                 textViewCasNadpis.setText(R.string.nadpisCasPauzy);
                 break;
             case 3:
@@ -1468,6 +1591,11 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorcaspauzymezitabatami));//  (R.drawable.background);
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
+
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
+                }
 
                 textViewCasNadpis.setText(R.string.nadpisCasPauzyMeziTabatmi);
                 break;
@@ -1479,16 +1607,35 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
 
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
+                }
+
                 textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
                 break;
             default:
                 break;
         }
+        if (nastavProgressBar) { //zatím to řeším takto, že po otočení se progress vypne, když bude pauza, tak tam žádný nebude, ale když se to znovu rozjede, tak progress bude OK
 
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private void udelejLayout() {
-        setContentView(R.layout.activity_classic);
+        if (newLayout) {
+            setContentView(R.layout.activity_custom_new);
+            //progress bar kruhový
+            progressBar = findViewById(R.id.progressbar);
+            if (!nastavProgressBar || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                progressBar.setVisibility(View.GONE);
+            }
+        } else {
+            setContentView(R.layout.activity_classic);
+
+        }
+
 
 
         if (!adsDisabled) {
@@ -1529,6 +1676,13 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         dlazdicePodHlavnimCasem2 = (LinearLayout) findViewById(R.id.dlazdicePodHlavnimCasem2);
         dlazdicePodHlavnimCasem3 = (LinearLayout) findViewById(R.id.dlazdicePodHlavnimCasem3);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (newLayout) {
+                dlazdicePodHlavnimCasem1.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundsedoprusvitnykulaty));
+                dlazdicePodHlavnimCasem2.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundsedoprusvitnykulaty));
+                dlazdicePodHlavnimCasem3.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundsedoprusvitnykulaty));
+
+
+            } else {
             dlazdicePodHlavnimCasem1.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
             dlazdicePodHlavnimCasem2.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
             dlazdicePodHlavnimCasem3.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
@@ -1549,6 +1703,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             dlazdicePodHlavnimCasem1.setBackground(pozadi1);
             dlazdicePodHlavnimCasem2.setBackground(pozadi2);
             dlazdicePodHlavnimCasem3.setBackground(pozadi3);
+            }
 
         }
 
@@ -1855,6 +2010,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     }
 
 
+
+    private void zmenNavigationBarColor(int NavigationBarColor) {
+        Log.d("barvaNavigationBar", "111");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getWindow().setNavigationBarColor(NavigationBarColor);
+            Log.d("barvaNavigationBar", "111");
+        }
+    }
 
 
 }

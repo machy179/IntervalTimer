@@ -478,7 +478,7 @@
 
 
                     <ImageView
-                        android:layout_width="108dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/velikostMezery"

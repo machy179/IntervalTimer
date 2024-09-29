@@ -100,12 +100,6 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
 
     private byte stav = 0; //0-priprava, 1-cviceni, 2-pauza, 3-pauza mezi tabatami
 
-//    private MediaPlayer tikZvuk3;
-//    private MediaPlayer tikZvuk2;
-//    private MediaPlayer tikZvuk1;
-//    private MediaPlayer restZvuk;
-    //   private MediaPlayer startZvuk;
-//    private MediaPlayer fanfareZvuk;
 
     //nastavení zvuků
 
@@ -192,8 +186,6 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
     //new design
     private boolean newLayout = true;
     private int vybranyDesign = 3;
-
-    //progress bar zatím blbne
     private CustomGauge progressBar;
     private int maxHodnotaProgressBar = 0;
     private boolean nastavProgressBar = false;
@@ -647,6 +639,14 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
 
     }
 
+    public void showTimePickerDialogNastavCasKolaVCasovaci(View v) {
+
+    }
+
+    public void showPickerNastavPocetCykluVTabate(View v) {
+
+    }
+
     private void zavlojejReviewNejake() {
 
         zavolejTretiZpusob();
@@ -834,26 +834,7 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
                 dlazdicePodHlavnimCasem3.setBackground(pozadi3);
 
             }
-/*            dlazdicePodHlavnimCasem1.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
-            dlazdicePodHlavnimCasem2.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);
-            dlazdicePodHlavnimCasem3.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundmodrykulaterohy));//  (R.drawable.background);*/
 
-/*            GradientDrawable pozadi1 =  new GradientDrawable();
-            pozadi1.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-            pozadi1.setColor(colorSpodnichDlazdic);
-            GradientDrawable pozadi2 =  new GradientDrawable();
-            pozadi2.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-            pozadi2.setColor(colorSpodnichDlazdic);
-            GradientDrawable pozadi3 =  new GradientDrawable();
-            pozadi3.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-            pozadi3.setColor(colorSpodnichDlazdic);
-            GradientDrawable pozadi4 =  new GradientDrawable();
-            //   pozadi4.setCornerRadius(getResources().getDimension(R.dimen.kulate_rohy));
-            //   pozadi4.setColor(colorDlazdicePocetCyklu);
-            //color
-            dlazdicePodHlavnimCasem1.setBackground(pozadi1);
-            dlazdicePodHlavnimCasem2.setBackground(pozadi2);
-            dlazdicePodHlavnimCasem3.setBackground(pozadi3);*/
 
         }
 

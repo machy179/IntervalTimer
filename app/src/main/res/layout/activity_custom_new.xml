@@ -6,8 +6,7 @@
     android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.machy1979ii.intervaltimer.CustomActivity">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/dlazdiceHlavniCas"
@@ -138,6 +137,7 @@
                 tools:ignore="MissingConstraints">
 
                 <LinearLayout
+                    android:onClick="showPickerNastavPocetCykluVTabate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -246,6 +246,7 @@
                 tools:ignore="MissingConstraints">
 
                 <LinearLayout
+                    android:onClick="showTimePickerDialogNastavCasKolaVCasovaci"
                     android:background="@drawable/backgroundsedoprusvitnykulaty"
                     android:elevation="@dimen/velikostStinu"
                     android:layout_width="match_parent"
