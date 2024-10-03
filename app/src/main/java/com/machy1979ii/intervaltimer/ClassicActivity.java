@@ -308,9 +308,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             //       tikZvuk1 = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
             mediaPlayer = MediaPlayer.create(getApplicationContext(), PraceSeZvukem.vratZvukCountdownPodlePozice(zvukCountdown));
 
+            //new design
             vybranyDesign = getDesignPreferences(getApplicationContext());
             Log.d("vybranyDesign", String.valueOf(vybranyDesign));
-            //       vybranyDesign = 3; //tady to předělat, aby si to tahalo ze shared preferences
             switch (vybranyDesign) {
                 case 1:
                     newLayout = false;
@@ -360,8 +360,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
 
         if (newLayout) {
-            dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
-            zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+            dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPripravy);
+            zmenNavigationBarColor(colorDlazdiceCasPripravy);
 
         }
 
@@ -639,8 +639,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 } else
                                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
                                 if (newLayout) {
-                                    dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasPauzy));
-                                    zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasPauzy));
+                                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPauzy);
+                                    zmenNavigationBarColor(colorDlazdiceCasPauzy);
                                 }
                                 textViewCasNadpis.setText(R.string.nadpisCasPauzy);
                                 pomocny = casPauzy.getSec() + casPauzy.getMin() * 60 + casPauzy.getHour() * 3600 + 1;
@@ -849,8 +849,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                                 } else
                                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
                                 if (newLayout) {
-                                    dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
-                                    zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
+                                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                                    zmenNavigationBarColor(colorDlazdiceCasCviceni);
                                 }
                                 textViewCasNadpis.setText(R.string.nadpisCasCviceni);
                                 aktualniCyklus = aktualniCyklus + 1;
@@ -953,8 +953,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                             } else
                                 dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
                             if (newLayout) {
-                                dlazdiceOdpocitavace.setBackgroundColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
-                                zmenNavigationBarColor(getBaseContext().getResources().getColor(R.color.colorCasCviceni));
+                                dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                                zmenNavigationBarColor(colorDlazdiceCasCviceni);
                             }
                             textViewCasNadpis.setText(R.string.nadpisCasCviceni);
                             aktualniCyklus = 1;
@@ -1204,7 +1204,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (pauzaNeniZmacknuta) {
             pauzaNeniZmacknuta = false;
             // textViewPauza.setText(">");
-            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE&& !newLayout) {
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !newLayout) {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
             } else {
                 linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
@@ -1230,7 +1230,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     public void showTimePickerDialogNastavCasKolaVCasovaci(View v) {
         pauzaNeniZmacknuta = false;
         //  textViewPauza.setText(">");
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !newLayout) {
             linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
         } else {
             linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
@@ -1242,7 +1242,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     public void showPickerNastavPocetCykluVTabate(View v) {
         pauzaNeniZmacknuta = false;
         //   textViewPauza.setText(">");
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE  && !newLayout) {
             linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
         } else {
             linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
@@ -1620,6 +1620,19 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         if (nastavProgressBar) { //zatím to řeším takto, že po otočení se progress vypne, když bude pauza, tak tam žádný nebude, ale když se to znovu rozjede, tak progress bude OK
 
             progressBar.setVisibility(View.GONE);
+        }
+
+        //tady se popasuje s tím, že když je to v pauze, aby to vykreslilo PLAY a čas do spodní prostřední dlaždice
+        if (!pauzaNeniZmacknuta)  {
+
+            // textViewPauza.setText(">");
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !newLayout) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
+            }
+            zobrazCelkovyCas();
+
         }
     }
 
