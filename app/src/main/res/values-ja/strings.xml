@@ -137,5 +137,6 @@
     <string name = "tab_text_1">クラシック</string>
 <string name = "tab_text_2">田畑</string>
 <string name = "tab_text_3">カスタム</string>
+    <string name="remove_ads">広告を削除</string>
 
 </resources>

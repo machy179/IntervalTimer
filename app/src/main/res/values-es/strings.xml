@@ -116,5 +116,6 @@
     <string name="tab_text_1">Clásico</string>
     <string name="tab_text_2">Tábata</string>
     <string name="tab_text_3">Personalizado</string>
+    <string name="remove_ads">Quitar anuncio</string>
 
 </resources>

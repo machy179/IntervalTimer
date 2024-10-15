@@ -316,8 +316,8 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
 
         if (newLayout) {
-            dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
-            zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+            dlazdiceOdpocitavace.setBackgroundColor(aktualniPolozkaCasu.getColorDlazdice());
+            zmenNavigationBarColor(aktualniPolozkaCasu.getColorDlazdice());
 
         }
 
@@ -336,7 +336,8 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
             velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
         }
 
-        odectiAZobrazCelkovyCas();
+   //     odectiAZobrazCelkovyCas();
+        zobrazCelkovyCas();
         spustOdpocitavac();
 
     }
@@ -433,6 +434,7 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
                             //je konec odpočítávání předchozí polozkyCasu, tak se musí v tomto vláknu nastavit nová polozkaCasu
                             pocitadloPolozekCasu++;
                             if (!(pocitadloPolozekCasu == polozkyCasyKol.size())) { //zjistí, zda není celkový konec odpočítávání
+                                if(pocitadloPolozekCasu == 1) odectiAZobrazCelkovyCas(); //pokud to přechází z přípravy do počítání, tak je potřeba celkový čas odečíst o jedna
                                 aktualniCyklus = pocitadloPolozekCasu;
                                 textViewAktualniPocetCyklu.setText(String.valueOf(aktualniCyklus) + "/" + String.valueOf(puvodniPocetCyklu));
                                 aktualniPolozkaCasu = polozkyCasyKol.get(pocitadloPolozekCasu);
@@ -559,7 +561,7 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
 
         textViewCelkovyCas.setText("00:00");
 
-        progressBar.setVisibility(View.GONE);
+
     }
 
     private void odectiAZobrazCelkovyCas() {
@@ -578,11 +580,13 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
     }
 
     private void zobrazCelkovyCas() {
+        Log.d("Timer celkovyCas:","333");
         int hodiny = casCelkovy.getHour();
         String hodinyString;
         int minuty = casCelkovy.getMin();
         String minutyString;
         int sekundy = casCelkovy.getSec();
+        Log.d("Timer celkovyCas:","333: "+String.valueOf(sekundy));
         String sekundyString;
 
         if (hodiny == 0) {
@@ -602,7 +606,7 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         } else {
             sekundyString = String.valueOf(sekundy);
         }
-
+        Log.d("Timer celkovyCas:","444: "+sekundyString);
         textViewCelkovyCas.setText(hodinyString + minutyString + ":" + sekundyString);
     }
 
@@ -699,22 +703,11 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
     //android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" (do activity v manifestu)
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
+        Log.d("Timer celkovyCas:","1- "+String.valueOf(casCelkovy.getSec()));
         udelejLayout();
         nastavCislice(pomocny);
 
-        //tady se popasuje s tím, že když je to v pauze, aby to vykreslilo PLAY a čas do spodní prostřední dlaždice
-        if (!pauzaNeniZmacknuta) {
 
-            // textViewPauza.setText(">");
-            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !newLayout) {
-                linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
-            } else {
-                linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
-            }
-            zobrazCelkovyCas();
-
-        }
 
         if (jeKonecOdpocitavani) {
             nastaveniPozadiKonce();
@@ -751,6 +744,21 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
             progressBar.setVisibility(View.GONE);
         }
 
+        Log.d("Timer celkovyCas:","111");
+        //tady se popasuje s tím, že když je to v pauze, aby to vykreslilo PLAY a čas do spodní prostřední dlaždice
+        if (!pauzaNeniZmacknuta) {
+            Log.d("Timer celkovyCas:","222");
+            // textViewPauza.setText(">");
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !newLayout) {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
+            } else {
+                linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
+            }
+        //    zobrazCelkovyCas();
+
+        }
+        Log.d("Timer celkovyCas:","2- "+String.valueOf(casCelkovy.getSec()));
+        zobrazCelkovyCas();
 
     }
 

@@ -80,4 +80,5 @@
     <string name="tab_text_1">Klassisch</string>
     <string name="tab_text_2">Tabata</string>
     <string name="tab_text_3">Benutzerdefiniert</string>
+    <string name="remove_ads">Anzeige entfernen</string>
 </resources>

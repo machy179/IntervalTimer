@@ -6,21 +6,14 @@ plugins {
 }
 
 android {
-//    compileSdkVersion 34
- //   buildToolsVersion "34.0.0"
-
     compileSdk = 35
-
-
-
-
 
     defaultConfig {
         applicationId "com.machy1979ii.intervaltimer"
         minSdkVersion 21 //19
         targetSdkVersion 35
-        versionCode 32 //32
-        versionName "4.3" //4.3
+        versionCode 35
+        versionName "5.2"
         multiDexEnabled = true
     //    android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
         ndkVersion "23.1.7779620" // to jsem sem dal, abych se pokusil udělat obfuscation soubor pro ladění chyb v programu na google play - tam je uvedeno že k app bundle souboru je přiložen mapovací soubor ReTrace
@@ -63,15 +56,15 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.4'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
    // testImplementation 'junit:junit:4.+'
     implementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     implementation 'com.github.pwiniars:android-five-stars-library:3.6'
-   implementation 'com.google.android.gms:play-services-ads:23.3.0'
+   implementation 'com.google.android.gms:play-services-ads:23.4.0'
 
  //   implementation 'petrov.kristiyan:colorpicker-library:1.1.10' // bylo potřeba to naimportovat jinak, viz. níže uvedeno:
     implementation 'com.github.kristiyanP:colorpicker:v1.1.10'
@@ -83,9 +76,9 @@ dependencies {
     implementation 'com.google.android.ump:user-messaging-platform:3.0.0' //GDPR zprava
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("com.android.billingclient:billing-ktx:7.0.0")
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
 
-    implementation platform('com.google.firebase:firebase-bom:33.2.0')
+    implementation platform('com.google.firebase:firebase-bom:33.4.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore-ktx'
 

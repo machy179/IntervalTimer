@@ -567,6 +567,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                                         textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
                                         pomocny=casCoolDown.getSec() +  casCoolDown.getMin()*60 +  casCoolDown.getHour()*3600+1;
                                         maxHodnotaProgressBar = (int) pomocny; //new design
+                                        pomocny = pomocny -1;
                                         textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniCoolDown));
                                         velikostCislic = R.dimen.velikostCasuOdpocitavaniFull;
                                         textViewCas.setText(R.string.coolDown);
@@ -773,7 +774,9 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
 
                                         textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
                                         pomocny=casCoolDown.getSec() +  casCoolDown.getMin()*60 +  casCoolDown.getHour()*3600+1;
+
                                         maxHodnotaProgressBar = (int) pomocny; //new design
+                                        pomocny = pomocny -1;
                                         textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniCoolDown));
                                         velikostCislic = R.dimen.velikostCasuOdpocitavaniFull;
                                         textViewCas.setText(R.string.coolDown);
@@ -1438,8 +1441,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                 } else  dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorCasPripravy));
 
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPripravy);
+                    zmenNavigationBarColor(colorDlazdiceCasPripravy);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasPripravy);
@@ -1457,8 +1460,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                 } else dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorCasCviceni));
 
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                    zmenNavigationBarColor(colorDlazdiceCasCviceni);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasCviceni);
@@ -1474,8 +1477,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                     //color
                 } else    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorCasPauzy));
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPauzy);
+                    zmenNavigationBarColor(colorDlazdiceCasPauzy);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasPauzy);
@@ -1491,8 +1494,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                     //color
                 } else    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorCasPauzyMeziTabatami));
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzyMeziTabatami));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPauzyMeziTabatami);
+                    zmenNavigationBarColor(colorDlazdiceCasPauzyMeziTabatami);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasPauzyMeziTabatmi);
@@ -1510,8 +1513,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorKonecTabaty));
                 }
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCoolDown);
+                    zmenNavigationBarColor(colorDlazdiceCasCoolDown);
                 }
                 textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
                 velikostCislic = R.dimen.velikostCasuOdpocitavaniFull;
@@ -1529,8 +1532,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                     //color
                 } else   dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.colorCasCoolDown));
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCoolDown);
+                    zmenNavigationBarColor(colorDlazdiceCasCoolDown);
                 }
                 textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
                 break;

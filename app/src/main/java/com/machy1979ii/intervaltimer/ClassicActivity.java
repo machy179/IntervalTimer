@@ -1542,8 +1542,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
 
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPripravy);
+                    zmenNavigationBarColor(colorDlazdiceCasPripravy);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasPripravy);
@@ -1561,8 +1561,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
 
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                    zmenNavigationBarColor(colorDlazdiceCasCviceni);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasCviceni);
@@ -1580,8 +1580,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
 
                 if (newLayout) {
-                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
-                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPauzy);
+                    zmenNavigationBarColor(colorDlazdiceCasPauzy);
                 }
 
                 textViewCasNadpis.setText(R.string.nadpisCasPauzy);
@@ -1600,6 +1600,23 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 textViewCasNadpis.setText(R.string.nadpisCasPauzyMeziTabatmi);
                 break;
             case 4:
+                //konec odpočítávání
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
+                } else
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                }
+
+                textViewCas.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.velikostCasuOdpocitavaniFull));
+                textViewCas.setText(R.string.konec);
+                textViewBeziciCasCisloKola.setText("");
+                konecOdpocitavani = true;
+                odpocitavac.cancel();
+                Log.d("Jsem na konci: ", "3");
                 break;
             case 5:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1929,6 +1946,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     //color
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPripravy));
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPripravy);
+                    zmenNavigationBarColor(colorDlazdiceCasPripravy);
+                }
                 break;
             case 1:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1941,6 +1962,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     //color
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                    zmenNavigationBarColor(colorDlazdiceCasCviceni);
+                }
                 break;
             case 2:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1953,6 +1978,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     //color
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasPauzy));
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPauzy);
+                    zmenNavigationBarColor(colorDlazdiceCasPauzy);
+                }
                 break;
             case 3:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1965,12 +1994,20 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     //color
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
+                    zmenNavigationBarColor(colorDlazdiceCasCviceni);
+                }
                 break;
             case 4:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                }
                 break;
             case 5:
 
@@ -1978,6 +2015,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackground(getBaseContext().getResources().getDrawable(R.drawable.backgroundcolorkonectabaty));//  (R.drawable.background);
                 } else
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                if (newLayout) {
+                    dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                    zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
+                }
                 break;
 
         }

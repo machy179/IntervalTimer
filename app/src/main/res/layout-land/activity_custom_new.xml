@@ -10,23 +10,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.machy1979ii.intervaltimer.CustomActivity">
 
-
-
-
-    <!--    <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:elevation="@dimen/velikostStinu"
-            android:background="@drawable/backgroundreklama"
-
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
-
     <LinearLayout
         android:id="@+id/dlazdiceHlavniCas"
         android:layout_width="match_parent"
@@ -114,7 +97,8 @@
                             app:gaugeStrokeCap="ROUND"
                             app:gaugeStrokeColor="#00FFFFFF"
                             app:gaugeStrokeWidth="@dimen/tloustka_progressbar"
-                            app:gaugeSweepAngle="360" />
+                            app:gaugeSweepAngle="360"
+                            tools:ignore="MissingClass" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/textViewBeziciCas"
@@ -143,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerInParent="true"
-                        android:elevation="@dimen/velikostStinu"
+                        android:layout_marginHorizontal="@dimen/ads_land_horizontal_margin"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />

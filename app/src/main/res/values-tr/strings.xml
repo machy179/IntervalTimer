@@ -137,5 +137,6 @@
     <string name="tab_text_1">Klasik</string>
     <string name="tab_text_2">Tabata</string>
     <string name="tab_text_3">Özel</string>
+    <string name="remove_ads">Reklamları kaldır</string>
 
 </resources>

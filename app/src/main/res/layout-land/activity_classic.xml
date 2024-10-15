@@ -194,7 +194,7 @@
 
                     android:textStyle="bold"
                     android:textSize="@dimen/velikostTextuCelkovyCas"
-                    android:text="10:25"
+                    android:text=""
                     android:textColor="@color/colorPisma"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -212,12 +212,9 @@
                         android:id="@+id/linearLayoutPauza"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
-                        android:background="@mipmap/pauselezatotabataactivity"
                         android:layout_gravity="center"
+                        android:background="@mipmap/pauselezatotabataactivity"
                         android:orientation="vertical">
-
-
-
 
 
                     </LinearLayout>

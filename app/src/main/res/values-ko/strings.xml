@@ -137,5 +137,7 @@
     <string name="tab_text_1">클래식</string>
     <string name="tab_text_2">타바타</string>
     <string name="tab_text_3">사용자 지정</string>
+    <string name="remove_ads">광고 제거</string>
+
 
 </resources>

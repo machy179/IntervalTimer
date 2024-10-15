@@ -194,7 +194,7 @@
 
                         android:textStyle="bold"
                         android:textSize="@dimen/velikostTextuCelkovyCas"
-                        android:text="10:25"
+                        android:text=""
                         android:textColor="@color/colorPisma"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

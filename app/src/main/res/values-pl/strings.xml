@@ -80,4 +80,5 @@
     <string name="tab_text_1">Klasyczny</string>
     <string name="tab_text_2">Tabata</string>
     <string name="tab_text_3">Niestandardowe</string>
+    <string name="remove_ads">Usuń reklamę</string>
 </resources>

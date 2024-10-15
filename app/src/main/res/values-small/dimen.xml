@@ -18,6 +18,7 @@
     <dimen name="tloustka_progressbar">4dp</dimen>
     <dimen name="odsazeniButtonuPause">9dp</dimen>
     <dimen name="velikostMezeryButtonuPause">4dp</dimen>
+    <dimen name="ads_land_horizontal_margin">6dp</dimen>
 
 
 </resources>

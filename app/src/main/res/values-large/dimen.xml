@@ -19,5 +19,6 @@
     <dimen name="tloustka_progressbar">21dp</dimen>
     <dimen name="odsazeniButtonuPause">48dp</dimen>
     <dimen name="velikostMezeryButtonuPause">25dp</dimen>
+    <dimen name="ads_land_horizontal_margin">25dp</dimen>
 
 </resources>
