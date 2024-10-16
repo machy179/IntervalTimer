@@ -3,6 +3,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services' //firebase
 }
 
 android {
@@ -12,8 +13,8 @@ android {
         applicationId "com.machy1979ii.intervaltimer"
         minSdkVersion 21 //19
         targetSdkVersion 35
-        versionCode 35
-        versionName "5.2"
+        versionCode 36
+        versionName "5.3"
         multiDexEnabled = true
     //    android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
         ndkVersion "23.1.7779620" // to jsem sem dal, abych se pokusil udělat obfuscation soubor pro ladění chyb v programu na google play - tam je uvedeno že k app bundle souboru je přiložen mapovací soubor ReTrace
@@ -79,7 +80,8 @@ dependencies {
     implementation("com.android.billingclient:billing-ktx:7.1.1")
 
     implementation platform('com.google.firebase:firebase-bom:33.4.0')
-    implementation 'com.google.firebase:firebase-analytics'
+ //   implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics:22.1.2'
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //progressbar
