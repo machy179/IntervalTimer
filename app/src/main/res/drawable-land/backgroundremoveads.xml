@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient
+        android:angle="90"
+        android:endColor="@color/colorKonecTabaty"
+        android:startColor="@color/colorCasPripravy"
+        android:type="linear" />
+    <!--border radius in dp-->
+    <corners android:radius="@dimen/kulate_rohy" />
+</shape>

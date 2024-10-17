@@ -53,8 +53,56 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:orientation="vertical"
-                android:weightSum="3">
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/viewNoAds"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_marginLeft="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
+                    android:layout_weight="1"
+                    android:background="@drawable/backgroundremoveads"
+                    android:elevation="@dimen/velikostStinu"
+                    android:onClick="showNoAds"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/velikostMezery"
+                            android:layout_marginRight="@dimen/velikostMezery"
+                            android:layout_marginBottom="@dimen/velikostMezery"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitEnd"
+                            android:src="@mipmap/ad_block3"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/remove_ads"
+                                android:textColor="@color/colorPisma"
+                                android:textSize="@dimen/velikostTextuNadpis"
+
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -386,12 +434,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
+
+                    android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
                     android:weightSum="4">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
                         android:layout_weight="3"
                         android:background="@drawable/backgroundcolorzvukpulkykola"
                         android:elevation="@dimen/velikostStinu"
@@ -447,7 +496,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/velikostMezeryLandTabataClassic"
                         android:layout_marginRight="@dimen/velikostMezeryLandTabataClassic"
-                        android:layout_marginBottom="@dimen/velikostMezeryLandTabataClassic"
 
                         android:layout_weight="1"
 
