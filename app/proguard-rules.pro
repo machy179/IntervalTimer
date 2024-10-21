@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.machy1979ii.intervaltimer.models.** { *; } #-tohle tady je, aby po podepsání aplikace fungovalo ukládání a načítání PraceSeSouboremCustom GSON
+
+-keepattributes Signature
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken

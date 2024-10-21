@@ -84,9 +84,11 @@ public class PraceSeSouboremCustom {
         ArrayList<SouborPolozekCasuKola> SouborPolozekCasuKola = new ArrayList<SouborPolozekCasuKola>();
         try {
             SouborPolozekCasuKola = vratZJsonuVsechnyPolozkyCasyKol(nactenyJson);
+            Log.d("AAA AAB:","OK");
             Log.d("AAA AAB:",SouborPolozekCasuKola.get(0).getPolozkyCasyKol().get(0).getNazevCasu());
         } catch (Exception e) {
             Log.d("AAA AAB:","error");
+            Log.d("AAA AAB:",e.toString());
             SouborPolozekCasuKola = new ArrayList<SouborPolozekCasuKola>();
             e.printStackTrace();
         }
@@ -99,8 +101,11 @@ public class PraceSeSouboremCustom {
         ArrayListSouborPolozekCasuKol souborPolozekCasuKola = null;
         try {
             souborPolozekCasuKola = gson.fromJson(nactenyJson, ArrayListSouborPolozekCasuKol.class);
+            Log.d("AAA AAB:","OKK");
         } catch (Exception e) {
+            Log.d("AAA AAB:",e.toString());
             e.printStackTrace();
+            Log.d("AAA AAB:","ERROR-ERROR");
         }
         return souborPolozekCasuKola.getSouborPolozekCasuKola();
 

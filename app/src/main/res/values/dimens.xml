@@ -18,12 +18,12 @@
     <dimen name="velikostTextuCelkovyCas">22dp</dimen>
     <dimen name="velikostStinu">6dp</dimen>
 
-    <dimen name="velikostMezery">12dp</dimen>   <!--bylo tam 6 -->
+    <dimen name="velikostMezery">9dp</dimen>   <!--bylo tam 12 -->
     <dimen name="velikostMezeryLandTabataClassic">12dp</dimen>
 
     <dimen name="velikostMezeryPismaOdpocitavace">36dp</dimen>
 
-    <dimen name="kulate_rohy">10dp</dimen>  <!--bylo tam 15 -->
+    <dimen name="kulate_rohy">18dp</dimen>  <!--bylo tam 10 -->
 
 
     <dimen name="velikostMezeryVodorovneLandZakladniLayout">12dp</dimen>
