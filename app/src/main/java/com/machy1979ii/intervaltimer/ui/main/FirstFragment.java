@@ -6,6 +6,7 @@ import static com.machy1979ii.intervaltimer.funkce.Design_preferencesKt.setDesig
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -35,6 +36,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -264,26 +269,26 @@ public class FirstFragment extends Fragment {
         showPickerDialogNastavPripravuColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zobrazNastaveniColoruDlazdice("colorDlazdiceCasPripravy",dlazdiceCasPripravy);
+                zobrazNastaveniColoruDlazdice("colorDlazdiceCasPripravy",dlazdiceCasPripravy, getResources().getColor(R.color.colorCasPripravy));
             }
         });
 
         showPickerDialogNastavCviceniColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zobrazNastaveniColoruDlazdice("colorDlazdiceCasCviceni",dlazdiceCasCviceni);
+                zobrazNastaveniColoruDlazdice("colorDlazdiceCasCviceni",dlazdiceCasCviceni, getResources().getColor(R.color.colorCasCviceni));
             }
         });
 
         showPickerDialogNastavPauzuColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy);
+                zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy,getResources().getColor(R.color.colorCasPauzy));
             }
         });
 
     }
-    public void showPickerDialogNastavCviceniColor(View v) {
+/*    public void showPickerDialogNastavCviceniColor(View v) {
         // custom dialog
 
         //    nastavColorDlazdice(colorDlazdiceCasCviceni, dlazdiceCasCviceni);
@@ -298,7 +303,7 @@ public class FirstFragment extends Fragment {
         zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy);
 
 
-    }
+    }*/
 
     public void vytvorView(){
         nactiHodnoty();
@@ -737,7 +742,7 @@ public class FirstFragment extends Fragment {
     }
 
     private String vratStringCasUpravenySHodinama(MyTime casClass) {
-        return getResources().getString(R.string.celkovyCas)+vratHodiny(casClass.getHour()) + vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
+        return getResources().getString(R.string.celkovyCas)+" "+vratHodiny(casClass.getHour()) + vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
     }
 
     private String vratHodiny(int cislo) {
@@ -1161,26 +1166,29 @@ public class FirstFragment extends Fragment {
         //musel jsem použít 2 shapy (shape1 a shape2), když jsem měl jen jeden a ten jsem použil
         //viz výše a také do dialogu (viz níže), tak to dělalo neplechu ve zobrazování
         if (colorDlazdiceString.equals("colorDlazdiceCasCviceni")) {
-            colorDlazdiceCasCviceni = color;
+                colorDlazdiceCasCviceni = color;
+
             dialogCviceni.getWindow().setBackgroundDrawable(shape2);
             nastavColorDlazdiceKola();
         } else if (colorDlazdiceString.equals("colorDlazdiceCasPauzy")) {
-            colorDlazdiceCasPauzy = color;
+                colorDlazdiceCasPauzy = color;
+
             dialogPauzy.getWindow().setBackgroundDrawable(shape2);
             nastavColorDlazdiceKola();
         }    else if (colorDlazdiceString.equals("colorDlazdiceCasPripravy")) {
-            colorDlazdiceCasPripravy = color;
+                colorDlazdiceCasPripravy = color;
+
             dialogPriprava.getWindow().setBackgroundDrawable(shape2);
         }
 
     }
-    private void zobrazNastaveniColoruDlazdice(String colorDlazdiceString, LinearLayout dlazdice) { //tady pokračovat, tady to asi udělalo chybu
-        final ColorPicker colorPicker = new ColorPicker(getActivity()); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
+    private void zobrazNastaveniColoruDlazdice(String colorDlazdiceString, LinearLayout dlazdice, int defaultColor) { //tady pokračovat, tady to asi udělalo chybu
+/*        final ColorPicker colorPicker = new ColorPicker(getActivity()); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
         colorPicker.setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
             @Override
             public void setOnFastChooseColorListener(int position, int color) {
                 Log.i("asdf:", "1");
-                nastavColorDlazdice(colorDlazdiceString, color,dlazdice);
+                nastavColorDlazdice(colorDlazdiceString, color,dlazdice, false);
                 Log.i("asdf:", "2");
                 ulozDataColorDoSouboru();
 
@@ -1200,7 +1208,41 @@ public class FirstFragment extends Fragment {
         colorPicker.getDialogViewLayout().setBackgroundResource(R.drawable.background);
         //     colorPicker.getDialogViewLayout().setBackgroundDrawableResource(backgroundcolorpicker);
 
-        colorPicker.show();
+        colorPicker.show();*/
+
+        final Dialog colorPickerNew = ColorPickerDialogBuilder
+                .with(getActivity())
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(6)
+                .lightnessSliderOnly()
+                .initialColor(defaultColor)
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+                        // toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                    }
+                })
+                .setPositiveButton(getResources().getString(R.string.ok), new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        nastavColorDlazdice(colorDlazdiceString, selectedColor,dlazdice);
+                        ulozDataColorDoSouboru();
+                    }
+                })
+                .setNegativeButton("default", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        nastavColorDlazdice(colorDlazdiceString, defaultColor,dlazdice);
+                        ulozDataColorDoSouboru();
+                        dialog.dismiss();
+                    }
+                })
+                .build();
+        colorPickerNew.getWindow().setBackgroundDrawableResource(R.drawable.backgroundvyberbarev);
+
+
+        colorPickerNew.show();
     }
 
     private void nactiHodnotuVybranehoDesignu() {

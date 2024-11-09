@@ -237,8 +237,7 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         adsDisabled = sharedPreferences.getBoolean("ads_disabled", false);
 
 
-        //Firebase Analytics
-        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerCustomActivity");
+
 
 
         //tohle tady je, aby statusbar měl určitou barvu, jako barva pozadí reklamy, nešlo mi to udělat v XML lajoutu, tak to řeším takhle
@@ -263,6 +262,9 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
             vybranyDesign = getDesignPreferences(getApplicationContext());
             Log.d("vybranyDesign", String.valueOf(vybranyDesign));
             //       vybranyDesign = 3; //tady to předělat, aby si to tahalo ze shared preferences
+
+            //Firebase Analytics
+            TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerCustomActivity_"+String.valueOf(vybranyDesign));
             switch (vybranyDesign) {
                 case 1:
                     newLayout = false;

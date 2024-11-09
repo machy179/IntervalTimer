@@ -3,10 +3,15 @@ package com.machy1979ii.intervaltimer.funkce.dialogovefunkce;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.widget.LinearLayout;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.funkce.PraceSeSouboremCustom;
 import com.machy1979ii.intervaltimer.models.PolozkaCasuKola;
@@ -29,7 +34,7 @@ public class VytvoreniDialoguColoru {
     public void zobrazNastaveniColoruDlazdice(LinearLayout dlazdice, PolozkaCasuKola polozkaCasu, Dialog predanyDialog, ArrayList<SouborPolozekCasuKola> vsechnyPolozkyCasyKol) { //tady pokračovat, tady to asi udělalo chybu
         this.vsechnyPolozkyCasyKol = vsechnyPolozkyCasyKol;
 
-        final ColorPicker colorPicker = new ColorPicker((Activity) context); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
+/*        final ColorPicker colorPicker = new ColorPicker((Activity) context); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
         colorPicker.setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
             @Override
             public void setOnFastChooseColorListener(int position, int color) {
@@ -55,7 +60,31 @@ public class VytvoreniDialoguColoru {
         colorPicker.getDialogViewLayout().setBackgroundResource(R.drawable.background);
         //     colorPicker.getDialogViewLayout().setBackgroundDrawableResource(backgroundcolorpicker);
 
-        colorPicker.show();
+        colorPicker.show();*/
+
+        final Dialog colorPickerNew = ColorPickerDialogBuilder
+                .with((Activity) context)
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(6)
+                .lightnessSliderOnly()
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+                        // toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                    }
+                })
+                .setPositiveButton(this.context.getResources().getString(R.string.ok), new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        polozkaCasu.setColorDlazdice(selectedColor);
+                        nastavColorDlazdice(selectedColor,dlazdice, predanyDialog);
+                    }
+                })
+                .build();
+        colorPickerNew.getWindow().setBackgroundDrawableResource(R.drawable.backgroundvyberbarev);
+
+
+        colorPickerNew.show();
     }
 
     public void nastavColorDlazdice(int color, LinearLayout dlazdice, Dialog predanyDialog) {

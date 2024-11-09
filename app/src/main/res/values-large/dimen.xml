@@ -12,7 +12,7 @@
     <dimen name="velikostTextuCelkovyCas">35dp</dimen>
 
     <dimen name="kulate_rohy">10dp</dimen>
-    <dimen name="velikostMezery">15dp</dimen>
+    <dimen name="velikostMezery">16dp</dimen>
     <dimen name="velikostMezeryPismaOdpocitavace">30dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">10dp</dimen>
 

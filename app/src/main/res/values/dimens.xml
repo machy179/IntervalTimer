@@ -18,7 +18,7 @@
     <dimen name="velikostTextuCelkovyCas">22dp</dimen>
     <dimen name="velikostStinu">6dp</dimen>
 
-    <dimen name="velikostMezery">9dp</dimen>   <!--bylo tam 12 -->
+    <dimen name="velikostMezery">10dp</dimen>   <!--bylo tam 12 -->
     <dimen name="velikostMezeryLandTabataClassic">12dp</dimen>
 
     <dimen name="velikostMezeryPismaOdpocitavace">36dp</dimen>

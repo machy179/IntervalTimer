@@ -3,6 +3,7 @@ package com.machy1979ii.intervaltimer.ui.main;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -29,6 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -740,42 +745,42 @@ public class SecondFragment extends Fragment {
      showPickerDialogNastavPripravuColor.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             zobrazNastaveniColoruDlazdice("colorDlazdiceCasPripravy",dlazdiceCasPripravy);
+             zobrazNastaveniColoruDlazdice("colorDlazdiceCasPripravy",dlazdiceCasPripravy, getResources().getColor(R.color.colorCasPripravy));
          }
      });
 
      showPickerDialogNastavCviceniColor.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             zobrazNastaveniColoruDlazdice("colorDlazdiceCasCviceni",dlazdiceCasCviceni);
+             zobrazNastaveniColoruDlazdice("colorDlazdiceCasCviceni",dlazdiceCasCviceni, getResources().getColor(R.color.colorCasCviceni));
          }
      });
 
      showPickerDialogNastavPauzuColor.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy);
+             zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy,getResources().getColor(R.color.colorCasPauzy));
          }
      });
 
      showPickerDialogNastavTabatyColor.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             zobrazNastaveniColoruDlazdice("colorDlazdiceTabaty",dlazdiceTabaty);
+             zobrazNastaveniColoruDlazdice("colorDlazdiceTabaty",dlazdiceTabaty,getResources().getColor(R.color.colorPocetTabat));
          }
      });
 
      showPickerDialogNastavPauzuMeziTabatamiColor.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzyMeziTabatami",dlazdiceCasPauzyMeziTabatami);
+             zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzyMeziTabatami",dlazdiceCasPauzyMeziTabatami,getResources().getColor(R.color.colorCasPauzyMeziTabatami));
          }
      });
 
      showPickerDialogNastavCoolDownColor.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             zobrazNastaveniColoruDlazdice("colorDlazdiceCasCoolDown",dlazdiceCasCoolDown);
+             zobrazNastaveniColoruDlazdice("colorDlazdiceCasCoolDown",dlazdiceCasCoolDown,getResources().getColor(R.color.colorCasCoolDown));
          }
      });
 
@@ -787,20 +792,20 @@ public class SecondFragment extends Fragment {
 
         //    nastavColorDlazdice(colorDlazdiceCasCviceni, dlazdiceCasCviceni);
         //    nastavColor3();
-        zobrazNastaveniColoruDlazdice("colorDlazdiceCasCviceni",dlazdiceCasCviceni);
+        zobrazNastaveniColoruDlazdice("colorDlazdiceCasCviceni",dlazdiceCasCviceni, getResources().getColor(R.color.colorCasCviceni));
 
 
     }
 
     public void showPickerDialogNastavPauzuColor(View v) {
 
-        zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy);
+        zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzy",dlazdiceCasPauzy, getResources().getColor(R.color.colorCasPauzy));
 
 
     }
 
     public void showPickerDialogNastavTabatyColor(View v) {
-        zobrazNastaveniColoruDlazdice("colorDlazdiceTabaty",dlazdiceTabaty);
+        zobrazNastaveniColoruDlazdice("colorDlazdiceTabaty",dlazdiceTabaty,getResources().getColor(R.color.colorPocetTabat));
     }
 
  //   public void showPickerDialogNastavPripravuColor(View v) {
@@ -808,15 +813,15 @@ public class SecondFragment extends Fragment {
  //   }
 
     public void showPickerDialogNastavPauzuMeziTabatamiColor(View v) {
-        zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzyMeziTabatami",dlazdiceCasPauzyMeziTabatami);
+        zobrazNastaveniColoruDlazdice("colorDlazdiceCasPauzyMeziTabatami",dlazdiceCasPauzyMeziTabatami,getResources().getColor(R.color.colorCasPauzyMeziTabatami));
     }
 
     public void showPickerDialogNastavCoolDownColor(View v) {
-        zobrazNastaveniColoruDlazdice("colorDlazdiceCasCoolDown",dlazdiceCasCoolDown);
+        zobrazNastaveniColoruDlazdice("colorDlazdiceCasCoolDown",dlazdiceCasCoolDown,getResources().getColor(R.color.colorCasCoolDown));
     }
 
-    private void zobrazNastaveniColoruDlazdice(String colorDlazdiceString, LinearLayout dlazdice) { //tady pokračovat, tady to asi udělalo chybu
-        final ColorPicker colorPicker = new ColorPicker(getActivity()); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
+    private void zobrazNastaveniColoruDlazdice(String colorDlazdiceString, LinearLayout dlazdice, int defaultColor) { //tady pokračovat, tady to asi udělalo chybu
+        /*final ColorPicker colorPicker = new ColorPicker(getActivity()); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
         colorPicker.setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
             @Override
             public void setOnFastChooseColorListener(int position, int color) {
@@ -841,7 +846,41 @@ public class SecondFragment extends Fragment {
         colorPicker.getDialogViewLayout().setBackgroundResource(R.drawable.background);
         //     colorPicker.getDialogViewLayout().setBackgroundDrawableResource(backgroundcolorpicker);
 
-        colorPicker.show();
+        colorPicker.show();*/
+
+        final Dialog colorPickerNew = ColorPickerDialogBuilder
+                .with(getActivity())
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(6)
+                .lightnessSliderOnly()
+                .initialColor(defaultColor)
+                .setOnColorSelectedListener(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(int selectedColor) {
+                        // toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                    }
+                })
+                .setPositiveButton(getResources().getString(R.string.ok), new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        nastavColorDlazdice(colorDlazdiceString, selectedColor,dlazdice);
+                        ulozDataColorDoSouboru();
+                    }
+                })
+                .setNegativeButton("default", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        nastavColorDlazdice(colorDlazdiceString, defaultColor,dlazdice);
+                        ulozDataColorDoSouboru();
+                        dialog.dismiss();
+                    }
+                })
+                .build();
+        colorPickerNew.getWindow().setBackgroundDrawableResource(R.drawable.backgroundvyberbarev);
+
+
+        colorPickerNew.show();
     }
 
     private void nastavColorDlazdice(String colorDlazdiceString, int color, LinearLayout dlazdice) {
@@ -980,7 +1019,7 @@ public class SecondFragment extends Fragment {
     }
 
     private String vratStringCasUpravenySHodinama(MyTime casClass) {
-        return getResources().getString(R.string.celkovyCas)+vratHodiny(casClass.getHour()) + vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
+        return getResources().getString(R.string.celkovyCas)+" "+vratHodiny(casClass.getHour()) + vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
     }
 
     private String vratHodiny(int cislo) {

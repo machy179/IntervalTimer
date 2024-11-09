@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#A6A6A5</color>
     <color name="statusBarColor">#A6A6A5</color>
     <color name="colorAccent">#FFFFFF</color>
-    <color name="colorPocetTabat">#012E63</color>
+    <color name="colorPocetTabat">#00204B</color>  <!--  #012E63 -->
     <color name="colorCasPripravy">#787878</color>
     <color name="colorReklama">#A6A6A5</color>  <!--  #A6A6A5 -->
     <color name="colorStatusBarColor">#A6A6A5</color>  <!--  #A6A6A5 -->
@@ -16,7 +16,7 @@
     <color name="colorButtonsDlazdiceCasu">#350c0c</color>
     <color name="colorCasPauzyMeziTabatami">#FFB60716</color>
     <color name="colorCasCoolDown">#B3B2B2</color>  <!--  #b9bebd -->
-    <color name="colorStart">#1d6f8f</color>
+    <color name="colorStart">#000000</color>  <!--  #b9bebd -->
     <color name="colorCerna">#000000</color>
     <color name="colorPisma">#FFFFFF</color>
     <color name="colorButtonu">#E3E2E2</color>

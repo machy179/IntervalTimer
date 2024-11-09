@@ -111,7 +111,7 @@ public class VypocetCelkovehoCasuAZobrezni {
     }
 
     private String vratStringCasUpravenySHodinama(MyTime casClass) {
-        return context.getResources().getString(R.string.celkovyCas)+vratHodiny(casClass.getHour()) + vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
+        return context.getResources().getString(R.string.celkovyCas)+" "+vratHodiny(casClass.getHour()) + vratDeseticisla(casClass.getMin()) + ":" + vratDeseticisla(casClass.getSec());
     }
 
     private String vratDeseticisla(int cislo) {

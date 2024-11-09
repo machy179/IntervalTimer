@@ -250,15 +250,6 @@ public class ThirdFragment extends Fragment {
 
     private void vytvorLayout() {
 
-/*        String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-        MobileAds.initialize(getActivity().getApplicationContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
 
         zmacknutyStartLayout = rootView.findViewById(R.id.zmacknutyStart);
 

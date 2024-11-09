@@ -2,7 +2,6 @@ package com.machy1979ii.intervaltimer.funkce
 
 import android.graphics.Rect
 import android.os.Build
-import android.view.ViewTreeObserver
 import android.view.WindowMetrics
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -60,8 +59,16 @@ class AdUtils {
 
         // If the ad hasn't been laid out, default to the full screen width.
         if (adWidthPixels == 0f) {
-            adWidthPixels = bounds!!.width().toFloat()
+            if (bounds != null) {
+                adWidthPixels = bounds!!.width().toFloat()
+            } else {
+                // Set a fallback width if bounds is null
+                adWidthPixels = activity.resources.displayMetrics.widthPixels.toFloat()
+            }
+
         }
+
+
         val density = activity.resources.displayMetrics.density
         val adWidth = (adWidthPixels / density).toInt()
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth)

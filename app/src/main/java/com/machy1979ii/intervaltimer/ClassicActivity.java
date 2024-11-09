@@ -244,10 +244,6 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 getApplicationContext().getSharedPreferences("boxing_timer_prefers", Context.MODE_PRIVATE);
         adsDisabled = sharedPreferences.getBoolean("ads_disabled", false);
 
-
-        //Firebase Analytics
-        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerClassicActivity");
-
         statusBarcolor();
 
 
@@ -311,6 +307,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             //new design
             vybranyDesign = getDesignPreferences(getApplicationContext());
             Log.d("vybranyDesign", String.valueOf(vybranyDesign));
+
+            //Firebase Analytics
+            TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerClassicActivity_"+String.valueOf(vybranyDesign));
             switch (vybranyDesign) {
                 case 1:
                     newLayout = false;

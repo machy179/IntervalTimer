@@ -244,8 +244,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
         adsDisabled = sharedPreferences.getBoolean("ads_disabled", false);
 
 
-        //Firebase Analytics
-        TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerTabataActivity");
+
 
         //     fanfareZvuk = MediaPlayer.create(getApplicationContext(), R.raw.ramagochiviolinend);
         //      startZvuk = MediaPlayer.create(getApplicationContext(), R.raw.boxstart);
@@ -299,6 +298,8 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
             //new design
             vybranyDesign = getDesignPreferences(getApplicationContext());
             Log.d("vybranyDesign", String.valueOf(vybranyDesign));
+            //Firebase Analytics
+            TimerAnalytics.INSTANCE.getInstance(this).logActivityStart("TimerTabataActivity_"+String.valueOf(vybranyDesign));
             switch (vybranyDesign) {
                 case 1:
                     newLayout = false;

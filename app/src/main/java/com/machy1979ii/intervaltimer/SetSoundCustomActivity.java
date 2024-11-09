@@ -2,7 +2,9 @@ package com.machy1979ii.intervaltimer;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
@@ -89,6 +91,10 @@ public class SetSoundCustomActivity extends AppCompatActivity {
     private FrameLayout adContainerView;
     private boolean initialLayoutComplete = false;
 
+    //Google Billing
+
+    private Boolean adsDisabled = false; //když si uživatel koupil aplikaci a reklamy jsou zakázány
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +109,11 @@ public class SetSoundCustomActivity extends AppCompatActivity {
         }
 
         self_intent_setsound = this;
+
+        //Google Billing
+        SharedPreferences sharedPreferences =
+                getApplicationContext().getSharedPreferences("boxing_timer_prefers", Context.MODE_PRIVATE);
+        adsDisabled = sharedPreferences.getBoolean("ads_disabled", false);
 
         statusBarcolor();
 
@@ -142,25 +153,30 @@ public class SetSoundCustomActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);*/
 
         // Reklama Goole nová - adaptivní banner
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
-        });
-        initialLayoutComplete = false;
-        adContainerView = findViewById(R.id.ad_view_container);
-        adView = new AdView(this);
-        adContainerView.addView(adView);
-        adContainerView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (!initialLayoutComplete) {
-                            initialLayoutComplete = true;
-                            AdUtils.loadBanner(adView, AD_UNIT_ID,SetSoundCustomActivity.this,adContainerView); //volám mnou vytvořenou statickou třídu/metodu
-                            //    loadBanner();
+        if (!adsDisabled) {
+            MobileAds.initialize(this, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) { }
+            });
+            initialLayoutComplete = false;
+            adContainerView = findViewById(R.id.ad_view_container);
+            adView = new AdView(this);
+            adContainerView.addView(adView);
+            adContainerView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            if (!initialLayoutComplete) {
+                                initialLayoutComplete = true;
+                                AdUtils.loadBanner(adView, AD_UNIT_ID,SetSoundCustomActivity.this,adContainerView); //volám mnou vytvořenou statickou třídu/metodu
+                                //    loadBanner();
+                            }
                         }
-                    }
-                });
+                    });
+        }
+
+
+
 
         nazevZvukuPolozka = getResources().getString(R.string.napisZvuk);
 
