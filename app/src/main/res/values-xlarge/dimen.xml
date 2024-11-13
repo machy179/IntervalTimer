@@ -13,6 +13,7 @@
     <dimen name="odsazeniButtonuPause">65dp</dimen>
     <dimen name="velikostMezeryButtonuPause">30dp</dimen>
     <dimen name="velikostMezery">20dp</dimen>
+    <dimen name="velikostMezeryPulka">10dp</dimen>
 
     <dimen name="ads_land_horizontal_margin">30dp</dimen>
 

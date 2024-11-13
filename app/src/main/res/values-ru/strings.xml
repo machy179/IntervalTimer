@@ -101,7 +101,7 @@
     <string name="never">никогда</string>
     <string name="notnow">не сейчас</string>
     <string name="ok">ok</string>
-
+    <string name="vychozi">по умолчанию</string>
     <string name="preskocPosledniKoloHorniText">Пропустить последний</string>
     <string name="preskocPosledniKolo">раунда</string>
     <string name="timeNapis">время</string>

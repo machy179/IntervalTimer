@@ -125,6 +125,7 @@
     <string name="notnow">今はやめろ</string>
 
     <string name="ok">OK</string>
+    <string name="vychozi">デフォルト</string>
 
 
     <string name = "preskocPosledniKoloHorniText"> 最後にスキップ</string>

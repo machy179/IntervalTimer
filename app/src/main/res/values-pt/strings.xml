@@ -101,6 +101,7 @@
     <string name="never">nunca</string>
     <string name="notnow">agora não</string>
     <string name="ok">ok</string>
+    <string name="vychozi">predefinição</string>
 
     <string name="preskocPosledniKoloHorniText"></string>
     <string name="preskocPosledniKolo">Pular último conjunto </string>

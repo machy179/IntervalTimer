@@ -19,6 +19,7 @@
     <dimen name="velikostStinu">6dp</dimen>
 
     <dimen name="velikostMezery">10dp</dimen>   <!--bylo tam 12 -->
+    <dimen name="velikostMezeryPulka">5dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">12dp</dimen>
 
     <dimen name="velikostMezeryPismaOdpocitavace">36dp</dimen>

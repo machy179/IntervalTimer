@@ -1,73 +1,55 @@
 <resources>
-    <string name="app_name">Interval Timer</string>marcela furlongová
+    <string name="app_name">Interval Timer</string>
     <string name="tab_text_1">Classic</string>
     <string name="tab_text_2">Tabata</string>
     <string name="tab_text_3">Custom</string>
-
-
-
     <string name="ulozCas">Save</string>
     <string name="prehrajCas">Play</string>
     <string name="nadpisNastavCasPripravy">Set preparation time</string>
-
-    <string name="nadpisNastavCasCviceni">Set round time</string> <!-- this is a comment -->
-    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Set seconds</string><!-- this is a comment -->
+    <string name="nadpisNastavCasCviceni">Set round time</string>
+    <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">Set seconds</string>
     <string name="nadpisNastavCasPauzy">Set rest time</string>
     <string name="nadpisNastavCasPauzyMeziTabatami">Set time between tabatas</string>
     <string name="nadpisNastavCasCoolDown">Set cool down time</string>
-
     <string name="nadpisCasPauzy">Rest time:</string>
-    <string name="nadpisCasPauzyZvuk">Sound of end of round</string><!-- this is a comment -->
-
+    <string name="nadpisCasPauzyZvuk">Sound of end of round</string>
     <string name="nadpisCasPauzyTabatyZvuk">Sound of time between tabatas</string>
     <string name="nadpisCasPripravy">Preparation time:</string>
-    <string name="nadpisCasCviceni">Round time:</string><!-- this is a comment -->
-    <string name="nadpisCasCviceniZvuk">Sound of start of round</string><!-- this is a comment -->
+    <string name="nadpisCasCviceni">Round time:</string>
+    <string name="nadpisCasCviceniZvuk">Sound of start of round</string>
     <string name="nadpisCasCoolDown">Cool down time:</string>
-    <string name="nadpisCasCoolDownCas">Sound of end of all rounds</string><!-- this is a comment -->
-    <string name="nadpisZvukPulkaCviceni">Sound of half of round</string><!-- this is a comment -->
-    <string name="nadpisZvukPrekKoncemKola">Sound before end of round</string><!-- this is a comment -->
-
+    <string name="nadpisCasCoolDownCas">Sound of end of all rounds</string>
+    <string name="nadpisZvukPulkaCviceni">Sound of half of round</string>
+    <string name="nadpisZvukPrekKoncemKola">Sound before end of round</string>
     <string name="nadpisCasPauzyMeziTabatmi">Time between tabatas</string>
-
-
     <string name="nadpisPocetTabatC">Round-length:</string>
     <string name="nadpisPocetTabat">Tabatas:</string>
-
-    <string name="nadpisPocetCyklu">Rounds:</string><!-- this is a comment -->
+    <string name="nadpisPocetCyklu">Rounds:</string>
     <string name="nadpisPocet">Number:</string>
     <string name="pauza">Pause</string>
     <string name="pokracovat">continue</string>
     <string name="coolDown">COOL DOWN</string>
     <string name="odpocinek">REST</string>
-    <string name="cvic">GO</string><!-- this is a comment -->
+    <string name="cvic">GO</string>
     <string name="konec">END</string>
     <string name="celkovyCas">Total time: </string>
-    <string name="NoSound">none</string><!-- this is a comment -->
-
+    <string name="NoSound">none</string>
     <string name="nadpisSoundSetup">Sound</string>
     <string name="nadpisNastaveniZvukuCoutDown">Sound of countdown</string>
-
-
-
     <string name="nadpisOdpocinekMeziTabatami">Rest between tabatas:</string>
     <string name="nadpisNastavCasPauzyMeziTabatmi">Set rest time between tabatas</string>
     <string name="nadpisNastavPocetTabat">Set number of tabatas</string>
     <string name="nadpisNastavPocetCyklu">Set number of rounds</string><!-- ??? -->
     <string name="title_activity_classic" translatable="false">ClassicActivity</string>
     <string name="title_activity_tabata">TabataActivity</string>
-
-
     <string name="title_activity_set_sound">SetSoundActivity</string>
-    <string name="nadpisNastavZvukCviceni">Set the sound of start of Round</string><!-- this is a comment -->
+    <string name="nadpisNastavZvukCviceni">Set the sound of start of Round</string>
     <string name="nadpisNastavZvukRest">Set the sound of start of rest time</string>
-
     <string name="nadpisNastavZvukRestTabatas">Set the sound of start of rest between tabatas </string>
-
     <string name="nadpisNastavZvukKonecCviceni">Set the sound of end of all workouts</string>
     <string name="nadpisNastavZvukCountdown">Set the sound of countdown</string>
-    <string name="nadpisNastavZvukPulkaCviceni">Set the sound of half round</string><!-- this is a comment -->
-    <string name="nadpisNastavZvukDoKonceKola">Set the sound before end of round</string><!-- this is a comment -->
+    <string name="nadpisNastavZvukPulkaCviceni">Set the sound of half round</string>
+    <string name="nadpisNastavZvukDoKonceKola">Set the sound before end of round</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_banner">BannerActivity</string>
     <string name = "napisZvuk"> sound </string>
@@ -76,14 +58,12 @@
     <string name="never">never</string>
     <string name="notnow">not now</string>
     <string name="ok">ok</string>
-
-    <string name="preskocPosledniKoloHorniText"></string>
+    <string name="preskocPosledniKoloHorniText">Skip last one</string>
     <string name="preskocPosledniKolo">Skip last set </string>
     <string name="timeNapis">time</string>
     <string name="nadpisNastavBarvu">Set the color:</string>
     <string name="nadpisNastaveniHlasitosti">Volume setting</string>
     <string name="nadpisNastavCas">Set time</string>
-
     <string name="remove_ads">Remove ADS</string>
-
+    <string name="vychozi">default</string>
 </resources>

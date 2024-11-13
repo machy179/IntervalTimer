@@ -125,6 +125,7 @@
     <string name="notnow">나중에</string>
 
     <string name="ok">확인</string>
+    <string name="vychozi">기본</string>
 
     <string name="preskocPosledniKoloHorniText">마지막 세트</string>
     <string name="preskocPosledniKolo"> 건너뛰기</string>

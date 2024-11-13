@@ -1229,7 +1229,7 @@ public class FirstFragment extends Fragment {
                         ulozDataColorDoSouboru();
                     }
                 })
-                .setNegativeButton("default", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.vychozi), new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

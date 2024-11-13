@@ -105,6 +105,7 @@
     <string name="never">nunca</string>
     <string name="notnow">ahora no</string>
     <string name="ok">ok</string>
+    <string name="vychozi">predeterminada</string>
 
     <string name="preskocPosledniKoloHorniText">Omitir último</string>
     <string name="preskocPosledniKolo">ronda </string>

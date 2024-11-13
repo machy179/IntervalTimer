@@ -12,6 +12,7 @@
     <dimen name="velikostTextuCelkovyCas">6dp</dimen>
 
     <dimen name="velikostMezery">2dp</dimen>
+    <dimen name="velikostMezeryPulka">1dp</dimen>
     <dimen name="velikostMezeryPismaOdpocitavace">6dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">2dp</dimen>
     <dimen name="kulate_rohy">5dp</dimen>

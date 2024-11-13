@@ -13,8 +13,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="10">
+        android:layout_height="match_parent">
 
 
 
@@ -30,7 +29,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="1"
             android:id="@+id/dlazdiceHlavniCas" >
 
 
@@ -96,142 +95,174 @@
 
 
 
-        <LinearLayout
-            android:orientation="horizontal"
-
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:id="@+id/dlazdicePodHlavnimCasem" >
+            android:layout_height="wrap_content"
+            android:id="@+id/dlazdicePodHlavnimCasem"
+            android:orientation="horizontal">
 
-
-
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/velikostMezery"
-                android:layout_marginBottom="@dimen/velikostMezery"
-
-                android:elevation="@dimen/velikostStinu"
-                android:layout_marginLeft="@dimen/velikostMezery"
-                android:layout_marginRight="@dimen/velikostMezery"
-                android:id="@+id/dlazdicePodHlavnimCasem1"
-                android:orientation="vertical"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dlazdicePodHlavnimCasem11"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/backgroundmodrykulaterohy"
-                android:layout_weight="1"
-                android:onClick="showPickerNastavPocetCykluVTabate">
-
-
-
-
-                <TextView
-                    android:text="@string/nadpisPocetCyklu"
-                    android:textSize="@dimen/velikostTextuNadpis"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPisma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/textViewPocetCykluNadpis" />
-
-                <TextView
-                    android:text="00/00"
-                    android:textSize="@dimen/velikostTextuHodnoty"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPisma"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:id="@+id/textViewAktualniPocetCyklu"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:elevation="@dimen/velikostStinu"
-                android:layout_marginTop="@dimen/velikostMezery"
-                android:layout_marginBottom="@dimen/velikostMezery"
-
-                android:id="@+id/dlazdicePodHlavnimCasem2"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="showPauseDialog"
-                android:background="@drawable/backgroundmodrykulaterohy"
-                >
-
-                <TextView
-
-                    android:textStyle="bold"
-                    android:textSize="@dimen/velikostTextuCelkovyCas"
-                    android:textColor="@color/colorPisma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/textViewCelkovyCas" />
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/dlazdicePodHlavnimCasem22"
+                tools:ignore="MissingConstraints">
 
 
                 <LinearLayout
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|center_horizontal|center"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/velikostMezery"
+                    android:layout_marginBottom="@dimen/velikostMezery"
 
+                    android:layout_marginStart="@dimen/velikostMezery"
+                    android:elevation="@dimen/velikostStinu"
+                    android:layout_marginEnd="@dimen/velikostMezeryPulka"
+
+                    android:id="@+id/dlazdicePodHlavnimCasem1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/backgroundmodrykulaterohy"
+                    android:layout_weight="1"
+                    android:onClick="showPickerNastavPocetCykluVTabate">
+
+
+
+
+                    <TextView
+                        android:text="@string/nadpisPocetCyklu"
+                        android:textSize="@dimen/velikostTextuNadpis"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/textViewPocetCykluNadpis" />
+
+                    <TextView
+                        android:text="00/00"
+                        android:textSize="@dimen/velikostTextuHodnoty"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/textViewAktualniPocetCyklu"/>
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dlazdicePodHlavnimCasem22"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/velikostMezery"
+
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintStart_toEndOf="@id/dlazdicePodHlavnimCasem11"
+                app:layout_constraintEnd_toStartOf="@id/dlazdicePodHlavnimCasem33"
+                tools:ignore="MissingConstraints">
+                <LinearLayout
+                    android:elevation="@dimen/velikostStinu"
+                    android:layout_marginTop="@dimen/velikostMezery"
+                    android:layout_marginBottom="@dimen/velikostMezery"
+                    android:layout_marginEnd="@dimen/velikostMezeryPulka"
+                    android:layout_marginStart="@dimen/velikostMezeryPulka"
+                    android:id="@+id/dlazdicePodHlavnimCasem2"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="showPauseDialog"
+                    android:background="@drawable/backgroundmodrykulaterohy"
+                    >
+
+                    <TextView
+
+                        android:textStyle="bold"
+                        android:textSize="@dimen/velikostTextuCelkovyCas"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/textViewCelkovyCas" />
                     <LinearLayout
-                        android:id="@+id/linearLayoutPauza"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
                         android:layout_gravity="center"
-                        android:background="@mipmap/pausestojatotabataactivity"
+                        android:gravity="center_vertical|center_horizontal|center"
                         android:orientation="vertical">
 
+                        <LinearLayout
+                            android:id="@+id/linearLayoutPauza"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="@dimen/velikostMezeryPulka"
+                            android:layout_marginStart="@dimen/velikostMezeryPulka"
+                            android:layout_gravity="center"
+                            android:background="@mipmap/pausestojatotabataactivity"
+                            android:orientation="vertical">
 
+
+                        </LinearLayout>
                     </LinearLayout>
+
                 </LinearLayout>
-            </LinearLayout>
-            <!-- misto tho drawable tam u tech třech bylo tohle
-             android:background="@color/colorZmacknutePauzy"
-             android:background="@drawable/backgroundmodrykulaterohy"
-             -->
-            <LinearLayout
-                android:elevation="@dimen/velikostStinu"
-                android:layout_marginRight="@dimen/velikostMezery"
-                android:layout_marginTop="@dimen/velikostMezery"
-                android:layout_marginBottom="@dimen/velikostMezery"
 
-                android:id="@+id/dlazdicePodHlavnimCasem3"
-                android:orientation="vertical"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dlazdicePodHlavnimCasem33"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/backgroundmodrykulaterohy"
-                android:layout_marginLeft="@dimen/velikostMezery"
-                android:layout_weight="1"
-                android:onClick="showTimePickerDialogNastavCasKolaVCasovaci">
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/velikostMezery"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/dlazdicePodHlavnimCasem22"
+                tools:ignore="MissingConstraints">
 
-                <TextView
-                    android:text="@string/nadpisPocetTabatC"
-                    android:textSize="@dimen/velikostTextuNadpis"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPisma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/textViewNadpisDelkaKol" />
-
-                <TextView
-                    android:text="00/00"
-                    android:textSize="@dimen/velikostTextuHodnoty"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPisma"
+                <LinearLayout
+                    android:elevation="@dimen/velikostStinu"
+                    android:layout_marginTop="@dimen/velikostMezery"
+                    android:layout_marginBottom="@dimen/velikostMezery"
+                    android:layout_marginEnd="@dimen/velikostMezery"
+                    android:layout_marginStart="@dimen/velikostMezeryPulka"
+                    android:id="@+id/dlazdicePodHlavnimCasem3"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:id="@+id/textViewAktualniPocetTabat"/>
-            </LinearLayout>
+                    android:background="@drawable/backgroundmodrykulaterohy"
+                    android:layout_weight="1"
+                    android:onClick="showTimePickerDialogNastavCasKolaVCasovaci">
 
-        </LinearLayout>
+                    <TextView
+                        android:text="@string/nadpisPocetTabat"
+                        android:textSize="@dimen/velikostTextuNadpis"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/textViewHodnotaPoctuTabatNadpis" />
+
+                    <TextView
+                        android:text="00/00"
+                        android:textSize="@dimen/velikostTextuHodnoty"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPisma"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/textViewAktualniPocetTabat"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <FrameLayout
@@ -245,18 +276,19 @@
             app:layout_constraintStart_toStartOf="parent"
             android:elevation="@dimen/velikostStinu"
             />
-<!--
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:elevation="@dimen/velikostStinu"
-            android:background="@drawable/backgroundreklama"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6701702247641250/5801491018" />-->
+
+        <!--        <com.google.android.gms.ads.AdView
+                    xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/adView"
+                    android:elevation="@dimen/velikostStinu"
+                    android:background="@drawable/backgroundreklama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-6701702247641250/5801491018" /> -->
+        <!--testovací reklama: ads:adUnitId="ca-app-pub-3940256099942544/6300978111"-->
 
     </LinearLayout>
 

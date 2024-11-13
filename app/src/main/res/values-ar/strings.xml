@@ -100,6 +100,7 @@
     <string name="never">مطلقا</string>
     <string name="notnow">ليس الآن</string>
     <string name="ok">موافق</string>
+    <string name="vychozi">الافتراضي</string>
     <string name="nadpisNastavSekundyPredProZvukPrekKoncemKola">قم بإعداد ثواني</string>
 
     <string name = "preskocPosledniKoloHorniText">  تخطي آخر</string>

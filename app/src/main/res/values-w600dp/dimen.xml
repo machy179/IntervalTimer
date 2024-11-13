@@ -3,5 +3,6 @@
 
     <dimen name="kulate_rohy">18dp</dimen>
     <dimen name="velikostMezery">20dp</dimen>
+    <dimen name="velikostMezeryPulka">10dp</dimen>
     <dimen name="velikostMezeryPismaOdpocitavace">48dp</dimen>
 </resources>

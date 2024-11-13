@@ -13,6 +13,7 @@
 
     <dimen name="kulate_rohy">10dp</dimen>
     <dimen name="velikostMezery">16dp</dimen>
+    <dimen name="velikostMezeryPulka">8dp</dimen>
     <dimen name="velikostMezeryPismaOdpocitavace">30dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">10dp</dimen>
 

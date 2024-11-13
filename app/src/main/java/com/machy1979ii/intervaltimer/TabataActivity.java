@@ -1205,7 +1205,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                 linearLayoutPauza.setBackgroundResource(R.mipmap.playstojatotabataactivity);
             }
             //       linearLayoutPauza.setBackgroundResource(R.mipmap.playlezatotabataactivity);
-            vytvorToast(getResources().getString(R.string.pauza));
+          //  vytvorToast(getResources().getString(R.string.pauza));
 
         } else {
             pauzaNeniZmacknuta = true;
@@ -1216,7 +1216,7 @@ public class TabataActivity extends AppCompatActivity implements NegativeReviewL
                 linearLayoutPauza.setBackgroundResource(R.mipmap.pauselezatotabataactivity);
             }
             //        linearLayoutPauza.setBackgroundResource(R.mipmap.pauselezatotabataactivity);
-            vytvorToast(getResources().getString(R.string.pokracovat));
+          //  vytvorToast(getResources().getString(R.string.pokracovat));
         }
 
 
