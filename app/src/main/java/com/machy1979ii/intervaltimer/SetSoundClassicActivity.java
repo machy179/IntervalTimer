@@ -59,11 +59,11 @@ public class SetSoundClassicActivity extends AppCompatActivity {
 
     private Dialog dialogPulkaCviceniNastaveniZvuku;
     private TextView vybranyZvukPulkaCviceniTextView;
-    private int cisloNastavenehoZvukuPulkaCviceni = 50; //když bude tohle číslo, tak žádný zvuk není vybrán
+    private int cisloNastavenehoZvukuPulkaCviceni = 49; //když bude tohle číslo, tak žádný zvuk není vybrán
 
     private Dialog dialogPredKoncemKolaNastaveniZvuku;
     private TextView vybranyZvukPredKoncemKolaTextView;
-    private int cisloNastavenehoZvukuPredKoncemKola = 50; //když bude tohle číslo, tak žádný zvuk není vybrán
+    private int cisloNastavenehoZvukuPredKoncemKola = 49; //když bude tohle číslo, tak žádný zvuk není vybrán
 
     private Dialog dialogPredKoncemKolaNastaveniCasu;
     private TextView casPredKoncemKolaTextView;
@@ -130,8 +130,8 @@ public class SetSoundClassicActivity extends AppCompatActivity {
         cisloNastavehoZvukuRest = getIntent().getIntExtra("zvukstopsetsoundClassic", 1);
   //      cisloNastavenehoZvukuKonec = getIntent().getIntExtra("zvukcelkovykonecsetsound", 1);
         cisloNastavenehoZvukuCountdown = getIntent().getIntExtra("zvukcountdownsetsoundClassic", 1);
-        cisloNastavenehoZvukuPulkaCviceni = getIntent().getIntExtra("zvukpulkakolaClassic", 33);
-        cisloNastavenehoZvukuPredKoncemKola = getIntent().getIntExtra("zvukpupredkoncemkolaClassic", 33);
+        cisloNastavenehoZvukuPulkaCviceni = getIntent().getIntExtra("zvukpulkakolaClassic", 49);
+        cisloNastavenehoZvukuPredKoncemKola = getIntent().getIntExtra("zvukpupredkoncemkolaClassic", 49);
         hodnotaCasuZvukuPredKoncemKola = getIntent().getIntExtra("caszvukupupredkoncemkolaClassic", 20);
 
         hlasitost = getIntent().getIntExtra("hlasitost",hlasitost);

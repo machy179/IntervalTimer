@@ -111,8 +111,8 @@ public class FirstFragment extends Fragment {
     private int zvukStop = 1;
     private int zvukCelkovyKonec = 1;
     private int zvukCountdown= 1;
-    private int zvukPulkaKola = 33; //33 je když není zvuk nastaven, to znamená, že zvuk v půlce cvičení není žádný
-    private int zvukPredKoncemKola = 33; //33 je když není zvuk nastaven, to znamená, že zvuk není žádný
+    private int zvukPulkaKola = 49; //49 je když není zvuk nastaven, to znamená, že zvuk v půlce cvičení není žádný
+    private int zvukPredKoncemKola = 49; //49 je když není zvuk nastaven, to znamená, že zvuk není žádný
     private int casZvukuPredKoncemKola = 20;
 
     private String dataSouborTime;
@@ -320,8 +320,8 @@ public class FirstFragment extends Fragment {
             zvukStop = 1;
             zvukCelkovyKonec = 1;
             zvukCountdown =1;
-            zvukPulkaKola = 33; //33 znamená, že zvuk půlky kola není
-            zvukPredKoncemKola = 33; //33 znamená, že zvuk není
+            zvukPulkaKola = 49; //49 znamená, že zvuk půlky kola není
+            zvukPredKoncemKola = 49; //49 znamená, že zvuk není
 
             //načtení hodnot pro zvuky ze souboru
             soubor = new PraceSeSouborem();

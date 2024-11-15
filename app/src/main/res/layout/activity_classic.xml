@@ -240,7 +240,7 @@
                     android:onClick="showTimePickerDialogNastavCasKolaVCasovaci">
 
                     <TextView
-                        android:text="@string/nadpisPocetTabat"
+                        android:text="@string/nadpisPocetTabatC"
                         android:textSize="@dimen/velikostTextuNadpis"
                         android:textStyle="bold"
                         android:textColor="@color/colorPisma"

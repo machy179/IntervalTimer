@@ -113,10 +113,10 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
     private int zvukStop = 1;
     private int zvukCelkovyKonec = 1;
     private int zvukCountdown = 1;
-    private int zvukPulkaCviceni = 33; //33 je, když není nastaven zvuk
+    private int zvukPulkaCviceni = 49; //49 je, když není nastaven zvuk
     private int casPulkyKola = 0; //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
     private int casPulkyKolaAktualni = 0; //je potřeba ještě tuto proměnnou, protože když nastavím jinou délku kola zrovna v kole, tak by to habrovalo
-    private int zvukPredkoncemKola = 33; //33 je, když není nastaven zvuk
+    private int zvukPredkoncemKola = 49; //49 je, když není nastaven zvuk
     private int casZvukuPredKoncemKola = 20; //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
 
 
@@ -282,9 +282,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             zvukStop = getIntent().getIntExtra("zvukstop", 1);
             zvukCelkovyKonec = getIntent().getIntExtra("zvukcelkovykonec", 1);
             zvukCountdown = getIntent().getIntExtra("zvukcountdown", 1);
-            zvukPulkaCviceni = getIntent().getIntExtra("zvukpulkakola", 33);
+            zvukPulkaCviceni = getIntent().getIntExtra("zvukpulkakola", 49);
 
-            zvukPredkoncemKola = getIntent().getIntExtra("zvukpredkoncemkola", 33);
+            zvukPredkoncemKola = getIntent().getIntExtra("zvukpredkoncemkola", 49);
             casZvukuPredKoncemKola = getIntent().getIntExtra("caszvukupupredkoncemkola", 20);
             hlasitost = getIntent().getIntExtra("hlasitost", 100);
 

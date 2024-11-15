@@ -64,7 +64,7 @@ class CustomService : Service() {
     var zvukStop = 1
     var zvukCelkovyKonec = 1
     var zvukCountdown = 1
-    var zvukPulkaCviceni = 33 //33 je, když není nastaven zvuk
+    var zvukPulkaCviceni = 49 //49 je, když není nastaven zvuk
 
     var casPulkyKola =
         0 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
@@ -72,7 +72,7 @@ class CustomService : Service() {
     var casPulkyKolaAktualni =
         0 //je potřeba ještě tuto proměnnou, protože když nastavím jinou délku kola zrovna v kole, tak by to habrovalo
 
-    var zvukPredkoncemKola = 33 //33 je, když není nastaven zvuk
+    var zvukPredkoncemKola = 49 //49 je, když není nastaven zvuk
 
     var casZvukuPredKoncemKola =
         20 //pokud uživatel nebude chtít, aby v půlce kola byl nějaký zvuk, tak hodnota bude 0
