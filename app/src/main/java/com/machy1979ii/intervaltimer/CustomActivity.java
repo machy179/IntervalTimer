@@ -805,6 +805,9 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         }
 
         textViewCas = (TextView) findViewById(R.id.textViewBeziciCas);
+        textViewCas.setFontFeatureSettings("tnum"); //protože je nastaven font písma Inter, což je proporcionální písmo a z toho důvodu to při každé změně číslice
+        //jakoby odskakuje, protože každá číslice je jinak široká, tak je nastavena tato vlastnost - tabulkové číslice
+
         textViewCasNadpis = (TextView) findViewById(R.id.textViewBeziciCasNadpis);
         textViewAktualniPocetCyklu = (TextView) findViewById(R.id.textViewAktualniPocetCyklu);
         textViewAktualniPocetTabat = (TextView) findViewById(R.id.textViewAktualniPocetTabat);
@@ -851,6 +854,10 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
 
         linearLayoutPauza = findViewById(R.id.linearLayoutPauza);
         textViewCelkovyCas = (TextView) findViewById(R.id.textViewCelkovyCas);
+        textViewCelkovyCas.setFontFeatureSettings("tnum");//protože je nastaven font písma Inter, což je proporcionální písmo a z toho důvodu to při každé změně číslice
+        //jakoby odskakuje, protože každá číslice je jinak široká, tak je nastavena tato vlastnost - tabulkové číslice
+
+
         velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
 
 
@@ -986,13 +993,13 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
         }
 
 
-        if (s != null && buttonBackIsNotPressed) {
+/*        if (s != null && buttonBackIsNotPressed) { //tady změna v service 20.12.2024!!!
             try {
                 s.setNotification();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         if (odpocitavac != null) {
             odpocitavac.cancel();
@@ -1041,6 +1048,14 @@ public class CustomActivity extends AppCompatActivity implements NegativeReviewL
             //color
         } else
             dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCviceni));
+
+        if (newLayout) {
+            dlazdiceOdpocitavace.setBackgroundColor(aktualniPolozkaCasu.getColorDlazdice());
+            zmenNavigationBarColor(aktualniPolozkaCasu.getColorDlazdice());
+        }
+
+        maxHodnotaProgressBar = aktualniPolozkaCasu.getTime().getSec() + aktualniPolozkaCasu.getTime().getMin() * 60 + aktualniPolozkaCasu.getTime().getHour() * 3600 + 1;
+        textViewCasNadpis.setText(aktualniPolozkaCasu.getNazevCasu());
 
         if (aktualniPolozkaCasu.getTime().getSec() < 10) {
             textViewAktualniPocetTabat.setText(String.valueOf(aktualniPolozkaCasu.getTime().getMin()) + ":0" + String.valueOf(aktualniPolozkaCasu.getTime().getSec()));

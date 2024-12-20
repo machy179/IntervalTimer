@@ -1,11 +1,19 @@
 package com.machy1979ii.intervaltimer.services
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
-import android.os.*
+import android.os.Binder
+import android.os.Build
+import android.os.CountDownTimer
+import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -82,6 +90,7 @@ class ClassicService : Service() {
     var volume = 0f
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        setNotification() ////tady změna v service 20.12.2024!!! - tento řádek přidán
         //nejdříve zjistí, jestli to sem neskočilo z broadcastu
         if ("ACTION_STOP_SERVICE".equals(intent?.getAction())) {
             val intent1 = Intent("znicClassicActivityAClassicService")
@@ -820,6 +829,7 @@ class ClassicService : Service() {
                         }
                         else -> {}
                     }
+                    Log.d("progress-bar", "$pomocny-ze service pomocny")
 
                     mNotificationManager?.notify(ONGOING_NOTIFICATION, notification)
                 }
@@ -872,6 +882,8 @@ class ClassicService : Service() {
         ppauzePlay = PendingIntent.getService(this, 0, pauzePlay!!, PendingIntent.FLAG_IMMUTABLE)
 
         notificationBuilder = NotificationCompat.Builder(this, channelId)
+
+
         notification = notificationBuilder!!
             //  .setOngoing(true) //bylo by heads-up okno pořád otevřené
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
@@ -892,7 +904,21 @@ class ClassicService : Service() {
                 getString(R.string.konec),
                 pStopSelf
             ) //pokud budu chtít dát nějakou další akci například
+            .setSound(null) // Zakáže zvukové znamení
             .build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            notificationBuilder!!.setBubbleMetadata(null); // Zakázání bublin
+        }
+
+
+        /*            try {
+                s.setNotification();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
+
+
 
         when (pauzaNeniZmacknuta) {
             false -> {
@@ -931,16 +957,20 @@ class ClassicService : Service() {
         val channelName = "Interval Timer Classic Background Service"
         chan = NotificationChannel(
             channelId,
-            channelName, NotificationManager.IMPORTANCE_HIGH
-        ) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
+            channelName, NotificationManager.IMPORTANCE_DEFAULT
+        ) //Kdybych chtěl, aby notifikace nebyla v v bublině heads-up, tak bych sem musel dát MAX...
         chan!!.description = "Interval Timer Classic Background Service description"
         chan!!.setShowBadge(true) //aby v případě notifikace byla u spouštěcí ikony aplikace značka, že je spuštěna notifikace, jako když je například u WA nová zpráva, tak u ikony na domovské stránce je značka nové zpárvy
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        chan!!.setSound(null, null);  //vypne zvuk notifikace
+
 
         mNotificationManager = getSystemService(
             NotificationManager::class.java
         )
         mNotificationManager!!.createNotificationChannel(chan!!)
+
+
 
         return channelId
     }
@@ -981,7 +1011,7 @@ class ClassicService : Service() {
         stav: Byte,
         pomocny: Long,
         pauzaNeniZmacknuta: Boolean,
-        pocetCyklu: Int
+        pocetCyklu: Int,
     ) {
 
         this.aktualniCyklus = aktualniCyklus
@@ -1098,7 +1128,7 @@ class ClassicService : Service() {
         zvukStart: Int, zvukStop: Int, zvukCelkovyKonec: Int,
         zvukCountdown: Int, zvukPulkaCviceni: Int, casPulkyKola: Int,
         casPulkyKolaAktualni: Int, zvukPredkoncemKola: Int, casZvukuPredKoncemKola: Int,
-        hlasitost: Int, maxHlasitost: Int, volume: Float
+        hlasitost: Int, maxHlasitost: Int, volume: Float,
     ) {
         this.zvukStart = zvukStart
         this.zvukStop = zvukStop

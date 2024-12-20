@@ -15,6 +15,13 @@
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor" tools:targetApi="l">@color/colorNavigationBar</item>
 
+
+        <item name="android:fontFamily">@font/inter18_bold_updated1</item>
+        <!--  <item name="android:fontFeatureSettings">tnum</item>  pokud budu chtít tnum nastavit pro font pro celou aplikaci -->
+        <item name="fontFamily">@font/inter18_bold_updated1</item> <!-- For backward compatibility -->
+
+
+
     </style>
 
     <style name="Theme.IntervalTimer.NoActionBar">

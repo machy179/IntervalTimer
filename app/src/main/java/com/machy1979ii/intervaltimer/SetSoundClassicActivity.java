@@ -33,6 +33,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.machy1979ii.intervaltimer.funkce.AdUtils;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.services.TimerAnalytics;
 import com.machy1979ii.intervaltimer.services.TimerBillingManager;
 import com.machy1979ii.intervaltimer.ui.main.FirstFragment;
@@ -393,6 +394,11 @@ public class SetSoundClassicActivity extends AppCompatActivity {
         setDividerColor(pocitacVybranehoZvuku);
         pocitacVybranehoZvuku.setMinValue(1);
 
+        // Set vibration on scroll
+        pocitacVybranehoZvuku.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
 
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavCasPripravy))) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -623,6 +629,12 @@ public class SetSoundClassicActivity extends AppCompatActivity {
         setDividerColor(pocitacSec);
         pocitacSec.setMinValue(0);
         pocitacSec.setMaxValue(60);
+
+        // Set vibration on scroll
+        pocitacSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         //nastavím v dialogu hodnotu, která je načtená ze souboru
 
             pocitacSec.setValue(hodnotaCasuZvukuPredKoncemKola);

@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.funkce.PraceSeSouboremCustom;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.models.PolozkaCasuKola;
 import com.machy1979ii.intervaltimer.models.SouborPolozekCasuKola;
 
@@ -44,6 +45,11 @@ public class VytvoreniDialoguZvuku {
         final NumberPicker pocitacVybranehoZvuku = (NumberPicker) dialog.findViewById(R.id.npVybranyZvuk);
         setDividerColor(pocitacVybranehoZvuku);
         pocitacVybranehoZvuku.setMinValue(1);
+
+        // Set vibration on scroll
+        pocitacVybranehoZvuku.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
 
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.backgroundcolorcascviceni));//  (R.drawable.background);

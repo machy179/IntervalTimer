@@ -92,6 +92,8 @@ class CustomService : Service() {
     var isActivityDestroyed = false
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        setNotification() //tady změna v service 20.12.2024!!!
+
         //nejdříve zjistí, jestli to sem neskočilo z broadcastu
         if ("ACTION_STOP_SERVICE".equals(intent?.getAction())) {
             val intent1 = Intent("znicCustomActivityACustomService")
@@ -356,6 +358,7 @@ class CustomService : Service() {
                 getString(R.string.konec),
                 pStopSelf
             ) //pokud budu chtít dát nějakou další akci například
+            .setSound(null) // Zakáže zvukové znamení
             .build()
 
         when (pauzaNeniZmacknuta) {
@@ -395,11 +398,12 @@ class CustomService : Service() {
         val channelName = "Interval Timer Custom Background Service"
         chan = NotificationChannel(
             channelId,
-            channelName, NotificationManager.IMPORTANCE_HIGH
-        ) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
+            channelName, NotificationManager.IMPORTANCE_DEFAULT
+        ) //Kdybych chtěl, aby notifikace nebyla v v bublině heads-up, tak bych sem musel dát MAX...
         chan!!.description = "Interval Timer Custom Background Service description"
         chan!!.setShowBadge(true) //aby v případě notifikace byla u spouštěcí ikony aplikace značka, že je spuštěna notifikace, jako když je například u WA nová zpráva, tak u ikony na domovské stránce je značka nové zpárvy
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        chan!!.setSound(null, null);  //vypne zvuk notifikace
 
         mNotificationManager = getSystemService(
             NotificationManager::class.java

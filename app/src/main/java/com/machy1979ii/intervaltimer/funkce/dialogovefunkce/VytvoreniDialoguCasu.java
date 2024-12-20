@@ -18,6 +18,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.machy1979ii.intervaltimer.R;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.funkce.VypocetCelkovehoCasuAZobrezni;
 import com.machy1979ii.intervaltimer.models.MyTime;
 import com.machy1979ii.intervaltimer.models.PolozkaCasuKola;
@@ -77,6 +78,15 @@ public class VytvoreniDialoguCasu {
         setDividerColor(pocitacSec);
         pocitacSec.setMinValue(0);
         pocitacSec.setMaxValue(59);
+
+        // Set vibration on scroll
+        pocitacMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
 
             pocitacMin.setValue(casPredany.getMin());
             pocitacSec.setValue(casPredany.getSec());

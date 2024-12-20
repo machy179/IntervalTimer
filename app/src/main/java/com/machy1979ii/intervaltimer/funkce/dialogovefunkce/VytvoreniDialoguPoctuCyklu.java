@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.machy1979ii.intervaltimer.R;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.funkce.VypocetCelkovehoCasuAZobrezni;
 import com.machy1979ii.intervaltimer.models.MyTime;
 import com.machy1979ii.intervaltimer.models.SouborPolozekCasuKola;
@@ -51,6 +52,16 @@ public class VytvoreniDialoguPoctuCyklu {
         setDividerColor(pocitacJednotky);
         pocitacJednotky.setMinValue(0);
         pocitacJednotky.setMaxValue(9);
+
+        // Set vibration on scroll
+        pocitacDesitky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacJednotky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         //
         int pocetCyklu = souborPolozekCasuKola.getPocetCyklu();;
             pocitacDesitky.setValue((pocetCyklu - pocetCyklu%10)/10);

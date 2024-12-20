@@ -47,6 +47,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.machy1979ii.intervaltimer.funkce.AdUtils;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukem;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.models.MyTime;
 import com.machy1979ii.intervaltimer.services.ClassicService;
 import com.machy1979ii.intervaltimer.services.TimerAnalytics;
@@ -144,6 +145,8 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             } else {
                 //     Toast.makeText(ClassicActivity.this, "Connected s!=null", Toast.LENGTH_SHORT).show();
             }
+
+
             bound = true;
 
             Log.d("Servica1", "onServiceConnected ---");
@@ -1129,6 +1132,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 if (nastavProgressBar && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     Log.d("progress-bar", String.valueOf(maxHodnotaProgressBar - 1));
                     Log.d("progress-bar", String.valueOf(pomocny));
+                    Log.d("progress-bar", String.valueOf(konecOdpocitavani));
                     if (((maxHodnotaProgressBar - 1 - (int) pomocny) == 0) || konecOdpocitavani) {
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -1282,6 +1286,16 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         setDividerColor(pocitacJednotky);
         pocitacJednotky.setMinValue(0);
         pocitacJednotky.setMaxValue(9);
+
+        // Set vibration on scroll
+        pocitacDesitky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacJednotky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         Button uloz = (Button) dialog.findViewById(R.id.buttonUlozPocet);
         uloz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1350,6 +1364,16 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         setDividerColor(pocitacSec);
         pocitacSec.setMinValue(0);
         pocitacSec.setMaxValue(59);
+
+        // Set vibration on scroll
+        pocitacMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         //nastavím v dialogu hodnotu, která je načtená ze souboru
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavCasCviceni))) {
             pocitacMin.setValue(casCviceni.getMin()); //asdf
@@ -1488,6 +1512,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
 
             }
 
+
             textViewCas.setText(vratDeseticisla((int) pomocny));
         } else {
             if (velikostCislic != (R.dimen.velikostCasuOdpocitavaniCtyri)) {
@@ -1615,6 +1640,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                 textViewBeziciCasCisloKola.setText("");
                 konecOdpocitavani = true;
                 odpocitavac.cancel();
+                textViewCasNadpis.setText("");
                 Log.d("Jsem na konci: ", "3");
                 break;
             case 5:
@@ -1628,7 +1654,7 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorCasCoolDown));
                 }
 
-                textViewCasNadpis.setText(R.string.nadpisCasCoolDown);
+                textViewCasNadpis.setText("");
                 break;
             default:
                 break;
@@ -1693,12 +1719,15 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         //   zavolejReview();
 
         textViewCas = (TextView) findViewById(R.id.textViewBeziciCas);
+        textViewCas.setFontFeatureSettings("tnum"); //protože je nastaven font písma Inter, což je proporcionální písmo a z toho důvodu to při každé změně číslice
+        //jakoby odskakuje, protože každá číslice je jinak široká, tak je nastavena tato vlastnost - tabulkové číslice
         textViewCasNadpis = (TextView) findViewById(R.id.textViewBeziciCasNadpis);
         textViewAktualniPocetCyklu = (TextView) findViewById(R.id.textViewAktualniPocetCyklu);
         textViewAktualniPocetTabat = (TextView) findViewById(R.id.textViewAktualniPocetTabat);
         dlazdiceOdpocitavace = (LinearLayout) findViewById(R.id.dlazdiceHlavniCas);
 
         textViewBeziciCasCisloKola = (TextView) findViewById(R.id.textViewBeziciCasCisloKola);
+
 
 
         dlazdicePodHlavnimCasem1 = (LinearLayout) findViewById(R.id.dlazdicePodHlavnimCasem1);
@@ -1739,6 +1768,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         linearLayoutPauza = findViewById(R.id.linearLayoutPauza);
         //  textViewPauza = (TextView) findViewById(R.id.textViewPauza);
         textViewCelkovyCas = (TextView) findViewById(R.id.textViewCelkovyCas);
+        textViewCelkovyCas.setFontFeatureSettings("tnum");//protože je nastaven font písma Inter, což je proporcionální písmo a z toho důvodu to při každé změně číslice
+        //jakoby odskakuje, protože každá číslice je jinak široká, tak je nastavena tato vlastnost - tabulkové číslice
+
         velikostCislic = R.dimen.velikostCasuOdpocitavaniDva;
 
 
@@ -1890,14 +1922,14 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
         }
 
 
-        if(s!=null && buttonBackIsNotPressed) {
+/*        if(s!=null && buttonBackIsNotPressed) { //tady změna v service 20.12.2024!!!
 
             try {
                 s.setNotification();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         if(odpocitavac!=null) {
             odpocitavac.cancel();
@@ -1949,6 +1981,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPripravy);
                     zmenNavigationBarColor(colorDlazdiceCasPripravy);
                 }
+                maxHodnotaProgressBar = casPripravy.getSec() + casPripravy.getMin() * 60 + casPripravy.getHour() * 3600 + 1;
+                textViewCasNadpis.setText(R.string.nadpisCasPripravy);
+                Log.d("progress-bar2", "maxHodnotaProgressBar0 =" + maxHodnotaProgressBar);
                 break;
             case 1:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1965,6 +2000,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
                     zmenNavigationBarColor(colorDlazdiceCasCviceni);
                 }
+                maxHodnotaProgressBar = casCviceni.getSec() + casCviceni.getMin() * 60 + casCviceni.getHour() * 3600 + 1;
+                textViewCasNadpis.setText(R.string.nadpisCasCviceni);
+                Log.d("progress-bar2", "maxHodnotaProgressBar1 =" + maxHodnotaProgressBar);
                 break;
             case 2:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1981,6 +2019,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasPauzy);
                     zmenNavigationBarColor(colorDlazdiceCasPauzy);
                 }
+                maxHodnotaProgressBar = casPauzy.getSec() + casPauzy.getMin() * 60 + casPauzy.getHour() * 3600 + 1;
+                textViewCasNadpis.setText(R.string.nadpisCasPauzy);
+                Log.d("progress-bar2", "maxHodnotaProgressBar2 =" + maxHodnotaProgressBar);
                 break;
             case 3:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1997,6 +2038,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(colorDlazdiceCasCviceni);
                     zmenNavigationBarColor(colorDlazdiceCasCviceni);
                 }
+                maxHodnotaProgressBar = casCviceni.getSec() + casCviceni.getMin() * 60 + casCviceni.getHour() * 3600 + 1;
+                textViewCasNadpis.setText(R.string.nadpisCasCviceni);
+                Log.d("progress-bar2", "maxHodnotaProgressBar3 =" + maxHodnotaProgressBar);
                 break;
             case 4:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -2007,6 +2051,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
                     zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
                 }
+                maxHodnotaProgressBar = 0;
+                textViewCasNadpis.setText("");
+                Log.d("progress-bar2", "maxHodnotaProgressBar4 =" + maxHodnotaProgressBar);
                 break;
             case 5:
 
@@ -2018,6 +2065,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
                     dlazdiceOdpocitavace.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
                     zmenNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorKonecTabaty));
                 }
+                maxHodnotaProgressBar = 0;
+                textViewCasNadpis.setText("");
+                Log.d("progress-bar2", "maxHodnotaProgressBar5 =" + maxHodnotaProgressBar);
                 break;
 
         }
@@ -2036,7 +2086,9 @@ public class ClassicActivity extends AppCompatActivity implements NegativeReview
             }
         }
 
+
         pomocny = s.getPomocny();
+        Log.d("progress-bar", String.valueOf(pomocny) +"-ze service načteno v Activity pomocny");
         nastavCislice(pomocny);
 
         zobrazCelkovyCas();

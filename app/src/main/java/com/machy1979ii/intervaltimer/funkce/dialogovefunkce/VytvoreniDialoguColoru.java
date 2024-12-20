@@ -1,5 +1,7 @@
 package com.machy1979ii.intervaltimer.funkce.dialogovefunkce;
 
+
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,12 +10,15 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.funkce.PraceSeSouboremCustom;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.models.PolozkaCasuKola;
 import com.machy1979ii.intervaltimer.models.SouborPolozekCasuKola;
 
@@ -34,43 +39,20 @@ public class VytvoreniDialoguColoru {
     public void zobrazNastaveniColoruDlazdice(LinearLayout dlazdice, PolozkaCasuKola polozkaCasu, Dialog predanyDialog, ArrayList<SouborPolozekCasuKola> vsechnyPolozkyCasyKol) { //tady pokračovat, tady to asi udělalo chybu
         this.vsechnyPolozkyCasyKol = vsechnyPolozkyCasyKol;
 
-/*        final ColorPicker colorPicker = new ColorPicker((Activity) context); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
-        colorPicker.setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
-            @Override
-            public void setOnFastChooseColorListener(int position, int color) {
-                Log.i("asdf:", "1");
-                polozkaCasu.setColorDlazdice(color);
-                nastavColorDlazdice(color,dlazdice, predanyDialog);
-                Log.i("asdf:", "2");
-                //        ulozDataColorDoSouboru(); tady to odkomentovat a dodělat to
-
-            }
-
-            @Override
-            public void onCancel(){
-                // put code
-            }
-        }).setColumns(5)
-                .setRoundColorButton(true)
-                .setTitle(context.getResources().getString(R.string.nadpisNastavBarvu))
-                .setColors(R.array.default_colors_color_picker)
-        ;
-
-
-        colorPicker.getDialogViewLayout().setBackgroundResource(R.drawable.background);
-        //     colorPicker.getDialogViewLayout().setBackgroundDrawableResource(backgroundcolorpicker);
-
-        colorPicker.show();*/
 
         final Dialog colorPickerNew = ColorPickerDialogBuilder
                 .with((Activity) context)
                 .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
                 .density(6)
+                .initialColor(ContextCompat.getColor(context, R.color.colorCasPripravy))
                 .lightnessSliderOnly()
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int selectedColor) {
                         // toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                        // Set vibration on scroll
+                        VibratorTimer.INSTANCE.vibrate(context);
+
                     }
                 })
                 .setPositiveButton(this.context.getResources().getString(R.string.ok), new ColorPickerClickListener() {

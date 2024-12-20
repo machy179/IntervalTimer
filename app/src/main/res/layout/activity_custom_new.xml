@@ -95,8 +95,8 @@
                     android:id="@+id/textViewBeziciCas"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/velikostMezeryPismaOdpocitavace"
-                    android:layout_marginRight="@dimen/velikostMezeryPismaOdpocitavace"
+                    android:layout_marginLeft="@dimen/velikostMezeryPismaOdpocitavaceCustomLayoutNewPort"
+                    android:layout_marginRight="@dimen/velikostMezeryPismaOdpocitavaceCustomLayoutNewPort"
                     android:gravity="center"
                     android:text="00"
                     android:textColor="@color/colorPisma"
@@ -151,12 +151,13 @@
                         android:textSize="@dimen/velikostTextuNadpis"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:textColor="@color/colorPisma"
                         android:id="@+id/textViewPocetCykluNadpis"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="Suspicious0dp" />
 
                     <TextView
                         android:text="00/00"
@@ -260,9 +261,12 @@
                         android:textSize="@dimen/velikostTextuNadpis"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:textColor="@color/colorPisma"
-                        android:id="@+id/textViewNadpisDelkaKol"/>
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:id="@+id/textViewNadpisDelkaKol"
+                        tools:ignore="Suspicious0dp" />
 
                     <TextView
                         android:text="00/00"

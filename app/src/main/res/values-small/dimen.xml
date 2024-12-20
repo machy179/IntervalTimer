@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="velikostTextuNadpis">4dp</dimen>
+    <dimen name="velikostTextuNadpis">10dp</dimen>
     <dimen name="velikostTextuNadpisMensi">10dp</dimen>
-    <dimen name="velikostTextuHodnoty">7dp</dimen>
+    <dimen name="velikostTextuHodnoty">24dp</dimen>
     <dimen name="velikostTextuNadpisDialog">3dp</dimen>
     <dimen name="velikostCasuOdpocitavaniFull">52dp</dimen>
-    <dimen name="velikostCasuOdpocitavaniDva">70dp</dimen>
-    <dimen name="velikostCasuOdpocitavaniCtyri">25dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniDva">90dp</dimen>
+    <dimen name="velikostCasuOdpocitavaniCtyri">32dp</dimen>
     <dimen name="velikostCasuOdpocitavaniTri">89dp</dimen>
     <dimen name="velikostCasuOdpocitavaniCoolDown">29dp</dimen>
-    <dimen name="velikostTextuCelkovyCas">6dp</dimen>
+    <dimen name="velikostTextuCelkovyCas">17dp</dimen>
 
-    <dimen name="velikostMezery">2dp</dimen>
-    <dimen name="velikostMezeryPulka">1dp</dimen>
+    <dimen name="velikostMezery">6dp</dimen>
+    <dimen name="velikostMezeryPulka">3dp</dimen>
     <dimen name="velikostMezeryPismaOdpocitavace">6dp</dimen>
+    <dimen name="velikostMezeryPismaOdpocitavaceCustomLayoutNewPort">8dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">2dp</dimen>
     <dimen name="kulate_rohy">5dp</dimen>
     <dimen name="tloustka_progressbar">4dp</dimen>

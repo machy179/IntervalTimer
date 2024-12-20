@@ -43,6 +43,7 @@ import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.SetSoundTabataActivity;
 import com.machy1979ii.intervaltimer.TabataActivity;
 import com.machy1979ii.intervaltimer.funkce.PraceSeSouboremTabata;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.models.MyTime;
 
 import java.io.IOException;
@@ -525,6 +526,16 @@ public class SecondFragment extends Fragment {
         setDividerColor(pocitacSec);
         pocitacSec.setMinValue(0);
         pocitacSec.setMaxValue(59);
+
+        // Set vibration on scroll
+        pocitacMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         //nastavím v dialogu hodnotu, která je načtená ze souboru
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavCasPripravy))) {
             pocitacMin.setValue(casPripravy.getMin());
@@ -609,6 +620,15 @@ public class SecondFragment extends Fragment {
         setDividerColor(pocitacJednotky);
         pocitacJednotky.setMinValue(0);
         pocitacJednotky.setMaxValue(9);
+
+        // Set vibration on scroll
+        pocitacDesitky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacJednotky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
         //
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavPocetCyklu))) {
             pocitacDesitky.setValue((pocetCyklu - pocetCyklu%10)/10);
@@ -857,7 +877,8 @@ public class SecondFragment extends Fragment {
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int selectedColor) {
-                        // toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                        // Set vibration on scroll
+                        VibratorTimer.INSTANCE.vibrate(getContext());
                     }
                 })
                 .setPositiveButton(getResources().getString(R.string.ok), new ColorPickerClickListener() {

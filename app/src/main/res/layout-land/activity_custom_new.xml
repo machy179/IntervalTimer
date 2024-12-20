@@ -168,12 +168,14 @@
                         <TextView
                             android:id="@+id/textViewPocetCykluNadpis"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            tools:ignore="Suspicious0dp"
                             android:layout_gravity="center"
                             android:text="@string/nadpisPocetCyklu"
                             android:textColor="@color/colorPisma"
                             android:textSize="@dimen/velikostTextuNadpis"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                             />
 
                         <TextView
                             android:id="@+id/textViewAktualniPocetCyklu"
@@ -272,9 +274,11 @@
                         <TextView
                             android:id="@+id/textViewNadpisDelkaKol"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_height="0dp"
+                            tools:ignore="Suspicious0dp"
                             android:text="@string/nadpisPocetTabatC"
+                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:textColor="@color/colorPisma"
                             android:textSize="@dimen/velikostTextuNadpis"
                             android:textStyle="bold" />

@@ -6,7 +6,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
-    <dimen name="velikostTextuNadpis">15dp</dimen>
+    <dimen name="velikostTextuNadpis">14dp</dimen>
     <dimen name="velikostTextuNadpisMensi">15dp</dimen>
     <dimen name="velikostTextuHodnoty">30dp</dimen>
     <dimen name="velikostTextuNadpisDialog">6dp</dimen>
@@ -22,7 +22,8 @@
     <dimen name="velikostMezeryPulka">5dp</dimen>
     <dimen name="velikostMezeryLandTabataClassic">12dp</dimen>
 
-    <dimen name="velikostMezeryPismaOdpocitavace">36dp</dimen>
+    <dimen name="velikostMezeryPismaOdpocitavace">38dp</dimen>
+    <dimen name="velikostMezeryPismaOdpocitavaceCustomLayoutNewPort">52dp</dimen>
 
     <dimen name="kulate_rohy">18dp</dimen>  <!--bylo tam 10 -->
 

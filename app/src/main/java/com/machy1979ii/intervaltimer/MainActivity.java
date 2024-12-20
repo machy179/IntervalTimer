@@ -17,11 +17,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.ump.ConsentForm;
 import com.google.android.ump.ConsentInformation;
@@ -135,6 +139,25 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
+/*
+        //níže uvedené aby pager používal tnum font
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            TabLayout.Tab tab = tabs.getTabAt(i);
+            if (tab != null && tab.view != null) {
+                // Najdeme původní TextView uvnitř tab.view
+                View tabView = tab.view;
+                for (int j = 0; j < ((ViewGroup) tabView).getChildCount(); j++) {
+                    View child = ((ViewGroup) tabView).getChildAt(j);
+                    if (child instanceof TextView) {
+                        TextView textView = (TextView) child;
+
+                        textView.setFontFeatureSettings("tnum"); // Aktivace tabulkových číslic
+
+
+                    }
+                }
+            }
+        }*/
 
     }
 

@@ -21,6 +21,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -49,6 +51,7 @@ import com.machy1979ii.intervaltimer.ClassicActivity;
 import com.machy1979ii.intervaltimer.R;
 import com.machy1979ii.intervaltimer.SetSoundClassicActivity;
 import com.machy1979ii.intervaltimer.funkce.PraceSeSouborem;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.models.MyTime;
 
 import java.io.IOException;
@@ -159,6 +162,7 @@ public class FirstFragment extends Fragment {
     private boolean prvniNacteniRadioButtonu = true; //když se načetla aplikace, nebo při change land/port, tak se automaticky zobrazil toas vybraného layoutu, tak je zde potřeba podchitit první načtení
 
     private int vybranyDesign = 3;
+
 
 
     @Override
@@ -505,6 +509,16 @@ public class FirstFragment extends Fragment {
         setDividerColor(pocitacSec);
         pocitacSec.setMinValue(0);
         pocitacSec.setMaxValue(59);
+
+        // Set vibration on scroll
+        pocitacMin.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacSec.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         //nastavím v dialogu hodnotu, která je načtená ze souboru
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavCasPripravy))) {
             pocitacMin.setValue(casPripravy.getMin());
@@ -574,6 +588,16 @@ public class FirstFragment extends Fragment {
         setDividerColor(pocitacJednotky);
         pocitacJednotky.setMinValue(0);
         pocitacJednotky.setMaxValue(9);
+
+        // Set vibration on scroll
+        pocitacDesitky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
+        pocitacJednotky.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
+
         //
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavPocetCyklu))) {
             pocitacDesitky.setValue((pocetCyklu - pocetCyklu%10)/10);
@@ -796,18 +820,6 @@ public class FirstFragment extends Fragment {
     }
 
     private void udelejLayout(View rootView) {
-
-
-/*        String idAplikace = "ca-app-pub-6701702247641250~7047640994";
-    //    MobileAds.initialize(requireContext(), idAplikace);
-        MobileAds.initialize(getActivity().getApplicationContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
 
         showTimePickerDialogNastavSetupZvukuLayout = rootView.findViewById(R.id.showTimePickerDialogNastavSetupZvuku);
         showTimePickerDialogNastavPripravuLayout = rootView.findViewById(R.id.showTimePickerDialogNastavPripravu);
@@ -1183,32 +1195,6 @@ public class FirstFragment extends Fragment {
 
     }
     private void zobrazNastaveniColoruDlazdice(String colorDlazdiceString, LinearLayout dlazdice, int defaultColor) { //tady pokračovat, tady to asi udělalo chybu
-/*        final ColorPicker colorPicker = new ColorPicker(getActivity()); //tady nevím, jestli je to OK, původně to bylo MainActivity.this, tady je chyba, vyřešit to
-        colorPicker.setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
-            @Override
-            public void setOnFastChooseColorListener(int position, int color) {
-                Log.i("asdf:", "1");
-                nastavColorDlazdice(colorDlazdiceString, color,dlazdice, false);
-                Log.i("asdf:", "2");
-                ulozDataColorDoSouboru();
-
-            }
-
-            @Override
-            public void onCancel(){
-                // put code
-            }
-        }).setColumns(5)
-                .setRoundColorButton(true)
-                .setTitle(getResources().getString(R.string.nadpisNastavBarvu))
-                .setColors(R.array.default_colors_color_picker)
-        ;
-
-
-        colorPicker.getDialogViewLayout().setBackgroundResource(R.drawable.background);
-        //     colorPicker.getDialogViewLayout().setBackgroundDrawableResource(backgroundcolorpicker);
-
-        colorPicker.show();*/
 
         final Dialog colorPickerNew = ColorPickerDialogBuilder
                 .with(getActivity())
@@ -1219,7 +1205,8 @@ public class FirstFragment extends Fragment {
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int selectedColor) {
-                        // toast("onColorSelected: 0x" + Integer.toHexString(selectedColor));
+                        // Set vibration on scroll
+                        VibratorTimer.INSTANCE.vibrate(getContext());
                     }
                 })
                 .setPositiveButton(getResources().getString(R.string.ok), new ColorPickerClickListener() {
@@ -1263,5 +1250,6 @@ public class FirstFragment extends Fragment {
                 radioButton1.setChecked(true);
         }
     }
+
 
 }

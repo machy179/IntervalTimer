@@ -45,6 +45,7 @@ class TabataService : Service() {
     var casMezitabatami = MyTime(0, 0, 0)
     var colorDlazdiceCasPauzyMeziTabatami = 0 //color
     var casCoolDown = MyTime(0, 0, 0)
+    var colorDlazdiceCasCoolDown = 0 //color
     var casCelkovy: MyTime? = null
     var pocetTabat = 1
     var colorDlazdicePocetCyklu = 0
@@ -81,6 +82,8 @@ class TabataService : Service() {
     var volume = 0f
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        setNotification() //tady změna v service 20.12.2024!!!
         //nejdříve zjistí, jestli to sem neskočilo z broadcastu
         if ("ACTION_STOP_SERVICE".equals(intent?.getAction())) {
             val intent1 = Intent("znicTabataActivityATabataService")
@@ -308,12 +311,10 @@ class TabataService : Service() {
                                             preskocVypisCasu = true
                                         } else {
                                             stav = 5
-                                            //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setContentText(
-                                                resources.getText(
-                                                    R.string.coolDown
-                                                )
-                                            )?.setColor(
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                                notification = notificationBuilder?.setColor(colorDlazdiceCasCoolDown)?.build()
+                                                //color
+                                            } else notification = notificationBuilder?.setColor(
                                                 resources.getColor(
                                                     R.color.colorCasCoolDown
                                                 )
@@ -544,11 +545,10 @@ class TabataService : Service() {
                                             mediaPlayer!!.start()
                                             stav = 5
                                             //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                            notification = notificationBuilder?.setContentText(
-                                                resources.getText(
-                                                    R.string.coolDown
-                                                )
-                                            )?.setColor(
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                                notification = notificationBuilder?.setColor(colorDlazdiceCasCoolDown)?.build()
+                                                //color
+                                            } else notification = notificationBuilder?.setColor(
                                                 resources.getColor(
                                                     R.color.colorCasCoolDown
                                                 )
@@ -826,7 +826,7 @@ class TabataService : Service() {
                                 mediaPlayer!!.setVolume(volume, volume)
                                 mediaPlayer!!.start()
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                                notification = notificationBuilder?.setContentText(
+/*                                notification = notificationBuilder?.setContentText(
                                     resources.getText(
                                         R.string.konec
                                     )
@@ -834,7 +834,21 @@ class TabataService : Service() {
                                     resources.getColor(
                                         R.color.colorKonecTabaty
                                     )
+                                )?.build()*/
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    notification = notificationBuilder?.setColor(colorDlazdiceCasCoolDown)?.build()
+                                    //color
+                                } else notification = notificationBuilder?.setColor(
+                                    resources.getColor(
+                                        R.color.colorCasCoolDown
+                                    )
+                                )?.setContentText(
+                                resources.getText(
+                                    R.string.coolDown
+                                )
                                 )?.build()
+
                                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
                                 stav = 4
                                 preskocVypisCasu = false
@@ -971,6 +985,7 @@ class TabataService : Service() {
                 getString(R.string.konec),
                 pStopSelf
             ) //pokud budu chtít dát nějakou další akci například
+            .setSound(null) // Zakáže zvukové znamení
             .build()
 
         when (pauzaNeniZmacknuta) {
@@ -1010,11 +1025,12 @@ class TabataService : Service() {
         val channelName = "Interval Timer Tabata Background Service"
         chan = NotificationChannel(
             channelId,
-            channelName, NotificationManager.IMPORTANCE_HIGH
-        ) //Kdybych chtěl, aby notifikace nebyla v malém okně heads-up, tak bych sem musel dát DEFAULT NEBO LOW...
+            channelName, NotificationManager.IMPORTANCE_DEFAULT
+        ) //Kdybych chtěl, aby notifikace nebyla v v bublině heads-up, tak bych sem musel dát MAX...
         chan!!.description = "Interval Timer Tabata Background Service description"
         chan!!.setShowBadge(true) //aby v případě notifikace byla u spouštěcí ikony aplikace značka, že je spuštěna notifikace, jako když je například u WA nová zpráva, tak u ikony na domovské stránce je značka nové zpárvy
         chan!!.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        chan!!.setSound(null, null);  //vypne zvuk notifikace
 
         mNotificationManager = getSystemService(
             NotificationManager::class.java
@@ -1065,7 +1081,9 @@ class TabataService : Service() {
         pomocny: Long,
         pauzaNeniZmacknuta: Boolean,
         pocetCyklu: Int,
-        casCoolDown: MyTime
+        casCoolDown: MyTime,
+        colorDlazdiceCasCoolDown: Int,
+
     ) {
 
         this.aktualniCyklus = aktualniCyklus
@@ -1087,6 +1105,7 @@ class TabataService : Service() {
         this.pocetCyklu = pocetCyklu
         this.pauzaNeniZmacknuta = pauzaNeniZmacknuta
         this.casCoolDown = casCoolDown
+        this.colorDlazdiceCasCoolDown = colorDlazdiceCasCoolDown
 
         Log.d("casMezitabatami 1 sec: ", casMezitabatami.sec.toString())
 
@@ -1151,7 +1170,10 @@ class TabataService : Service() {
             3 -> {
 
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                notification = notificationBuilder?.setColor(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    notification = notificationBuilder?.setColor(colorDlazdiceCasPauzyMeziTabatami)?.build()
+                    //color
+                } else notification = notificationBuilder?.setColor(
                     resources.getColor(
                         R.color.colorCasPauzyMeziTabatami
                     )
@@ -1171,7 +1193,10 @@ class TabataService : Service() {
             5 -> {
 
                 //takhle to budu dělat, asi ručně a nakonci swithce dát updateNotification
-                notification = notificationBuilder?.setColor(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    notification = notificationBuilder?.setColor(colorDlazdiceCasCoolDown)?.build()
+                    //color
+                } else notification = notificationBuilder?.setColor(
                     resources.getColor(
                         R.color.colorCasCoolDown
                     )

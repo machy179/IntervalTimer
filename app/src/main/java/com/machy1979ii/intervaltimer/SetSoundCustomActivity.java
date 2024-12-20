@@ -33,6 +33,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.machy1979ii.intervaltimer.funkce.AdUtils;
 import com.machy1979ii.intervaltimer.funkce.PraceSeZvukemTabata;
+import com.machy1979ii.intervaltimer.funkce.VibratorTimer;
 import com.machy1979ii.intervaltimer.ui.main.SecondFragment;
 
 
@@ -305,6 +306,11 @@ public class SetSoundCustomActivity extends AppCompatActivity {
         final NumberPicker pocitacVybranehoZvuku = (NumberPicker) dialog.findViewById(R.id.npVybranyZvuk);
         setDividerColor(pocitacVybranehoZvuku);
         pocitacVybranehoZvuku.setMinValue(1);
+
+        // Set vibration on scroll
+        pocitacVybranehoZvuku.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            VibratorTimer.INSTANCE.vibrate(dialog.getContext());
+        });
 
 
         if (nadpis.equals(getResources().getString(R.string.nadpisNastavCasPripravy))) {

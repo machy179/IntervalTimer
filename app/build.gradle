@@ -13,8 +13,8 @@ android {
         applicationId "com.machy1979ii.intervaltimer"
         minSdkVersion 21 //19
         targetSdkVersion 35
-        versionCode 45
-        versionName "6.1.0"
+        versionCode 47
+        versionName "6.2.0"
         multiDexEnabled = true
     //    android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
         ndkVersion "23.1.7779620" // to jsem sem dal, abych se pokusil udělat obfuscation soubor pro ladění chyb v programu na google play - tam je uvedeno že k app bundle souboru je přiložen mapovací soubor ReTrace
@@ -52,20 +52,20 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.13.1'  //1.3.2 1.10.1
+    implementation 'androidx.core:core-ktx:1.15.0'  //1.3.2 1.10.1
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
    // testImplementation 'junit:junit:4.+'
     implementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     implementation 'com.github.pwiniars:android-five-stars-library:3.6'
-   implementation 'com.google.android.gms:play-services-ads:23.4.0'
+   implementation 'com.google.android.gms:play-services-ads:23.6.0'
 
  //   implementation 'petrov.kristiyan:colorpicker-library:1.1.10' // bylo potřeba to naimportovat jinak, viz. níže uvedeno:
     implementation 'com.github.kristiyanP:colorpicker:v1.1.10'
@@ -74,12 +74,12 @@ dependencies {
     implementation 'com.github.AnderWeb:discreteSeekBar:99e62e6'
  //   implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.11.0' //POZOR, pokud to upgraduju na 'com.google.code.gson:gson:2.11.0', tak budu muset předělat ukládání praceSeSouboremCustom, jako jsem to udělal v BoxingTimeru
-    implementation 'com.google.android.ump:user-messaging-platform:3.0.0' //GDPR zprava
+    implementation 'com.google.android.ump:user-messaging-platform:3.1.0' //GDPR zprava
     implementation("androidx.multidex:multidex:2.0.1")
 
     implementation("com.android.billingclient:billing-ktx:7.1.1")
 
-    implementation platform('com.google.firebase:firebase-bom:33.4.0')
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
  //   implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-analytics:22.1.2'
     implementation 'com.google.firebase:firebase-firestore-ktx'
