@@ -942,8 +942,13 @@ class ClassicService : Service() {
             }
         }
 
-        nastavPocatecniHodnoty() //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
-        //tikání časovače ignorovalo další propisování nové hodnoty do notifikace, se aktuální čas v pauze špatně propisoval
+        try { // u starších telefonů se ještě nestihly předat hodnoty, které se používají v nastavPocatectniHodnoty,tak jsem to dal do try
+            nastavPocatecniHodnoty()
+            //je potřeba nastavit počáteční hodnoty a je třeba to vložil sem, protože při pauze, kde
+            //tikání časovače ignorovalo další propisování nové hodnoty do notifikace, se aktuální čas v pauze špatně propisoval
+        } catch (e: Exception) {
+
+        }
 
         notification!!.flags = Notification.DEFAULT_LIGHTS
         notification!!.flags = Notification.FLAG_AUTO_CANCEL
